@@ -1,0 +1,86 @@
+<nav class="navbar navbar-light bg-light flex-pull-right">
+    <button class="btn btn-primary" type="button" ng-click="home()">
+        Home
+    </button>
+    <button class="btn btn-light" type="button" ng-click="logout()">
+        Logout
+    </button>
+</nav>
+<div id="list">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h4>{{'Question #' + currentQuestion}}</h4>
+            </div>
+            <div class="card-body">
+                <form name="questionForm">
+                    <div ng-include="'template/questions/question.html'"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <nav aria-label="Question Pagination">
+      <ul class="pagination justify-content-end">
+        <li class="page-item" ng-class="{'disabled' : currentQuestion <= 1}">
+          <button class="page-link" ng-click="prev()" ng-disabled="currentQuestion <= 1">Previous</button>
+        </li>
+        <li class="page-item" ng-class="{'disabled' : currentQuestion >= currentQuestionSet.numOfQuestions || !validateAnswer()}">
+          <button class="page-link" ng-click="next()" ng-disabled="currentQuestion >= currentQuestionSet.numOfQuestions || !validateAnswer()">Next</button>
+        </li>
+        <li class="page-item" ng-show="currentQuestion == currentQuestionSet.numOfQuestions" ng-class="{'disabled' : !validateAnswer()}">
+          <button class="page-link" ng-click="submit()" ng-disabled="!validateAnswer()">Submit</button>
+        </li>
+      </ul>
+    </nav>
+</div>
+<div class="chat" ng-if="currentQuestionSet.isCollaborative">
+    <button type="button" class="btn btn-outline-danger btn-block" ng-click="collaborate()" ng-if="!waiting && !isConnect">Find Collaborator</button>
+    <button class="btn btn-outline-danger btn-block" type="button" disabled ng-if="waiting">
+        <span class="spinner-border spinner-border-sm"></span>
+        Looking for collaborator
+    </button>
+    <div class="chat-box" ng-show="showMessage && isConnect">
+        <div class="message">
+            <div class="message-box" id="message-box">
+                <div ng-repeat="msg in session.messages | orderBy : createdDate" class="single-message shadow px-2 py-1 mb-3 rounded clear"
+                    ng-class="{'text-primary bg-light pull-left' : msg.accountId != account.accountId, 'text-light bg-primary pull-right' : msg.accountId == account.accountId}">
+                    <div ng-if="msg.accountId != account.accountId">
+                        <span>{{ msg.message }}</span>
+                    </div>
+                    <div ng-if="msg.accountId == account.accountId">
+                        <span>{{ msg.message }}</span>
+                    </div>
+                </div>
+            </div>
+            <form ng-submit="sendMessage()">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Type message here" ng-model="chatBox.message">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-sm" type="submit">Send</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button type="button" class="btn btn-outline-secondary btn-block" ng-click="toggleMessage()" ng-if="!waiting && isConnect">
+        Messages <span class="badge badge-danger" ng-show="chatBox.unreadMessage">{{chatBox.unreadMessage}}</span>
+    </button>
+</div>
+
+<!-- Position it -->
+<div class="toast-box" ng-if="currentQuestionSet.isCollaborative && chatBox.toastMessage && chatBox.toastMessage !== ''">
+  <!-- Then put toasts within -->
+  <div class="toast" data-autohide="true" data-animation="true" data-delay="5000">
+    <div class="toast-header bg-light">
+      <strong class="mr-auto">Updates</strong>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+        <span>&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      {{ chatBox.toastMessage }}
+    </div>
+  </div>
+</div>
