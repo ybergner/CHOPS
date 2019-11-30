@@ -4,7 +4,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
 
-var answerRouter = reuqire('./router/answerRouter.js'');
+var answerRouter = require('./router/answerRouter.js');
 var questionRouter = require('./router/questionRouter.js');
 var studentRouter = require('./router/studentRouter.js');
 

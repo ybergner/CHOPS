@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var Account = require('../data/accountSchema.js');
 var Enum = require('../data/enum.js');
+var utils = require('../data/utils.js');
 
 // get all students
 router.get('/student', function(req, res){
@@ -15,7 +16,7 @@ router.get('/student', function(req, res){
               console.log('Collection is empty');
               res.json([]);
           } else {
-              res.json(result);
+              res.json(utils.convertToFrontEndObject(result, Enum.schemaType.account));
           }
       }
   });
@@ -32,7 +33,7 @@ router.get('/student/:id', function(req, res){
               console.log('Cannot find student' + req.params.id);
               res.json({});
           } else {
-              res.json(result);
+              res.json(utils.convertToFrontEndObject(result, Enum.schemaType.account));
           }
       }
   });
@@ -46,7 +47,7 @@ router.post('/student', function(req, res){
               console.log('Cannot create student');
               res.status(500).send(req.params.data);
           } else {
-              res.json(result);
+              res.json(utils.convertToFrontEndObject(result, Enum.schemaType.account));
           }
         });
     } else if (req.params.operation == 'update') {
@@ -62,7 +63,7 @@ router.post('/student', function(req, res){
                         console.log('Cannot update student' + req.params.data._id);
                         res.status(500).send('Cannot update student' + req.params.data._id);
                     } else {
-                        res.json(result);
+                        res.json({});
                     }
                 });
             }
@@ -79,9 +80,9 @@ router.delete('/student/:id', function(req, res){
       } else {
           if (result === null) {
               console.log('Cannot find student' + req.params.id);
-              res.json({});
+              res.status(500).send(req.params.id);
           } else {
-              res.json(result);
+              res.json({});
           }
       }
   });

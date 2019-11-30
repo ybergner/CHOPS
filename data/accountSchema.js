@@ -7,6 +7,7 @@ var accountSchema = new Schema({
     accountName: { type : String, required : true },
     accountType: { type : Number, required : true },
     email: { type : String },
+    password: { type : String, required : true }
 });
 
 module.exports = mongoose.model('account', accountSchema);
