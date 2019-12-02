@@ -5,7 +5,6 @@ var crypto = require('crypto'),
     algorithm = 'aes-256-ctr',
     password = 'abcd1234';
 
-// no password
 var convertAccount = function(dbObject) {
     if (dbObject) {
         let res = {};
@@ -13,6 +12,7 @@ var convertAccount = function(dbObject) {
         res.accountName = dbObject.accountName;
         res.accountType = dbObject.accountType;
         res.email = dbObject.email;
+        res.password = utils.decryptPassword(dbObject.password);
         return res;
     }
     return dbObject;
@@ -58,9 +58,9 @@ var convert = function(dbObject, schemaType) {
 }
 
 utils.convertToFrontEndObject = function(dbObjects, schemaType) {
-    if (Array.isArray(dbObject)) {
+    if (Array.isArray(dbObjects)) {
         let res = [];
-        for (let obj of dbObject) {
+        for (let obj of dbObjects) {
             res.push(convert(obj, schemaType));
         }
         return res;

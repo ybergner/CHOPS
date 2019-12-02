@@ -5,35 +5,66 @@ var Account = require('../data/accountSchema.js');
 var Enum = require('../data/enum.js');
 var utils = require('../data/utils.js');
 
+async function validateTeacher(data) {
+    let res = await Account.findOne({accountType: Enum.accountType.teacher, _id: data._id}).lean().then();
+    if (res) {
+        return true;
+    }
+    return false;
+}
+
 // get all students
-router.get('/student', function(req, res){
-  Account.find({accountType: Enum.accountType.student}).lean().exec(function(err, result) {
-      if (err) {
-          console.log('Cannot get all students');
-          res.status(500).send('Cannot get all students');
-      } else {
-          if (result === null) {
-              console.log('Collection is empty');
-              res.json([]);
-          } else {
-              res.json(utils.convertToFrontEndObject(result, Enum.schemaType.account));
-          }
-      }
-  });
+router.post('/validatePassword', function(req, res){
+    let encryptedPassword = utils.encryptPassword(req.params.password);
+    Account.findOne({accountId : req.params.accountId, password : encryptedPassword}).lean().exec(function(err, result) {
+        if (err) {
+            console.log('Cannot validate password');
+            res.status(500).send('Cannot validate password');
+        } else {
+            if (result === null) {
+                res.status(404).send('Invalid password');
+            } else {
+                res.json({success : true, data : result});
+            }
+        }
+    });
+});
+
+// get all students
+router.post('/student', function(req, res){
+    validateTeacher(req.params.account).then(function(isValid) {
+        if (!isValid) {
+            res.status(404).send('No Permission');
+        } else {
+            Account.find({accountType: Enum.accountType.student}).lean().exec(function(err, result) {
+              if (err) {
+                  console.log('Cannot get all students');
+                  res.status(500).send('Cannot get all students');
+              } else {
+                  if (result === null) {
+                      console.log('Collection is empty');
+                      res.json([]);
+                  } else {
+                      res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.account)});
+                  }
+              }
+            });
+        }
+    });
 });
 
 // get specific student by id
-router.get('/student/:id', function(req, res){
-  Account.findById(req.params.id).lean().exec(function(err, result) {
+router.get('/student/:_id', function(req, res){
+  Account.findOne({accountType: Enum.accountType.student, _id: req.params._id}).lean().exec(function(err, result) {
       if (err) {
-          console.log('Cannot get student' + req.params.id);
-          res.status(500).send('Cannot get student' + req.params.id);
+          console.log('Cannot get student ' + req.params._id);
+          res.status(500).send('Cannot get student ' + req.params._id);
       } else {
           if (result === null) {
-              console.log('Cannot find student' + req.params.id);
+              console.log('Cannot find student ' + req.params._id);
               res.json({});
           } else {
-              res.json(utils.convertToFrontEndObject(result, Enum.schemaType.account));
+              res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.account)});
           }
       }
   });
@@ -41,51 +72,63 @@ router.get('/student/:id', function(req, res){
 
 // add/update new student
 router.post('/student', function(req, res){
-    if (req.params.operation == 'create') {
-        Account.create(req.params.data, function(err, result) {
-          if (err) {
-              console.log('Cannot create student');
-              res.status(500).send(req.params.data);
-          } else {
-              res.json(utils.convertToFrontEndObject(result, Enum.schemaType.account));
-          }
-        });
-    } else if (req.params.operation == 'update') {
-        Account.findById(req.params.data._id).then(function(err, result) {
-            if (err) {
-                console.log('Cannot get student' + req.params.data._id);
-                res.status(500).send('Cannot get student' + req.params.data._id);
-            } else {
-                result.accountName = req.params.data.accountName;
-                result.email = req.params.data.email;
-                result.save(function(saveErr) {
-                    if (saveErr) {
-                        console.log('Cannot update student' + req.params.data._id);
-                        res.status(500).send('Cannot update student' + req.params.data._id);
+    validateTeacher(req.params.account).then(function(isValid) {
+        if (!isValid) {
+            res.status(404).send('No Permission');
+        } else {
+            if (req.params.operation == 'create') {
+                Account.create(req.params.data, function(err, result) {
+                  if (err) {
+                      console.log('Cannot create student');
+                      res.status(500).send(req.params.data);
+                  } else {
+                      res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.account)});
+                  }
+                });
+            } else if (req.params.operation == 'update') {
+                Account.findById(req.params.data._id).then(function(err, result) {
+                    if (err) {
+                        console.log('Cannot get student' + req.params.data._id);
+                        res.status(500).send('Cannot get student' + req.params.data._id);
                     } else {
-                        res.json({});
+                        result.accountName = req.params.data.accountName;
+                        result.email = req.params.data.email;
+                        result.save(function(saveErr) {
+                            if (saveErr) {
+                                console.log('Cannot update student ' + req.params.data._id);
+                                res.status(500).send('Cannot update student ' + req.params.data._id);
+                            } else {
+                                res.json({success : true});
+                            }
+                        });
                     }
                 });
             }
-        });
-    }
+        }
+    });
 });
 
 // delete student by id
-router.delete('/student/:id', function(req, res){
-  Account.findByIdAndRemove(req.params.id).lean().exec(function(err, result) {
-      if (err) {
-          console.log('Cannot get student' + req.params.id);
-          res.status(500).send('Cannot get student' + req.params.id);
-      } else {
-          if (result === null) {
-              console.log('Cannot find student' + req.params.id);
-              res.status(500).send(req.params.id);
-          } else {
-              res.json({});
-          }
-      }
-  });
+router.delete('/student/:id', function(req, res) {
+    validateTeacher(req.params.account).then(function(isValid) {
+        if (!isValid) {
+            res.status(404).send('No Permission');
+        } else {
+            Account.findByIdAndRemove(req.params._id).lean().exec(function(err, result) {
+              if (err) {
+                  console.log('Cannot get student ' + req.params._id);
+                  res.status(500).send('Cannot get student ' + req.params._id);
+              } else {
+                  if (result === null) {
+                      console.log('Cannot find student ' + req.params._id);
+                      res.status(500).send(req.params._id);
+                  } else {
+                      res.json({success : true});
+                  }
+              }
+            });
+        }
+    });
 });
 
 module.exports = router;
