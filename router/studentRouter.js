@@ -77,6 +77,7 @@ router.post('/student', function(req, res){
             res.status(404).send('No Permission');
         } else {
             if (req.params.operation == 'create') {
+                req.params.password = utils.encryptPassword(req.params.password);
                 Account.create(req.params.data, function(err, result) {
                   if (err) {
                       console.log('Cannot create student');
@@ -93,6 +94,7 @@ router.post('/student', function(req, res){
                     } else {
                         result.accountName = req.params.data.accountName;
                         result.email = req.params.data.email;
+                        result.password = utils.encryptPassword(req.params.password);
                         result.save(function(saveErr) {
                             if (saveErr) {
                                 console.log('Cannot update student ' + req.params.data._id);
