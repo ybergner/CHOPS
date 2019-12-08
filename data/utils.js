@@ -26,19 +26,7 @@ var convertAnswer = function(dbObject) {
         res.accountId = dbObject.accountId;
         res.lastUpdatedDate = dbObject.lastUpdatedDate;
         res.questionSetId = dbObject.questionSetId;
-        return res;
-    }
-    return dbObject;
-};
-
-var convertQuestion = function(dbObject, withAnswer) {
-    if (dbObject) {
-        let res = {};
-        res.questionType = dbObject.questionType;
-        res.question = dbObject.question;
-        if (withAnswer) {
-            res.defaultAnswer = dbObject.defaultAnswer;
-        }
+        res.selectedHint = dbObject.selectedHint;
         return res;
     }
     return dbObject;
@@ -48,8 +36,6 @@ var convert = function(dbObject, schemaType) {
     if (schemaType) {
         if (schemaType === Enum.schemaType.account) {
             return convertAccount(dbObject);
-        } else if (schemaType === Enum.schemaType.question) {
-            return convertQuestion(dbObject);
         } else if (schemaType === Enum.schemaType.answer) {
             return convertAnswer(dbObject);
         }

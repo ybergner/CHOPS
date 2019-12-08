@@ -11,8 +11,6 @@ module.exports = Object.freeze({
     },
     schemaType : {
       account : 1,
-      question : 2,
-      answer : 3,
-      questionSet : 4
+      answer : 2,
     }
 });

@@ -7,7 +7,8 @@ var answerSchema = new Schema({
     answer: { type : String, trim : true },
     accountId: { type : String, required : true },
     lastUpdatedDate: { type : Date },
-    questionSetId: { type : String }
+    questionSetId: { type : String },
+    selectedHint: { type : String }
 });
 
 module.exports = mongoose.model('answer', answerSchema);

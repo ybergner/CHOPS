@@ -13,7 +13,6 @@ async function validateTeacher(data) {
     return false;
 }
 
-// get all students
 router.post('/validatePassword', function(req, res){
     let encryptedPassword = utils.encryptPassword(req.params.password);
     Account.findOne({accountId : req.params.accountId, password : encryptedPassword}).lean().exec(function(err, result) {
@@ -24,7 +23,7 @@ router.post('/validatePassword', function(req, res){
             if (result === null) {
                 res.status(404).send('Invalid password');
             } else {
-                res.json({success : true, data : result});
+                res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.account)});
             }
         }
     });
@@ -53,23 +52,6 @@ router.post('/student', function(req, res){
     });
 });
 
-// get specific student by id
-router.get('/student/:_id', function(req, res){
-  Account.findOne({accountType: Enum.accountType.student, _id: req.params._id}).lean().exec(function(err, result) {
-      if (err) {
-          console.log('Cannot get student ' + req.params._id);
-          res.status(500).send('Cannot get student ' + req.params._id);
-      } else {
-          if (result === null) {
-              console.log('Cannot find student ' + req.params._id);
-              res.json({});
-          } else {
-              res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.account)});
-          }
-      }
-  });
-});
-
 // add/update new student
 router.post('/student', function(req, res){
     validateTeacher(req.params.account).then(function(isValid) {
@@ -92,9 +74,10 @@ router.post('/student', function(req, res){
                         console.log('Cannot get student' + req.params.data._id);
                         res.status(500).send('Cannot get student' + req.params.data._id);
                     } else {
+                        result.accountId = req.params.data.accountId;
                         result.accountName = req.params.data.accountName;
                         result.email = req.params.data.email;
-                        result.password = utils.encryptPassword(req.params.password);
+                        result.password = utils.encryptPassword(req.params.data.password);
                         result.save(function(saveErr) {
                             if (saveErr) {
                                 console.log('Cannot update student ' + req.params.data._id);
