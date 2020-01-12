@@ -8,6 +8,7 @@ var crypto = require('crypto'),
 var convertAccount = function(dbObject) {
     if (dbObject) {
         let res = {};
+        res._id = dbObject._id;
         res.accountId = dbObject.accountId;
         res.accountName = dbObject.accountName;
         res.accountType = dbObject.accountType;
@@ -21,6 +22,7 @@ var convertAccount = function(dbObject) {
 var convertAnswer = function(dbObject) {
     if (dbObject) {
         let res = {};
+        res._id = dbObject._id;
         res.questionId = dbObject.questionId;
         res.answer = dbObject.answer;
         res.accountId = dbObject.accountId;
