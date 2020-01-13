@@ -12,7 +12,7 @@ app.config(['$compileProvider', function($compileProvider){
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|sms|tel):/);
 }]);
 
-app.factory('enum', function() {
+app.factory('enums', function() {
     return {
         accountType : {
           teacher : 1,
@@ -24,19 +24,39 @@ app.factory('enum', function() {
           openQuestion : 3
         }
     };
+});
+
+app.factory('answerService', ['$http', '$q', 'accountService', function($http, $q, accountService) {
+    return {
+        getAnswersByAccount : function() {
+            var account = accountService.getCurrentAccount();
+            if (account) {
+                return $http.get('api/answer/' + account.accountId);
+            } else {
+                return $q.reject('No Account Information');
+            }
+        },
+        crud : function(operation, data) {
+            var account = accountService.getCurrentAccount();
+            if (account) {
+                $http.post('api/answer', {account: account, operation: operation, data: data});
+            } else {
+                return $q.reject('No Account Information');
+            }
+        }
+    };
 }]);
 
-app.factory('answerService', ['$http', function($http) {
-    return {};
-}]);
-
-app.factory('accountService', ['$http, enum', function($http, enum) {
+app.factory('accountService', ['$http', '$q', 'enums', function($http, $q, enums) {
     var account;
     return {
         getCurrentAccount : function() {
             return account;
         },
-        validatePassword : function(data) {
+        logoutAccount : function() {
+            account = null;
+        },
+        loginAccount : function(data) {
             return $http.post('api/validatePassword', {
                 accountId : data.accountId,
                 password : data.password
@@ -45,28 +65,32 @@ app.factory('accountService', ['$http, enum', function($http, enum) {
                 return account;
             });
         },
-        getStudentByAccount : function(data) {
-            if (account && account.accountType == enum.accountType.teacher) {
+        getStudents : function(data) {
+            if (account && account.accountType == enums.accountType.teacher) {
                 return $http.post('api/students', {account: account});
+            } else {
+                return $q.reject('No Permissions');
             }
         },
         crud : function(operation, data) {
-            if (account && account.accountType == enum.accountType.teacher) {
-                return $http.post('api/student', {account: account, operation : operation, data: data});
+            if (account && account.accountType == enums.accountType.teacher) {
+                return $http.post('api/student', {account: account, operation: operation, data: data});
+            } else {
+                return $q.reject('No Permissions');
             }
         }
-    }
+    };
 }]);
 
-app.controller('testController', ['$scope', '$http', function($scope, $http){
-    $http.post('api/validatePassword', {
+app.controller('testController', ['$scope', 'accountService', 'answerService', function($scope, accountService, answerService){
+    accountService.loginAccount({
         accountId : 123,
         password : 'admin'
-    }).then(function(res) {
-        $scope.account = res.data.data;
+    }).then(function(account) {
+        $scope.account = account;
     });
     $scope.click = function(){
-        $http.post('api/student', {account: $scope.account, operation: 'delete', studentId : 9999999}).then(function(res) {
+        answerService.getAnswersByAccount().then(function(res) {
             console.log(res);
         });
     }
