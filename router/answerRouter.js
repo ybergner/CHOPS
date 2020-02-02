@@ -12,7 +12,7 @@ router.get('/answer/:accountId', function(req, res){
             console.log('Cannot get answer ' + req.params.accountId);
             res.status(500).send('Cannot get answer ' + req.params.accountId);
         } else {
-            if (result === null) {
+            if (!result) {
                 console.log('Cannot find student ' + req.params.accountId);
                 res.json({});
             } else {

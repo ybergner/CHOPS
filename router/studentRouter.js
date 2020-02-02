@@ -20,7 +20,7 @@ router.post('/validatePassword', function(req, res){
             console.log('Cannot validate password');
             res.status(500).send('Cannot validate password');
         } else {
-            if (result === null) {
+            if (!result) {
                 res.status(404).send('Invalid password');
             } else {
                 res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.account)});
@@ -40,7 +40,7 @@ router.post('/students', function(req, res){
                   console.log('Cannot get all students');
                   res.status(500).send('Cannot get all students');
               } else {
-                  if (result === null) {
+                  if (!result) {
                       console.log('Collection is empty');
                       res.json([]);
                   } else {
@@ -96,7 +96,7 @@ router.post('/student', function(req, res){
                       console.log('Cannot get student ' + req.body.data.accountId);
                       res.status(500).send('Cannot get student ' + req.body.data.accountId);
                   } else {
-                      if (result === null) {
+                      if (!result) {
                           console.log('Cannot find student ' + req.body.data.accountId);
                           res.status(500).send(req.body.data.accountId);
                       } else {
@@ -108,5 +108,31 @@ router.post('/student', function(req, res){
         }
     });
 });
+
+router.setUpAdmin = function() {
+    // if there is no admin account, create one
+    Account.findOne({accountType: Enum.accountType.teacher}).lean().exec(function(err, result) {
+        if (!result) {
+            console.log('No admin account found, creating one.');
+            Account.create({
+                accountId : 123,
+                accountName : 'admin',
+                accountType : Enum.accountType.teacher,
+                email : 'kzheng1111@gmail.com',
+                password : utils.encryptPassword('admin')
+            }, function(err, result) {
+                if (err) {
+                    console.log('Cannot create admin account.');
+                    console.log(err);
+                } else {
+                    console.log('Created admin account.');
+                    console.log(result);
+                }
+            });
+        } else {
+            console.log("Found admin account.");
+        }
+    });
+}
 
 module.exports = router;

@@ -8,7 +8,8 @@ var answerSchema = new Schema({
     accountId: { type : Number, required : true },
     lastUpdatedDate: { type : Date },
     questionSetId: { type : Number },
-    selectedHint: { type : [String] }
+    selectedHint: { type : [String] },
+    isCollaborative : { type : Boolean }
 });
 
 module.exports = mongoose.model('answer', answerSchema);

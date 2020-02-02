@@ -82,7 +82,32 @@ app.factory('accountService', ['$http', '$q', 'enums', function($http, $q, enums
     };
 }]);
 
-app.controller('testController', ['$scope', 'accountService', 'answerService', function($scope, accountService, answerService){
+app.factory('sessionService', ['$http', '$q', function($http, $q) {
+    return {
+        getSessionByAccount : function() {
+            var account = accountService.getCurrentAccount();
+            if (account) {
+                return $http.get('api/session/' + account.accountId);
+            } else {
+                return $q.reject('No Account Information');
+            }
+        },
+    };
+}]);
+
+app.factory('socketService', ['accountService', function(accountService) {
+    var socket;
+    return {
+        socketSetup : function() {
+            socket = io({ reconnection: false });
+            socket.emit('account', accountService.getCurrentAccount());
+            socket.on('account received', function(){console.log('account connected to socket')});
+        }
+    };
+}]);
+
+app.controller('testController', ['$scope', 'accountService', 'answerService', 'sessionService', 'socketService',
+    function($scope, accountService, answerService, sessionService, socketService) {
     accountService.loginAccount({
         accountId : 123,
         password : 'admin'
@@ -93,5 +118,6 @@ app.controller('testController', ['$scope', 'accountService', 'answerService', f
         answerService.getAnswersByAccount().then(function(res) {
             console.log(res);
         });
+        socketService.socketSetup();
     }
 }]);

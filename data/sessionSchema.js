@@ -1,0 +1,21 @@
+'use strict';
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+var messageSchema = new Schema({
+    accountId : { type : Number, required : true },
+    message : { type : String, trim : true },
+    createdDate : { type : Date, default : Date.now }
+});
+
+var sessionSchema = new Schema({
+    accountAId : { type : Number, required : true },
+    accountBId : { type : Number, required : true },
+    questionSetId : { type : Number },
+    messages : { type : [messageSchema] },
+    accountASelectedHints : {},
+    accountBSelectedHints : {},
+    lastUpdatedDate : { type : Date }
+});
+
+module.exports = mongoose.model('session', sessionSchema);

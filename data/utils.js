@@ -29,6 +29,23 @@ var convertAnswer = function(dbObject) {
         res.lastUpdatedDate = dbObject.lastUpdatedDate;
         res.questionSetId = dbObject.questionSetId;
         res.selectedHint = dbObject.selectedHint;
+        res.isCollaborative = dbObject.isCollaborative;
+        return res;
+    }
+    return dbObject;
+};
+
+var convertSession = function(dbObject) {
+    if (dbObject) {
+        let res = {};
+        res._id = dbObject._id;
+        res.accountAId = dbObject.accountAId;
+        res.accountBId = dbObject.accountBId;
+        res.questionSetId = dbObject.questionSetId;
+        res.messages = dbObject.messages;
+        res.accountASelectedHints = dbObject.accountASelectedHints;
+        res.accountBSelectedHints = dbObject.accountBSelectedHints;
+        res.lastUpdatedDate = dbObject.lastUpdatedDate;
         return res;
     }
     return dbObject;
@@ -40,6 +57,8 @@ var convert = function(dbObject, schemaType) {
             return convertAccount(dbObject);
         } else if (schemaType === Enum.schemaType.answer) {
             return convertAnswer(dbObject);
+        } else if (schemaType === Enum.schemaType.session) {
+            return convertSession(dbObject);
         }
     }
     return dbObject;
