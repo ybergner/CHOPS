@@ -1,9 +1,6 @@
 'use strict';
 var Enum = require('./enum.js');
 var utils = {};
-var crypto = require('crypto'),
-    algorithm = 'aes-256-ctr',
-    password = 'abcd1234';
 
 var convertAccount = function(dbObject) {
     if (dbObject) {
@@ -13,7 +10,7 @@ var convertAccount = function(dbObject) {
         res.accountName = dbObject.accountName;
         res.accountType = dbObject.accountType;
         res.email = dbObject.email;
-        res.password = utils.decryptPassword(dbObject.password);
+        res.password = dbObject.password;
         return res;
     }
     return dbObject;
@@ -75,19 +72,5 @@ utils.convertToFrontEndObject = function(dbObjects, schemaType) {
         return convert(dbObjects, schemaType);
     }
 };
-
-utils.encryptPassword = function(pw) {
-    var cipher = crypto.createCipher(algorithm, password);
-    var crypted = cipher.update(pw, 'utf8', 'hex');
-    crypted += cipher.final('hex');
-    return crypted;
-}
-
-utils.decryptPassword = function(dbPw) {
-    var decipher = crypto.createDecipher(algorithm, password);
-    var decrypted = decipher.update(dbPw, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
-    return decrypted;
-}
 
 module.exports = utils;

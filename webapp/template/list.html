@@ -1,0 +1,42 @@
+<div id="list">
+    <div class="container" ng-if="isTeacher">
+        <div class="row">
+            <div class="col-md-4 offset-md-8">
+                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#createAccount" aria-expanded="false" aria-controls="createAccount">
+                     Create Account
+                 </button>
+            </div>
+        </div>
+        <div class="collapse row" id="createAccount">
+            <form>
+              <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="createAccountId">Account Id</label>
+                    <input type="text" class="form-control" id="createAccountId" ng-model="createFormInfo.accountId">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="createAccountName">Account Name</label>
+                    <input type="text" class="form-control" id="createAccountName" ng-model="createFormInfo.accountName">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="createAccountType">Account Type</label>
+                  <select class="form-control" id="createAccountType" ng-init="createFormInfo.accountType = accountTypeEnum.student"
+                      ng-options="key for (key, value) in accountTypeEnum" ng-model="createFormInfo.accountType">
+                  </select>
+              </div>
+              <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="createEmail">Email</label>
+                    <input type="email" class="form-control" id="createEmail" ng-model="createFormInfo.email">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="createPassword">Password</label>
+                    <input type="text" class="form-control" id="createPassword" ng-model="createFormInfo.password">
+                  </div>
+              </div>
+              <button class="btn btn-primary" ng-click="createAccount()">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

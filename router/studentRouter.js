@@ -14,8 +14,7 @@ async function validateTeacher(data) {
 }
 
 router.post('/validatePassword', function(req, res){
-    let encryptedPassword = utils.encryptPassword(req.body.password);
-    Account.findOne({accountId : req.body.accountId, password : encryptedPassword}).lean().exec(function(err, result) {
+    Account.findOne({accountId : req.body.accountId, password : req.body.password}).lean().exec(function(err, result) {
         if (err) {
             console.log('Cannot validate password');
             res.status(500).send('Cannot validate password');
@@ -60,7 +59,6 @@ router.post('/student', function(req, res){
         } else {
             if (req.body.operation == 'create') {
                 req.body.data.accountType = Enum.accountType.student;
-                req.body.data.password = utils.encryptPassword(req.body.data.password);
                 Account.create(req.body.data, function(err, result) {
                   if (err) {
                       console.log('Cannot create student');
@@ -79,7 +77,7 @@ router.post('/student', function(req, res){
                         result.accountName = req.body.data.accountName;
                         result.accountType = Enum.accountType.student;
                         result.email = req.body.data.email;
-                        result.password = utils.encryptPassword(req.body.data.password);
+                        result.password = req.body.data.password;
                         result.save(function(saveErr) {
                             if (saveErr) {
                                 console.log('Cannot update student ' + req.body.data.accountId);
@@ -119,7 +117,7 @@ router.setUpAdmin = function() {
                 accountName : 'admin',
                 accountType : Enum.accountType.teacher,
                 email : 'kzheng1111@gmail.com',
-                password : utils.encryptPassword('admin')
+                password : 'admin'
             }, function(err, result) {
                 if (err) {
                     console.log('Cannot create admin account.');

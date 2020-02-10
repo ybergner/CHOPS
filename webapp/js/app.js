@@ -3,8 +3,12 @@ var app = angular.module('myApp', ['ngRoute']);
 app.config(function($routeProvider){
     $routeProvider.
         when('/', {
-            templateUrl: '../template/test.html',
-            controller: 'testController'
+            templateUrl: '../template/list.html',
+            controller: 'listController'
+        }).
+        when('/login', {
+            templateUrl: '../template/login.html',
+            controller: 'loginController'
         });
 });
 
@@ -48,24 +52,35 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
 }]);
 
 app.factory('accountService', ['$http', '$q', 'enums', function($http, $q, enums) {
-    var account;
     return {
         getCurrentAccount : function() {
-            return account;
-        },
-        logoutAccount : function() {
-            account = null;
+            let accountInfo = localStorage.getItem('accountInfo');
+            if (accountInfo) {
+                accountInfo = JSON.parse(accountInfo);
+                let now = new Date();
+                let lastUpdatedDate = new Date(accountInfo.lastUpdatedDate);
+                let timeoutPeriod = 1000 * 3600 * 5; // 5 hours
+                if ((now.getTime() - lastUpdatedDate.getTime()) < timeoutPeriod) {
+                    return accountInfo.account;
+                } else {
+                    // session time out
+                    localStorage.removeItem('accountInfo');
+                }
+            }
+            return null;
         },
         loginAccount : function(data) {
             return $http.post('api/validatePassword', {
                 accountId : data.accountId,
                 password : data.password
             }).then(function(res) {
-                account = res.data.data;
+                let account = res.data.data;
+                localStorage.setItem('accountInfo', JSON.stringify({account: account, lastUpdatedDate: new Date()}));
                 return account;
             });
         },
         getStudents : function(data) {
+            let account = this.getCurrentAccount();
             if (account && account.accountType == enums.accountType.teacher) {
                 return $http.post('api/students', {account: account});
             } else {
@@ -73,6 +88,7 @@ app.factory('accountService', ['$http', '$q', 'enums', function($http, $q, enums
             }
         },
         crud : function(operation, data) {
+            let account = this.getCurrentAccount();
             if (account && account.accountType == enums.accountType.teacher) {
                 return $http.post('api/student', {account: account, operation: operation, data: data});
             } else {
@@ -106,18 +122,47 @@ app.factory('socketService', ['accountService', function(accountService) {
     };
 }]);
 
-app.controller('testController', ['$scope', 'accountService', 'answerService', 'sessionService', 'socketService',
-    function($scope, accountService, answerService, sessionService, socketService) {
-    accountService.loginAccount({
-        accountId : 123,
-        password : 'admin'
-    }).then(function(account) {
-        $scope.account = account;
-    });
-    $scope.click = function(){
-        answerService.getAnswersByAccount().then(function(res) {
-            console.log(res);
-        });
-        socketService.socketSetup();
+app.controller('loginController', ['$scope', 'accountService', '$location', function($scope, accountService, $location) {
+    $scope.account = accountService.getCurrentAccount();
+    if ($scope.account) {
+        // redirect
+        $location.path('/');
     }
+    $scope.submit = function() {
+        if ($scope.accountId && $scope.password) {
+            accountService.loginAccount({
+                accountId : $scope.accountId,
+                password : $scope.password
+            }).then(function(account) {
+                $scope.account = account;
+                // redirect
+                $location.path('/');
+            }, function(error) {
+                $scope.accountId = null;
+                $scope.password = null;
+            });
+        }
+    }
+}]);
+
+app.controller('listController', ['$scope', 'accountService', '$location', 'enums', function($scope, accountService, $location, enums) {
+    $scope.account = accountService.getCurrentAccount();
+    $scope.accountTypeEnum = enums.accountType;
+    if (!$scope.account) {
+        // redirect
+        $location.path('/login');
+    }
+    $scope.isTeacher = $scope.account.accountType === enums.accountType.teacher;
+    $scope.createFormInfo = {};
+    $scope.createAccount = function() {
+        if ($scope.createFormInfo.accountId && $scope.createFormInfo.accountName && $scope.createFormInfo.accountType && $scope.createFormInfo.email && $scope.createFormInfo.password) {
+            accountService.crud('create', $scope.createFormInfo).then(function(res) {
+                $scope.createFormInfo = { accountType : enums.accountType.student };
+                $('#createAccount').collapse('hide');
+            }, function(err) {
+                $scope.createFormInfo = { accountType : enums.accountType.student };
+                $('#createAccount').collapse('hide');
+            });
+        }
+    };
 }]);
