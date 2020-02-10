@@ -79,6 +79,9 @@ app.factory('accountService', ['$http', '$q', 'enums', function($http, $q, enums
                 return account;
             });
         },
+        logoutAccount : function() {
+            localStorage.removeItem('accountInfo');
+        },
         getStudents : function(data) {
             let account = this.getCurrentAccount();
             if (account && account.accountType == enums.accountType.teacher) {
@@ -152,17 +155,47 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
         // redirect
         $location.path('/login');
     }
-    $scope.isTeacher = $scope.account.accountType === enums.accountType.teacher;
-    $scope.createFormInfo = {};
-    $scope.createAccount = function() {
-        if ($scope.createFormInfo.accountId && $scope.createFormInfo.accountName && $scope.createFormInfo.accountType && $scope.createFormInfo.email && $scope.createFormInfo.password) {
-            accountService.crud('create', $scope.createFormInfo).then(function(res) {
-                $scope.createFormInfo = { accountType : enums.accountType.student };
-                $('#createAccount').collapse('hide');
-            }, function(err) {
-                $scope.createFormInfo = { accountType : enums.accountType.student };
-                $('#createAccount').collapse('hide');
-            });
-        }
+    $scope.logout = function() {
+        accountService.logoutAccount();
+        $location.path('/login');
     };
+    $scope.isTeacher = $scope.account.accountType === enums.accountType.teacher;
+    if ($scope.isTeacher) {
+        var refreshStudentList = function() {
+            accountService.getStudents().then(function(res){
+                $scope.allStudents = res.data.data;
+            });
+        };
+        $scope.createFormInfo = {};
+        $scope.createAccount = function() {
+            if ($scope.createFormInfo.accountId && $scope.createFormInfo.accountName && $scope.createFormInfo.accountType && $scope.createFormInfo.email && $scope.createFormInfo.password) {
+                accountService.crud('create', $scope.createFormInfo).then().finally(function() {
+                    $scope.createFormInfo = { accountType : enums.accountType.student };
+                    $('#createAccount').collapse('hide');
+                    refreshStudentList();
+                });
+            }
+        };
+        $scope.allStudents = [];
+        refreshStudentList();
+        $scope.editAccount = function(student) {
+            $scope.editStudent = angular.copy(student);
+        };
+        $scope.updateAccount = function() {
+            if ($scope.editStudent.accountId && $scope.editStudent.accountName && $scope.editStudent.accountType && $scope.editStudent.email && $scope.editStudent.password) {
+                accountService.crud('update', $scope.editStudent).then().finally(function() {
+                    $('#editAccount').modal('hide');
+                    refreshStudentList();
+                });
+            }
+        };
+        $scope.deleteAccount = function() {
+            if ($scope.editStudent.accountId && $scope.editStudent.accountType) {
+                accountService.crud('delete', $scope.editStudent).then().finally(function() {
+                    $('#editAccount').modal('hide');
+                    refreshStudentList();
+                });
+            }
+        }
+    }
 }]);

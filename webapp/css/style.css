@@ -1,3 +1,7 @@
-#login, #list {
-    margin-top: 10px;
+#login, #list, .student-table {
+    margin-top: 15px;
+}
+
+.pull-right {
+    float: right;
 }

@@ -1,8 +1,13 @@
 <div id="list">
+    <div class="container">
+        <button class="btn btn-light pull-right" type="button" ng-click="logout()">
+            Logout
+        </button>
+    </div>
     <div class="container" ng-if="isTeacher">
         <div class="row">
-            <div class="col-md-4 offset-md-8">
-                 <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#createAccount" aria-expanded="false" aria-controls="createAccount">
+            <div class="col-md-3 offset-md-9">
+                 <button class="btn btn-primary pull-right" type="button" data-toggle="collapse" data-target="#createAccount" aria-expanded="false" aria-controls="createAccount">
                      Create Account
                  </button>
             </div>
@@ -37,6 +42,79 @@
               </div>
               <button class="btn btn-primary" ng-click="createAccount()">Submit</button>
             </form>
+        </div>
+        <div class="row">
+            <table class="table table-bordered table-hover student-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Account Id</th>
+                  <th scope="col">Account Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Password</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr ng-repeat="student in allStudents">
+                      <th scope="row">{{$index + 1}}</th>
+                      <td>{{student.accountId}}</td>
+                      <td>{{student.accountName}}</td>
+                      <td>{{student.email}}</td>
+                      <td>{{student.password}}</td>
+                      <td>
+                          <button type="button" class="btn btn-outline-info" ng-click="editAccount(student)" data-toggle="modal" data-target="#editAccount">Edit</button>
+                      </td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+        <div class="modal fade" id="editAccount" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="editAccountTitle" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editAccountTitle">Student Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="editAccountId">Account Id</label>
+                          <input type="text" class="form-control" id="editAccountId" disabled ng-model="editStudent.accountId">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="editAccountName">Account Name</label>
+                          <input type="text" class="form-control" id="editAccountName" ng-model="editStudent.accountName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="createAccountType">Account Type</label>
+                        <select class="form-control" id="editAccountType" disabled
+                            ng-options="key for (key, value) in accountTypeEnum" ng-model="editStudent.accountType">
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="editEmail">Email</label>
+                          <input type="email" class="form-control" id="editEmail" ng-model="editStudent.email">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="editPassword">Password</label>
+                          <input type="text" class="form-control" id="editPassword" ng-model="editStudent.password">
+                        </div>
+                    </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" ng-click="deleteAccount()">Delete</button>
+                <button type="button" class="btn btn-primary" ng-click="updateAccount()">Save</button>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
 </div>
