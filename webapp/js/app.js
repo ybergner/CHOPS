@@ -230,7 +230,7 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
             for (let ans of answers) {
                 for (let questionSet of $scope.questionSetList) {
                     if (ans.questionSetId == questionSet.questionSetId) {
-                        questionSet.answers[ans.questionId] = ans;
+                        questionSet.answers[ans.questionId - 1] = ans;
                         break;
                     }
                 }
@@ -304,5 +304,5 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
             $location.path('/');
         });
     };
-    
+
 }]);
