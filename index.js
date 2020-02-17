@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, './webapp')));
 
 mongoose.connect(dbUrl, {useMongoClient: true}, function(err){
     if(err){
+        console.log(err);
         console.log('Connection to Database failed');
         process.exit(1);
     }else{
