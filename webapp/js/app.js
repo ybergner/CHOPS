@@ -9,12 +9,30 @@ app.config(function($routeProvider){
         when('/login', {
             templateUrl: '../template/login.html',
             controller: 'loginController'
+        }).
+        when('/questions', {
+            templateUrl: '../template/questionSet.html',
+            controller: 'questionSetController'
         });
 });
 
 app.config(['$compileProvider', function($compileProvider){
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|sms|tel):/);
 }]);
+
+app.factory('questionSetMapping', function() {
+    return {
+        list : [
+            {
+                questionSetId : 'Temp',
+                name : 'Test Temp',
+                numOfQuestions : 3,
+                answers : [],
+                isHidden : false
+            }
+        ]
+    };
+});
 
 app.factory('enums', function() {
     return {
@@ -31,9 +49,12 @@ app.factory('enums', function() {
 });
 
 app.factory('answerService', ['$http', '$q', 'accountService', function($http, $q, accountService) {
+    var currentQuestionSet;
     return {
-        getAnswersByAccount : function() {
-            var account = accountService.getCurrentAccount();
+        getAnswersByAccount : function(account) {
+            if (!account) {
+                account = accountService.getCurrentAccount();
+            }
             if (account) {
                 return $http.get('api/answer/' + account.accountId);
             } else {
@@ -47,6 +68,12 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
             } else {
                 return $q.reject('No Account Information');
             }
+        },
+        setCurrentQuestionSet : function(questionSet) {
+            currentQuestionSet = questionSet;
+        },
+        getCurrentQuestionSet : function() {
+            return currentQuestionSet;
         }
     };
 }]);
@@ -148,7 +175,7 @@ app.controller('loginController', ['$scope', 'accountService', '$location', func
     }
 }]);
 
-app.controller('listController', ['$scope', 'accountService', '$location', 'enums', function($scope, accountService, $location, enums) {
+app.controller('listController', ['$scope', 'accountService', '$location', 'enums', 'questionSetMapping', 'answerService', function($scope, accountService, $location, enums, questionSetMapping, answerService) {
     $scope.account = accountService.getCurrentAccount();
     $scope.accountTypeEnum = enums.accountType;
     if (!$scope.account) {
@@ -197,5 +224,85 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
                 });
             }
         }
+    } else {
+        answerService.getAnswersByAccount().then(function(res){
+            var answers = res.data.data;
+            for (let ans of answers) {
+                for (let questionSet of $scope.questionSetList) {
+                    if (ans.questionSetId == questionSet.questionSetId) {
+                        questionSet.answers[ans.questionId] = ans;
+                        break;
+                    }
+                }
+            }
+        });
     }
+    $scope.questionSetList = angular.copy(questionSetMapping.list);
+
+    $scope.doQuestionSet = function(questionSet) {
+        answerService.setCurrentQuestionSet(questionSet);
+        $location.path('/questions');
+    };
+}]);
+
+app.controller('questionSetController', ['$scope', 'accountService', 'answerService', '$location', '$q', '$window', function($scope, accountService, answerService, $location, $q, $window) {
+    $scope.account = $scope.account || accountService.getCurrentAccount();
+    $scope.currentQuestionSet = answerService.getCurrentQuestionSet();
+    if (!$scope.currentQuestionSet) {
+        $scope.currentQuestionSet = { answers : [] };
+        $location.path('/');
+    }
+    $scope.logout = function() {
+        accountService.logoutAccount();
+        $location.path('/login');
+    };
+
+    $scope.currentQuestion = 1;
+    $scope.previousAnswers = angular.copy($scope.currentQuestionSet.answers);
+
+    var checkAnswer = function(questionId) {
+        if (!$scope.currentQuestionSet.answers[questionId - 1]) {
+            $scope.currentQuestionSet.answers[questionId - 1] = {
+                questionId : questionId,
+                questionSetId : $scope.currentQuestionSet.questionSetId,
+                answer : {}
+                //selectedHint: { type : [String] },
+                //isCollaborative : { type : Boolean }
+            }
+        }
+    };
+
+    checkAnswer($scope.currentQuestion);
+
+    $scope.next = function() {
+        if($scope.currentQuestion < $scope.currentQuestionSet.numOfQuestions) {
+            $scope.currentQuestion++;
+            checkAnswer($scope.currentQuestion);
+        }
+    };
+
+    $scope.prev = function() {
+        if($scope.currentQuestion > 1) {
+            $scope.currentQuestion--;
+            checkAnswer($scope.currentQuestion);
+        }
+    };
+
+    $scope.submit = function() {
+        if (!Object.keys($scope.currentQuestionSet.answers[$scope.currentQuestion - 1].answer).length) {
+            return;
+        }
+        let promises = [];
+        for (let i = 0; i < $scope.currentQuestionSet.numOfQuestions; i++) {
+            if (!$scope.previousAnswers[i]) {
+                promises.push(answerService.crud('create', $scope.currentQuestionSet.answers[i]));
+            } else if(!angular.equals($scope.previousAnswers[i], $scope.currentQuestionSet.answers[i])) {
+                promises.push(answerService.crud('update', $scope.currentQuestionSet.answers[i]));
+            }
+        }
+        $q.all(promises).then(function(){
+            $location.path('/');
+        });
+    };
+    
 }]);

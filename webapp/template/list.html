@@ -1,49 +1,51 @@
+<nav class="navbar navbar-light bg-light flex-pull-right">
+    <button  ng-if="isTeacher" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#createAccount" aria-expanded="false" aria-controls="createAccount">
+        Create Account
+    </button>
+    <button class="btn btn-light" type="button" ng-click="logout()">
+        Logout
+    </button>
+</nav>
 <div id="list">
-    <div class="container">
-        <button class="btn btn-light pull-right" type="button" ng-click="logout()">
-            Logout
-        </button>
-    </div>
     <div class="container" ng-if="isTeacher">
-        <div class="row">
-            <div class="col-md-3 offset-md-9">
-                 <button class="btn btn-primary pull-right" type="button" data-toggle="collapse" data-target="#createAccount" aria-expanded="false" aria-controls="createAccount">
-                     Create Account
-                 </button>
+        <div class="collapse card" id="createAccount">
+            <div class="card-header">
+                <h4>Account Form</h4>
+            </div>
+            <div class="card-body">
+                <form>
+                  <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="createAccountId">Account Id</label>
+                        <input type="text" class="form-control" id="createAccountId" ng-model="createFormInfo.accountId">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="createAccountName">Account Name</label>
+                        <input type="text" class="form-control" id="createAccountName" ng-model="createFormInfo.accountName">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label for="createAccountType">Account Type</label>
+                      <select class="form-control" id="createAccountType" ng-init="createFormInfo.accountType = accountTypeEnum.student"
+                          ng-options="key for (key, value) in accountTypeEnum" ng-model="createFormInfo.accountType">
+                      </select>
+                  </div>
+                  <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="createEmail">Email</label>
+                        <input type="email" class="form-control" id="createEmail" ng-model="createFormInfo.email">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="createPassword">Password</label>
+                        <input type="text" class="form-control" id="createPassword" ng-model="createFormInfo.password">
+                      </div>
+                  </div>
+                  <button class="btn btn-primary pull-right" ng-click="createAccount()">Submit</button>
+                </form>
             </div>
         </div>
-        <div class="collapse row" id="createAccount">
-            <form>
-              <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="createAccountId">Account Id</label>
-                    <input type="text" class="form-control" id="createAccountId" ng-model="createFormInfo.accountId">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="createAccountName">Account Name</label>
-                    <input type="text" class="form-control" id="createAccountName" ng-model="createFormInfo.accountName">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label for="createAccountType">Account Type</label>
-                  <select class="form-control" id="createAccountType" ng-init="createFormInfo.accountType = accountTypeEnum.student"
-                      ng-options="key for (key, value) in accountTypeEnum" ng-model="createFormInfo.accountType">
-                  </select>
-              </div>
-              <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="createEmail">Email</label>
-                    <input type="email" class="form-control" id="createEmail" ng-model="createFormInfo.email">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="createPassword">Password</label>
-                    <input type="text" class="form-control" id="createPassword" ng-model="createFormInfo.password">
-                  </div>
-              </div>
-              <button class="btn btn-primary" ng-click="createAccount()">Submit</button>
-            </form>
-        </div>
         <div class="row">
+            <h4>All Students</h4>
             <table class="table table-bordered table-hover student-table">
               <thead>
                 <tr>
@@ -115,6 +117,33 @@
               </div>
             </div>
           </div>
+        </div>
+    </div>
+    <div class="container questionSet-table">
+        <div class="row">
+            <h4>All Question Sets</h4>
+            <table class="table table-bordered table-hover student-table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Question Set</th>
+                  <th scope="col">Question #</th>
+                  <th scope="col">Percentage</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr ng-repeat="questionSet in questionSetList" ng-hide="questionSet.isHidden">
+                      <th scope="row">{{$index + 1}}</th>
+                      <td>{{questionSet.name}}</td>
+                      <td>{{questionSet.numOfQuestions}}</td>
+                      <td>{{questionSet.answers.length / questionSet.numOfQuestions * 100 + '%'}}</td>
+                      <td>
+                          <button type="button" class="btn btn-outline-info" ng-click="doQuestionSet(questionSet)">Do</button>
+                      </td>
+                  </tr>
+              </tbody>
+            </table>
         </div>
     </div>
 </div>

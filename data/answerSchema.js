@@ -4,10 +4,10 @@ var Schema = mongoose.Schema;
 
 var answerSchema = new Schema({
     questionId: { type : Number, required : true },
-    answer: { type : String, trim : true },
+    answer: {}, // mixed schema type
     accountId: { type : Number, required : true },
     lastUpdatedDate: { type : Date },
-    questionSetId: { type : Number },
+    questionSetId: { type : String, trim : true },
     selectedHint: { type : [String] },
     isCollaborative : { type : Boolean }
 });

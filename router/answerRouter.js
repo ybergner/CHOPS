@@ -44,6 +44,7 @@ router.post('/answer', function(req, res) {
                 result.answer = req.body.data.answer;
                 result.lastUpdatedDate = new Date();
                 result.selectedHint = req.body.data.selectedHint;
+                result.markModified('answer');
                 result.save(function(saveErr) {
                     if (saveErr) {
                         console.log('Cannot update answer ' + req.body.data._id);

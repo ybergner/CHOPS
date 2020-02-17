@@ -1,0 +1,30 @@
+<nav class="navbar navbar-light bg-light flex-pull-right">
+    <button class="btn btn-light" type="button" ng-click="logout()">
+        Logout
+    </button>
+</nav>
+<div id="list">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h4>{{'Question #' + currentQuestion}}</h4>
+            </div>
+            <div class="card-body" ng-include="'template/questions/' + currentQuestionSet.questionSetId + '/' + currentQuestion + '.html'"></div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <nav aria-label="Question Pagination">
+      <ul class="pagination justify-content-end">
+        <li class="page-item" ng-click="prev()" ng-class="{ 'disabled' : currentQuestion <= 1 || !currentQuestionSet.answers[currentQuestion - 1].answer }">
+          <span class="page-link">Previous</span>
+        </li>
+        <li class="page-item" ng-click="next()" ng-class="{ 'disabled' : currentQuestion >= currentQuestionSet.numOfQuestions || !currentQuestionSet.answers[currentQuestion - 1].answer }">
+          <span class="page-link">Next</span>
+        </li>
+        <li class="page-item" ng-click="submit()" ng-show="currentQuestion == currentQuestionSet.numOfQuestions" ng-class="{ 'disabled' : !currentQuestionSet.answers[currentQuestion - 1].answer }">
+          <span class="page-link">Submit</span>
+        </li>
+      </ul>
+    </nav>
+</div>
