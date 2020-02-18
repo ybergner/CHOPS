@@ -64,7 +64,7 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
         crud : function(operation, data) {
             var account = accountService.getCurrentAccount();
             if (account) {
-                $http.post('api/answer', {account: account, operation: operation, data: data});
+                return $http.post('api/answer', {account: account, operation: operation, data: data});
             } else {
                 return $q.reject('No Account Information');
             }
@@ -74,6 +74,14 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
         },
         getCurrentQuestionSet : function() {
             return currentQuestionSet;
+        },
+        downloadReport : function() {
+            var account = accountService.getCurrentAccount();
+            if (account) {
+                return $http.post('api/getReport', {account: account}, {responseType: "arraybuffer"});
+            } else {
+                return $q.reject('No Account Information');
+            }
         }
     };
 }]);
@@ -223,7 +231,17 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
                     refreshStudentList();
                 });
             }
-        }
+        };
+        $scope.downloadReport = function() {
+            answerService.downloadReport().then(function(res) {
+                var blob = new Blob([res.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+                var link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = "Report_" +  (new Date()).getTime() + ".xlsx";
+                link.click();
+                URL.revokeObjectURL(link.href);
+            });
+        };
     } else {
         answerService.getAnswersByAccount().then(function(res){
             var answers = res.data.data;
@@ -245,7 +263,7 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
     };
 }]);
 
-app.controller('questionSetController', ['$scope', 'accountService', 'answerService', '$location', '$q', '$window', function($scope, accountService, answerService, $location, $q, $window) {
+app.controller('questionSetController', ['$scope', 'accountService', 'answerService', '$location', '$q', 'enums', function($scope, accountService, answerService, $location, $q, enums) {
     $scope.account = $scope.account || accountService.getCurrentAccount();
     $scope.currentQuestionSet = answerService.getCurrentQuestionSet();
     if (!$scope.currentQuestionSet) {
@@ -258,6 +276,7 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
     };
 
     $scope.currentQuestion = 1;
+    $scope.isTeacher = $scope.account && $scope.account.accountType === enums.accountType.teacher;
     $scope.previousAnswers = angular.copy($scope.currentQuestionSet.answers);
 
     var checkAnswer = function(questionId) {
@@ -275,7 +294,7 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
     checkAnswer($scope.currentQuestion);
 
     $scope.next = function() {
-        if($scope.currentQuestion < $scope.currentQuestionSet.numOfQuestions) {
+        if ($scope.currentQuestion < $scope.currentQuestionSet.numOfQuestions) {
             $scope.currentQuestion++;
             checkAnswer($scope.currentQuestion);
         }
@@ -288,16 +307,28 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
         }
     };
 
-    $scope.submit = function() {
-        if (!Object.keys($scope.currentQuestionSet.answers[$scope.currentQuestion - 1].answer).length) {
-            return;
+    $scope.home = function() {
+        $location.path('/');
+    }
+
+    $scope.validateAnswer = function(index) {
+        for (let key of Object.keys($scope.currentQuestionSet.answers[index].answer)) {
+            if ($scope.currentQuestionSet.answers[index].answer[key] && $scope.currentQuestionSet.answers[index].answer[key] !== '') {
+                return true;
+            }
         }
+        return false;
+    }
+
+    $scope.submit = function() {
         let promises = [];
         for (let i = 0; i < $scope.currentQuestionSet.numOfQuestions; i++) {
-            if (!$scope.previousAnswers[i]) {
-                promises.push(answerService.crud('create', $scope.currentQuestionSet.answers[i]));
-            } else if(!angular.equals($scope.previousAnswers[i], $scope.currentQuestionSet.answers[i])) {
-                promises.push(answerService.crud('update', $scope.currentQuestionSet.answers[i]));
+            if (!$scope.isTeacher && $scope.validateAnswer(i)) {
+                if (!$scope.previousAnswers[i]) {
+                    promises.push(answerService.crud('create', $scope.currentQuestionSet.answers[i]));
+                } else if(!angular.equals($scope.previousAnswers[i], $scope.currentQuestionSet.answers[i])) {
+                    promises.push(answerService.crud('update', $scope.currentQuestionSet.answers[i]));
+                }
             }
         }
         $q.all(promises).then(function(){

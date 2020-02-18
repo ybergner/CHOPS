@@ -12,6 +12,7 @@ var socketUtils = require('./socket/socketUtils.js');
 var answerRouter = require('./router/answerRouter.js');
 var studentRouter = require('./router/studentRouter.js');
 var sessionRouter = require('./router/sessionRouter.js');
+var spreadSheetRouter = require('./router/spreadSheetRouter.js');
 var dbUrl = 'mongodb+srv://kzheng:kzheng@cluster0-7wnfd.mongodb.net/test?retryWrites=true&w=majority';
 
 //bodyParser set up for json object return
@@ -21,19 +22,19 @@ app.use(bodyParser.json());
 //static folder set up
 app.use(express.static(path.join(__dirname, './webapp')));
 
-mongoose.connect(dbUrl, {useMongoClient: true}, function(err){
-    if(err){
+mongoose.connect(dbUrl, {useNewUrlParser: true}, function(err){
+    if (err) {
         console.log(err);
         console.log('Connection to Database failed');
         process.exit(1);
-    }else{
+    } else {
         console.log('Database Connected');
         studentRouter.setUpAdmin();
         socketUtils.setUpSocket(io);
     }
 });
 
-app.use('/api', [answerRouter, studentRouter, sessionRouter]);
+app.use('/api', [answerRouter, studentRouter, sessionRouter, spreadSheetRouter]);
 
 app.get('/favicon.ico', function(req, res){
     res.send('Currently no favicon');

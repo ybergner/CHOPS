@@ -1,6 +1,9 @@
 <nav class="navbar navbar-light bg-light flex-pull-right">
-    <button  ng-if="isTeacher" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#createAccount" aria-expanded="false" aria-controls="createAccount">
+    <button ng-if="isTeacher" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#createAccount" aria-expanded="false" aria-controls="createAccount">
         Create Account
+    </button>
+    <button ng-if="isTeacher" class="btn btn-primary" type="button" ng-click="downloadReport()">
+        Download Report
     </button>
     <button class="btn btn-light" type="button" ng-click="logout()">
         Logout

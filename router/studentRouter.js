@@ -13,6 +13,8 @@ async function validateTeacher(data) {
     return false;
 }
 
+router.validateTeacher = validateTeacher;
+
 router.post('/validatePassword', function(req, res){
     Account.findOne({accountId : req.body.accountId, password : req.body.password}).lean().exec(function(err, result) {
         if (err) {
