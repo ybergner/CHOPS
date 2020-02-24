@@ -8,7 +8,7 @@ var answerSchema = new Schema({
     accountId: { type : Number, required : true },
     lastUpdatedDate: { type : Date },
     questionSetId: { type : String, trim : true },
-    selectedHint: { type : [String] },
+    selectedHints: { type : [String] },
     isCollaborative : { type : Boolean }
 });
 

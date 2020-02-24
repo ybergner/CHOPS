@@ -20,10 +20,10 @@ router.getSessionById = function(accountId, questionSetId) {
     });
 };
 
-router.deleteSessionById = function(id) {
-    return Session.deleteOne({_id : id}).then(function(result) {
+router.deleteSessionByAccountId = function(accountId) {
+    return Session.deleteMany({$or : [{accountAId : accountId}, {accountBId : accountId}]}).then(function(result) {
         if (!result) {
-            console.log('Cannot find session ' + id);
+            console.log('Cannot find session by account id: ' + accountId);
             return null;
         } else {
             return result;
@@ -41,8 +41,6 @@ router.addOrUpdateSession = function(data) {
                 console.log(data);
             } else {
                 result.messages = data.messages;
-                result.accountASelectedHints = data.accountASelectedHints;
-                result.accountBSelectedHints = data.accountBSelectedHints;
                 result.lastUpdatedDate = new Date();
                 result.save(function(saveErr) {
                     if (saveErr) {

@@ -25,7 +25,7 @@ var convertAnswer = function(dbObject) {
         res.accountId = dbObject.accountId;
         res.lastUpdatedDate = dbObject.lastUpdatedDate;
         res.questionSetId = dbObject.questionSetId;
-        res.selectedHint = dbObject.selectedHint;
+        res.selectedHints = dbObject.selectedHints;
         res.isCollaborative = dbObject.isCollaborative;
         return res;
     }
@@ -40,8 +40,6 @@ var convertSession = function(dbObject) {
         res.accountBId = dbObject.accountBId;
         res.questionSetId = dbObject.questionSetId;
         res.messages = dbObject.messages;
-        res.accountASelectedHints = dbObject.accountASelectedHints;
-        res.accountBSelectedHints = dbObject.accountBSelectedHints;
         res.lastUpdatedDate = dbObject.lastUpdatedDate;
         return res;
     }

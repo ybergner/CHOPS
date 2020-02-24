@@ -27,8 +27,17 @@ app.factory('questionSetMapping', function() {
                 questionSetId : 'Temp',
                 name : 'Test Temp',
                 numOfQuestions : 3,
-                answers : [],
-                isHidden : false
+                isHidden : false,
+                isCollaborative : false,
+                answers : []
+            },
+            {
+                questionSetId : 'Temp_collaborative',
+                name : 'Test Temp',
+                numOfQuestions : 3,
+                isHidden : false,
+                isCollaborative : true,
+                answers : []
             }
         ]
     };
@@ -117,7 +126,7 @@ app.factory('accountService', ['$http', '$q', 'enums', function($http, $q, enums
         logoutAccount : function() {
             localStorage.removeItem('accountInfo');
         },
-        getStudents : function(data) {
+        getStudents : function() {
             let account = this.getCurrentAccount();
             if (account && account.accountType == enums.accountType.teacher) {
                 return $http.post('api/students', {account: account});
@@ -136,29 +145,55 @@ app.factory('accountService', ['$http', '$q', 'enums', function($http, $q, enums
     };
 }]);
 
-app.factory('sessionService', ['$http', '$q', function($http, $q) {
+app.factory('socketService', function() {
     return {
-        getSessionByAccount : function() {
-            var account = accountService.getCurrentAccount();
-            if (account) {
-                return $http.get('api/session/' + account.accountId);
-            } else {
-                return $q.reject('No Account Information');
-            }
-        },
-    };
-}]);
-
-app.factory('socketService', ['accountService', function(accountService) {
-    var socket;
-    return {
-        socketSetup : function() {
-            socket = io({ reconnection: false });
-            socket.emit('account', accountService.getCurrentAccount());
-            socket.on('account received', function(){console.log('account connected to socket')});
+        socketSetup : function(scope) {
+            let socket = io({ reconnection: false });
+            socket.emit('account', {accountId : scope.account.accountId, questionSetId : scope.currentQuestionSet.questionSetId});
+            socket.on('account already has socket', function(){
+                console.log('account already connected with socket.');
+                $('.toast').toast('hide');
+                scope.chatBox.toastMessage = 'This account had been connected in another session.';
+                scope.$apply();
+                $('.toast').toast('show');
+            });
+            socket.on('account received', function(){
+                console.log('account set up completed in socket.');
+                scope.socket = socket;
+            });
+            socket.on('account in queue', function() {
+                console.log('account waiting in queue');
+                scope.waiting = true;
+                scope.$apply();
+            });
+            socket.on('account matched', function(data) {
+                console.log('account matched');
+                console.log(data);
+                scope.session = data;
+                scope.waiting = false;
+                $('.toast').toast('hide');
+                scope.chatBox.toastMessage = 'Connected with another collaborator.';
+                scope.$apply();
+                $('.toast').toast('show');
+                scope.chatEl = document.getElementById("message-box");
+            });
+            socket.on('leave', function(id) {
+                console.log('account id ' + id + ' left');
+                scope.waiting = true;
+                scope.showMessage = false;
+                $('.toast').toast('hide');
+                scope.chatBox.toastMessage = 'Collaborator disconnected.';
+                scope.$apply();
+                $('.toast').toast('show');
+            });
+            socket.on('new message', function(message){
+                scope.session.messages.push(message);
+                scope.$apply();
+                scope.chatEl.scrollTop = scope.chatEl.scrollHeight;
+            });
         }
     };
-}]);
+});
 
 app.controller('loginController', ['$scope', 'accountService', '$location', function($scope, accountService, $location) {
     $scope.account = accountService.getCurrentAccount();
@@ -263,7 +298,7 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
     };
 }]);
 
-app.controller('questionSetController', ['$scope', 'accountService', 'answerService', '$location', '$q', 'enums', function($scope, accountService, answerService, $location, $q, enums) {
+app.controller('questionSetController', ['$scope', 'accountService', 'answerService', '$location', '$q', 'enums', 'socketService', function($scope, accountService, answerService, $location, $q, enums, socketService) {
     $scope.account = $scope.account || accountService.getCurrentAccount();
     $scope.currentQuestionSet = answerService.getCurrentQuestionSet();
     if (!$scope.currentQuestionSet) {
@@ -272,6 +307,9 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
     }
     $scope.logout = function() {
         accountService.logoutAccount();
+        if ($scope.socket) {
+            $scope.socket.disconnect();
+        }
         $location.path('/login');
     };
 
@@ -284,9 +322,9 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
             $scope.currentQuestionSet.answers[questionId - 1] = {
                 questionId : questionId,
                 questionSetId : $scope.currentQuestionSet.questionSetId,
-                answer : {}
-                //selectedHint: { type : [String] },
-                //isCollaborative : { type : Boolean }
+                answer : {},
+                selectedHints : [],
+                isCollaborative : $scope.currentQuestionSet.isCollaborative
             }
         }
     };
@@ -308,8 +346,11 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
     };
 
     $scope.home = function() {
+        if ($scope.socket) {
+            $scope.socket.disconnect();
+        }
         $location.path('/');
-    }
+    };
 
     $scope.validateAnswer = function(index) {
         for (let key of Object.keys($scope.currentQuestionSet.answers[index].answer)) {
@@ -318,7 +359,41 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
             }
         }
         return false;
+    };
+
+    if ($scope.currentQuestionSet.isCollaborative) {
+        if (!$scope.isTeacher) {
+            socketService.socketSetup($scope);
+        }
+        $scope.templateFolderPath = 'template/questions/collaborative/';
+    } else {
+        $scope.templateFolderPath = 'template/questions/individual/';
     }
+
+    $scope.showMessage = false;
+    $scope.chatBox = {message : '', toastMessage : ''};
+
+    $scope.toggleMessage = function() {
+        $scope.showMessage = !$scope.showMessage;
+        if ($scope.showMessage) {
+            setTimeout(function() {
+                $scope.chatEl.scrollTop = $scope.chatEl.scrollHeight;
+            }, 100);
+        }
+    };
+
+    $scope.collaborate = function() {
+        if ($scope.socket && angular.isUndefined($scope.waiting)) {
+            $scope.socket.emit('queueing');
+        }
+    };
+
+    $scope.sendMessage = function() {
+        if ($scope.socket && $scope.chatBox.message && $scope.chatBox.message !== '') {
+            $scope.socket.emit('new message', $scope.chatBox.message);
+            $scope.chatBox.message = '';
+        }
+    };
 
     $scope.submit = function() {
         let promises = [];
@@ -332,6 +407,9 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
             }
         }
         $q.all(promises).then(function(){
+            if ($scope.socket) {
+                $scope.socket.disconnect();
+            }
             $location.path('/');
         });
     };

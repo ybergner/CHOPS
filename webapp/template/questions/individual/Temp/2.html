@@ -1,0 +1,29 @@
+<div ng-init="currentQuestionSet.answers[currentQuestion - 1].answer.multipleChoice = currentQuestionSet.answers[currentQuestion - 1].answer.multipleChoice || {};">
+    <h6 class="card-title">Question title 2</h6>
+    <p class="card-text">Some text of the question</p>
+    <img src="{{templateFolderPath + currentQuestionSet.questionSetId + '/asset/300x200.jpg'}}" class="card-img-top" alt="question image">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="check1"
+        ng-model="currentQuestionSet.answers[currentQuestion - 1].answer.multipleChoice.a"
+        ng-disabled="currentQuestionSet.answers[currentQuestion - 1]._id">
+      <label class="form-check-label" for="check1">
+        First checkbox
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="check2"
+        ng-model="currentQuestionSet.answers[currentQuestion - 1].answer.multipleChoice.b"
+        ng-disabled="currentQuestionSet.answers[currentQuestion - 1]._id">
+      <label class="form-check-label" for="check2">
+        Second checkbox
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="check3"
+        ng-model="currentQuestionSet.answers[currentQuestion - 1].answer.multipleChoice.c"
+        ng-disabled="currentQuestionSet.answers[currentQuestion - 1]._id">
+      <label class="form-check-label" for="check3">
+        Third checkbox
+      </label>
+    </div>
+</div>

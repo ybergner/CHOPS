@@ -8,38 +8,46 @@ utils.setUpSocket = function(io) {
     var counter = 0;
     io.on('connection', function(socket) {
         socket.on('account', function(data) {
-            socket._userName = data.accountId;
-            accountSessionSocketMap[data.accountId] = {};
-            accountSessionSocketMap[data.accountId].isConnect = false;
-            accountSessionSocketMap[data.accountId].socket = socket;
-            accountSessionSocketMap[data.accountId].questionSetId = data.questionSetId;
-            sessionRouter.getSessionById(data.accountId, data.questionSetId).then(function(sessions) {
-                console.log(sessions);
-                if (sessions && sessions.length) {
-                    accountSessionSocketMap[data.accountId].session = sessions[0];
-                } else {
-                    accountSessionSocketMap[data.accountId].session = [];
-                }
-                socket.emit('account received');
-            });
+            if (accountSessionSocketMap[data.accountId]) {
+                socket._userName = "invalid_socket";
+                socket.emit('account already has socket', {});
+            } else {
+                socket._userName = data.accountId;
+                accountSessionSocketMap[data.accountId] = {};
+                accountSessionSocketMap[data.accountId].isConnect = false;
+                accountSessionSocketMap[data.accountId].socket = socket;
+                accountSessionSocketMap[data.accountId].questionSetId = data.questionSetId;
+                sessionRouter.getSessionById(data.accountId, data.questionSetId).then(function(sessions) {
+                    if (sessions && sessions.length) {
+                        accountSessionSocketMap[data.accountId].session = sessions[0] || {};
+                    } else {
+                        accountSessionSocketMap[data.accountId].session = {};
+                    }
+                    socket.emit('account received', {});
+                });
+            }
         });
 
         socket.on('queueing', function() {
+            if (socket._userName == "invalid_socket") {
+                socket.emit('account already has socket', {});
+                return;
+            }
             if (accountQueue.length) {
                 // someone in queue
                 if (accountSessionSocketMap[socket._userName].session && accountSessionSocketMap[socket._userName].session._id) {
                     // account had collaborate this question set with someone before
                     let index = accountQueue.indexOf(accountSessionSocketMap[socket._userName].session.accountAId);
                     if (index == -1) {
-                        index = accountQueue.indexOf(accountSessionSocketMap[socket._userName].session.accountAId);
+                        index = accountQueue.indexOf(accountSessionSocketMap[socket._userName].session.accountBId);
                     }
                     if (index > -1) {
                         // found the collaborated account
                         accountSessionSocketMap[socket._userName].isConnect = true;
-                        socket._roomName = accountSessionSocketMap[socket._userName].session._id;
+                        socket._roomName = accountSessionSocketMap[socket._userName].session._id.toString();
                         let matchedAccountId = accountQueue.splice(index, 1)[0];
                         accountSessionSocketMap[matchedAccountId].isConnect = true;
-                        accountSessionSocketMap[matchedAccountId].socket._roomName = accountSessionSocketMap[socket._userName].session._id;
+                        accountSessionSocketMap[matchedAccountId].socket._roomName = accountSessionSocketMap[socket._userName].session._id.toString();
                         // make reference the same
                         accountSessionSocketMap[matchedAccountId].session = accountSessionSocketMap[socket._userName].session;
                         socket.join(socket._roomName);
@@ -48,34 +56,45 @@ utils.setUpSocket = function(io) {
                     } else {
                         // did not find the collaborated account, put current account into queue
                         accountQueue.push(socket._userName);
-                        socket.emit('account in queue');
+                        socket.emit('account in queue', {});
                     }
                 } else {
                     // first time to do this question set
                     socket._roomName = "First Time Room " + counter;
-                    accountSessionSocketMap[socket._userName].isConnect = true;
-                    accountSessionSocketMap[socket._userName].session = {
-                        accountAId : socket._userName,
-                        accountBId : matchedAccountId,
-                        questionSetId : accountSessionSocketMap[socket._userName].questionSetId,
-                        messages : [],
-                        accountASelectedHints : {},
-                        accountBSelectedHints : {}
-                    };
-                    let matchedAccountId = accountQueue.shift();
-                    accountSessionSocketMap[matchedAccountId].socket._roomName = "First Time Room " + counter;
-                    accountSessionSocketMap[matchedAccountId].isConnect = true;
-                    // make reference the same
-                    accountSessionSocketMap[matchedAccountId].session = accountSessionSocketMap[socket._userName].session;
-                    counter++;
-                    socket.join(socket._roomName);
-                    accountSessionSocketMap[matchedAccountId].socket.join(socket._roomName);
-                    io.in(socket._roomName).emit('account matched', accountSessionSocketMap[socket._userName].session);
+                    let index = -1;
+                    for (let i = 0; i < accountQueue.length; i++) {
+                        if (!accountSessionSocketMap[accountQueue[i]].session._id) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    if (index > -1) {
+                        let matchedAccountId = accountQueue.splice(index, 1)[0];
+                        accountSessionSocketMap[socket._userName].isConnect = true;
+                        accountSessionSocketMap[socket._userName].session = {
+                            accountAId : socket._userName,
+                            accountBId : matchedAccountId,
+                            questionSetId : accountSessionSocketMap[socket._userName].questionSetId,
+                            messages : [],
+                        };
+                        accountSessionSocketMap[matchedAccountId].socket._roomName = "First Time Room " + counter;
+                        accountSessionSocketMap[matchedAccountId].isConnect = true;
+                        // make reference the same
+                        accountSessionSocketMap[matchedAccountId].session = accountSessionSocketMap[socket._userName].session;
+                        counter++;
+                        socket.join(socket._roomName);
+                        accountSessionSocketMap[matchedAccountId].socket.join(socket._roomName);
+                        io.in(socket._roomName).emit('account matched', accountSessionSocketMap[socket._userName].session);
+                    } else {
+                        // no one is in queue, put current account into queue
+                        accountQueue.push(socket._userName);
+                        socket.emit('account in queue', {});
+                    }
                 }
             } else {
                 // no one is in queue, put current account into queue
                 accountQueue.push(socket._userName);
-                socket.emit('account in queue');
+                socket.emit('account in queue', {});
             }
         });
 
@@ -103,6 +122,10 @@ utils.setUpSocket = function(io) {
         });
 
         socket.on('new message', function(data){
+            if (socket._userName == "invalid_socket") {
+                socket.emit('account already has socket', {});
+                return;
+            }
             let message = { accountId : socket._userName, message : data, createdDate : new Date() };
             accountSessionSocketMap[socket._userName].session.messages.push(message);
             io.in(socket._roomName).emit('new message', message);

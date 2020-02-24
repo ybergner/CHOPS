@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
                 <form name="questionForm">
-                    <div ng-include="'template/questions/' + currentQuestionSet.questionSetId + '/' + currentQuestion + '.html'"></div>
+                    <div ng-include="templateFolderPath + currentQuestionSet.questionSetId + '/' + currentQuestion + '.html'"></div>
                 </form>
             </div>
         </div>
@@ -34,4 +34,51 @@
         </li>
       </ul>
     </nav>
+</div>
+<div class="chat" ng-if="currentQuestionSet.isCollaborative">
+    <button type="button" class="btn btn-outline-danger btn-block" ng-click="collaborate()" ng-if="!session && !waiting">Find Collaborator</button>
+    <button class="btn btn-outline-danger btn-block" type="button" disabled ng-if="waiting">
+        <span class="spinner-border spinner-border-sm"></span>
+        Looking for collaborator
+    </button>
+    <div class="chat-box" ng-show="showMessage">
+        <div class="message">
+            <div class="message-box" id="message-box">
+                <div ng-repeat="msg in session.messages | orderBy : createdDate" class="single-message shadow p-3 mb-3 rounded"
+                    ng-class="{'text-primary bg-light' : msg.accountId != account.accountId, 'text-light bg-primary' : msg.accountId == account.accountId}">
+                    <div ng-if="msg.accountId != account.accountId">
+                        <span>{{ 'Collaborator : ' + msg.message }}</span>
+                    </div>
+                    <div ng-if="msg.accountId == account.accountId">
+                        <span>{{ 'You : ' + msg.message }}</span>
+                    </div>
+                </div>
+            </div>
+            <form ng-submit="sendMessage()">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Type message here" ng-model="chatBox.message">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-sm" type="submit">Send</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button type="button" class="btn btn-outline-secondary btn-block" ng-click="toggleMessage()" ng-if="session && !waiting">Messages</button>
+</div>
+
+<!-- Position it -->
+<div class="toast-box" ng-if="currentQuestionSet.isCollaborative">
+  <!-- Then put toasts within -->
+  <div class="toast" data-autohide="true" data-animation="true" data-delay="5000">
+    <div class="toast-header bg-light">
+      <strong class="mr-auto">Updates</strong>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+        <span>&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      {{ chatBox.toastMessage }}
+    </div>
+  </div>
 </div>

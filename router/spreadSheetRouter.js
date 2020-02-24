@@ -54,6 +54,7 @@ var generateAndSendReportSheet = function(res, result) {
         var ws = wb.addWorksheet(questionSetId);
         ws.cell(1, 1).string('Quiz Id').style(headerStyle);
         ws.cell(1, 2).string('Submit Time').style(headerStyle);
+        ws.column(2).setWidth(20);
         ws.cell(1, 3).string('Student Id').style(headerStyle);
         var firstRun = true;
         var rowNum = 2;

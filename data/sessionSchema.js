@@ -11,10 +11,8 @@ var messageSchema = new Schema({
 var sessionSchema = new Schema({
     accountAId : { type : Number, required : true },
     accountBId : { type : Number, required : true },
-    questionSetId : { type : Number },
+    questionSetId : { type : String, trim : true },
     messages : { type : [messageSchema] },
-    accountASelectedHints : {},
-    accountBSelectedHints : {},
     lastUpdatedDate : { type : Date }
 });
 
