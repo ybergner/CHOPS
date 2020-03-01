@@ -44,13 +44,13 @@
     <div class="chat-box" ng-show="showMessage">
         <div class="message">
             <div class="message-box" id="message-box">
-                <div ng-repeat="msg in session.messages | orderBy : createdDate" class="single-message shadow p-3 mb-3 rounded"
-                    ng-class="{'text-primary bg-light' : msg.accountId != account.accountId, 'text-light bg-primary' : msg.accountId == account.accountId}">
+                <div ng-repeat="msg in session.messages | orderBy : createdDate" class="single-message shadow px-2 py-1 mb-3 rounded clear"
+                    ng-class="{'text-primary bg-light pull-left' : msg.accountId != account.accountId, 'text-light bg-primary pull-right' : msg.accountId == account.accountId}">
                     <div ng-if="msg.accountId != account.accountId">
-                        <span>{{ 'Collaborator : ' + msg.message }}</span>
+                        <span>{{ msg.message }}</span>
                     </div>
                     <div ng-if="msg.accountId == account.accountId">
-                        <span>{{ 'You : ' + msg.message }}</span>
+                        <span>{{ msg.message }}</span>
                     </div>
                 </div>
             </div>

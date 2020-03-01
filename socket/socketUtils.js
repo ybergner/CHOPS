@@ -76,6 +76,8 @@ utils.setUpSocket = function(io) {
                             accountBId : matchedAccountId,
                             questionSetId : accountSessionSocketMap[socket._userName].questionSetId,
                             messages : [],
+                            accountASelectedHints : [],
+                            accountBSelectedHints : []
                         };
                         accountSessionSocketMap[matchedAccountId].socket._roomName = "First Time Room " + counter;
                         accountSessionSocketMap[matchedAccountId].isConnect = true;
@@ -129,6 +131,63 @@ utils.setUpSocket = function(io) {
             let message = { accountId : socket._userName, message : data, createdDate : new Date() };
             accountSessionSocketMap[socket._userName].session.messages.push(message);
             io.in(socket._roomName).emit('new message', message);
+        });
+
+        socket.on('select hints', function(data){
+            if (socket._userName == "invalid_socket") {
+                socket.emit('account already has socket', {});
+                return;
+            }
+            let alreadySelectedHints = [];
+            let validHints = [].concat(data.selectedHints);
+            let otherAccountSelectedHints;
+            let selfAccountSelectedHints;
+            if (accountSessionSocketMap[socket._userName].session.accountAId == socket._userName) {
+                // user is account A, check account B
+                selfAccountSelectedHints =  accountSessionSocketMap[socket._userName].session.accountASelectedHints;
+                otherAccountSelectedHints = accountSessionSocketMap[socket._userName].session.accountBSelectedHints;
+            } else {
+                // user is account B, check account A
+                selfAccountSelectedHints =  accountSessionSocketMap[socket._userName].session.accountBSelectedHints;
+                otherAccountSelectedHints = accountSessionSocketMap[socket._userName].session.accountASelectedHints;
+            }
+            for (let selectedHints of otherAccountSelectedHints) {
+                if (selectedHints.questionId == data.questionId) {
+                    for (let hint of data.selectedHints) {
+                        if (selectedHints.selectedHints.includes(hint)) {
+                            alreadySelectedHints.push(hint);
+                            let index = validHints.indexOf(hint);
+                            if (index > -1) {
+                                validHints.splice(index, 1);
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            if (alreadySelectedHints.length) {
+                socket.emit('already selected hints',
+                { questionId : data.questionId, selectedHints : alreadySelectedHints });
+            }
+            if (validHints.length) {
+                let isExisted = false;
+                for (let selectedHints of selfAccountSelectedHints) {
+                    if (selectedHints.questionId == data.questionId) {
+                        isExisted = true;
+                        for (let hint of validHints) {
+                            if (!selectedHints.selectedHints.includes(hint)) {
+                                selectedHints.selectedHints.push(hint);
+                            }
+                        }
+                        break;
+                    }
+                }
+                if (!isExisted) {
+                    selfAccountSelectedHints.push({questionId : data.questionId, selectedHints : validHints});
+                }
+                io.in(socket._roomName).emit('new hints selected',
+                { questionId : data.questionId, selectedHints : validHints, accountId : socket._userName });
+            }
         });
 
     });

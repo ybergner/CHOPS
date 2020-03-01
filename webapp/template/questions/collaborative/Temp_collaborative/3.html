@@ -2,6 +2,50 @@
     <h6 class="card-title">Collaborative Question title 3</h6>
     <p class="card-text">Some text of the question</p>
     <img src="{{templateFolderPath + currentQuestionSet.questionSetId + '/asset/600x400.png'}}" class="card-img-top" alt="question image">
+    <div ng-if="session" class="card">
+        <div class="card-body">
+            <h5 class="card-title">Hints</h5>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="hint-check1"
+                ng-checked="checkHints('a')"
+                ng-click="toggleHints('a')"
+                ng-disabled="checkHints('a')">
+              <label class="form-check-label" for="hint-check1">
+                First hint checkbox
+              </label>
+            </div>
+            <div ng-if="checkHints('a')">
+                First hint
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="hint-check2"
+                ng-checked="checkHints('b')"
+                ng-click="toggleHints('b')"
+                ng-disabled="checkHints('b')">
+              <label class="form-check-label" for="hint-check2">
+                Second hint checkbox
+              </label>
+            </div>
+            <div ng-if="checkHints('b')">
+                Second hint
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="hint-check3"
+                ng-checked="checkHints('c')"
+                ng-click="toggleHints('c')"
+                ng-disabled="checkHints('c')">
+              <label class="form-check-label" for="hint-check3">
+                Third hint checkbox
+              </label>
+            </div>
+            <div ng-if="checkHints('c')">
+                Third hint
+            </div>
+            <div class="pull-right">
+                <button type="button" class="btn btn-outline-primary" ng-click="selectHints()">Get Hints</button>
+            </div>
+        </div>
+    </div>
     <textarea class="form-control" name="openQuestion" id="openQuestion" placeholder="Enter your answers here." rows="5"
         ng-model="currentQuestionSet.answers[currentQuestion - 1].answer.openQuestion"
         ng-disabled="currentQuestionSet.answers[currentQuestion - 1]._id">

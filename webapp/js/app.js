@@ -168,8 +168,9 @@ app.factory('socketService', function() {
             });
             socket.on('account matched', function(data) {
                 console.log('account matched');
-                console.log(data);
                 scope.session = data;
+                scope.isA = scope.session.accountAId == scope.account.accountId;
+                scope.checkAnswer(scope.currentQuestion);
                 scope.waiting = false;
                 $('.toast').toast('hide');
                 scope.chatBox.toastMessage = 'Connected with another collaborator.';
@@ -190,6 +191,60 @@ app.factory('socketService', function() {
                 scope.session.messages.push(message);
                 scope.$apply();
                 scope.chatEl.scrollTop = scope.chatEl.scrollHeight;
+            });
+
+            socket.on('already selected hints', function(data){
+                $('.toast').toast('hide');
+                scope.chatBox.toastMessage = 'Collaborator already selected hints ' + data.selectedHints.join() + ' for question ' + data.questionId;
+                if (scope.currentOtherHints.questionId == data.questionId) {
+                    for (let hint of data.selectedHints) {
+                        if (!scope.currentOtherHints.selectedHints.includes(hint)) {
+                            scope.currentOtherHints.selectedHints.push(hint);
+                        }
+                    }
+                }
+                scope.$apply();
+                $('.toast').toast('show');
+            });
+
+            socket.on('new hints selected', function(data){
+                let originalHints;
+                if (data.accountId == scope.account.accountId) {
+                    if (scope.isA) {
+                        originalHints = scope.session.accountASelectedHints;
+                    } else {
+                        originalHints = scope.session.accountBSelectedHints;
+                    }
+                } else {
+                    if (scope.isA) {
+                        originalHints = scope.session.accountBSelectedHints;
+                    } else {
+                        originalHints = scope.session.accountASelectedHints;
+                    }
+                }
+                let isExisted = false;
+                for (let selectedHints of originalHints) {
+                    if (selectedHints.questionId == data.questionId) {
+                        isExisted = true;
+                        selectedHints.selectedHints = selectedHints.selectedHints.concat(data.selectedHints);
+                        break;
+                    }
+                }
+                if (!isExisted) {
+                    let newHint = { questionId : data.questionId, selectedHints : data.selectedHints };
+                    if (scope.currentQuestion == data.questionId) {
+                        if (data.accountId == scope.account.accountId) {
+                            scope.originalCurrentHints = newHint;
+                        } else {
+                            scope.currentOtherHints = newHint;
+                        }
+                    }
+                    originalHints.push(newHint);
+                }
+                $('.toast').toast('hide');
+                scope.chatBox.toastMessage = 'Student ' +  data.accountId + ' selected hints ' + data.selectedHints.join() + ' for question ' + data.questionId;
+                scope.$apply();
+                $('.toast').toast('show');
             });
         }
     };
@@ -229,7 +284,7 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
         accountService.logoutAccount();
         $location.path('/login');
     };
-    $scope.isTeacher = $scope.account.accountType === enums.accountType.teacher;
+    $scope.isTeacher = $scope.account && $scope.account.accountType === enums.accountType.teacher;
     if ($scope.isTeacher) {
         var refreshStudentList = function() {
             accountService.getStudents().then(function(res){
@@ -316,15 +371,42 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
     $scope.currentQuestion = 1;
     $scope.isTeacher = $scope.account && $scope.account.accountType === enums.accountType.teacher;
     $scope.previousAnswers = angular.copy($scope.currentQuestionSet.answers);
-
-    var checkAnswer = function(questionId) {
+    $scope.currentHints = {};
+    $scope.currentOtherHints = {};
+    $scope.originalCurrentHints = {};
+    var checkAnswer = $scope.checkAnswer =  function(questionId) {
         if (!$scope.currentQuestionSet.answers[questionId - 1]) {
             $scope.currentQuestionSet.answers[questionId - 1] = {
                 questionId : questionId,
                 questionSetId : $scope.currentQuestionSet.questionSetId,
                 answer : {},
-                selectedHints : [],
                 isCollaborative : $scope.currentQuestionSet.isCollaborative
+            }
+        }
+        if ($scope.session) {
+            $scope.currentHints = {questionId : questionId, selectedHints : []};
+            $scope.currentOtherHints = {questionId : questionId, selectedHints : []};
+            $scope.originalCurrentHints = {questionId : questionId, selectedHints : []};
+            let selfAccountSelectedHints, otherAccountSelectedHints;
+            if ($scope.isA) {
+                selfAccountSelectedHints = $scope.session.accountASelectedHints;
+                otherAccountSelectedHints = $scope.session.accountBSelectedHints;
+            } else {
+                selfAccountSelectedHints = $scope.session.accountBSelectedHints;
+                otherAccountSelectedHints = $scope.session.accountASelectedHints;
+            }
+            for (let selectedHints of selfAccountSelectedHints) {
+                if (selectedHints.questionId == questionId) {
+                    $scope.originalCurrentHints = selectedHints;
+                    $scope.currentHints = angular.copy(selectedHints);
+                    break;
+                }
+            }
+            for (let selectedHints of otherAccountSelectedHints) {
+                if (selectedHints.questionId == questionId) {
+                    $scope.currentOtherHints = selectedHints;
+                    break;
+                }
             }
         }
     };
@@ -392,6 +474,37 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
         if ($scope.socket && $scope.chatBox.message && $scope.chatBox.message !== '') {
             $scope.socket.emit('new message', $scope.chatBox.message);
             $scope.chatBox.message = '';
+        }
+    };
+
+    $scope.selectHints = function() {
+        if ($scope.socket && $scope.currentQuestionSet.isCollaborative && $scope.session) {
+            let submitHints = [];
+            for (let hint of $scope.currentHints.selectedHints) {
+                if (!$scope.originalCurrentHints.selectedHints.includes(hint)) {
+                    submitHints.push(hint);
+                }
+            }
+            if (submitHints.length) {
+                $scope.socket.emit('select hints', {
+                    selectedHints : submitHints,
+                    questionId : $scope.currentQuestion
+                });
+            }
+        }
+    };
+
+    $scope.checkHints = function(hint) {
+        return ($scope.originalCurrentHints.selectedHints && $scope.originalCurrentHints.selectedHints.includes(hint))
+         || ($scope.currentOtherHints.selectedHints && $scope.currentOtherHints.selectedHints.includes(hint));
+    };
+
+    $scope.toggleHints = function(hint) {
+        let index = $scope.currentHints.selectedHints.indexOf(hint);
+        if (index > -1) {
+            $scope.currentHints.selectedHints.splice(index, 1);
+        } else {
+            $scope.currentHints.selectedHints.push(hint);
         }
     };
 

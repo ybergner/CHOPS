@@ -42,6 +42,8 @@ router.addOrUpdateSession = function(data) {
             } else {
                 result.messages = data.messages;
                 result.lastUpdatedDate = new Date();
+                result.accountASelectedHints = data.accountASelectedHints;
+                result.accountBSelectedHints = data.accountBSelectedHints;
                 result.save(function(saveErr) {
                     if (saveErr) {
                         console.log('Cannot update session ' + data._id);
