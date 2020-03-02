@@ -435,9 +435,15 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
     };
 
     $scope.validateAnswer = function(index) {
-        for (let key of Object.keys($scope.currentQuestionSet.answers[index].answer)) {
-            if ($scope.currentQuestionSet.answers[index].answer[key] && $scope.currentQuestionSet.answers[index].answer[key] !== '') {
-                return true;
+        if ($scope.currentQuestionSet.answers[index].answer.singleChoice) {
+            return $scope.currentQuestionSet.answers[index].answer.singleChoice && $scope.currentQuestionSet.answers[index].answer.singleChoice !== '';
+        } else if ($scope.currentQuestionSet.answers[index].answer.openQuestion) {
+            return $scope.currentQuestionSet.answers[index].answer.openQuestion && $scope.currentQuestionSet.answers[index].answer.openQuestion !== '';
+        } else if ($scope.currentQuestionSet.answers[index].answer.multipleChoice) {
+            for (let key of Object.keys($scope.currentQuestionSet.answers[index].answer.multipleChoice)) {
+                if ($scope.currentQuestionSet.answers[index].answer.multipleChoice[key]) {
+                    return true;
+                }
             }
         }
         return false;
