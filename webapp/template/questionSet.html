@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
                 <form name="questionForm">
-                    <div ng-include="templateFolderPath + currentQuestionSet.questionSetId + '/' + currentQuestion + '.html'"></div>
+                    <div ng-include="'template/questions/question.html'"></div>
                 </form>
             </div>
         </div>
@@ -26,22 +26,22 @@
         <li class="page-item" ng-class="{'disabled' : currentQuestion <= 1}">
           <button class="page-link" ng-click="prev()" ng-disabled="currentQuestion <= 1">Previous</button>
         </li>
-        <li class="page-item" ng-class="{'disabled' : currentQuestion >= currentQuestionSet.numOfQuestions || !validateAnswer(currentQuestion - 1)}">
-          <button class="page-link" ng-click="next()" ng-disabled="currentQuestion >= currentQuestionSet.numOfQuestions || !validateAnswer(currentQuestion - 1)">Next</button>
+        <li class="page-item" ng-class="{'disabled' : currentQuestion >= currentQuestionSet.numOfQuestions || !validateAnswer()}">
+          <button class="page-link" ng-click="next()" ng-disabled="currentQuestion >= currentQuestionSet.numOfQuestions || !validateAnswer()">Next</button>
         </li>
-        <li class="page-item" ng-show="currentQuestion == currentQuestionSet.numOfQuestions" ng-class="{'disabled' : !validateAnswer(currentQuestion - 1)}">
-          <button class="page-link" ng-click="submit()" ng-disabled="!validateAnswer(currentQuestion - 1)">Submit</button>
+        <li class="page-item" ng-show="currentQuestion == currentQuestionSet.numOfQuestions" ng-class="{'disabled' : !validateAnswer()}">
+          <button class="page-link" ng-click="submit()" ng-disabled="!validateAnswer()">Submit</button>
         </li>
       </ul>
     </nav>
 </div>
 <div class="chat" ng-if="currentQuestionSet.isCollaborative">
-    <button type="button" class="btn btn-outline-danger btn-block" ng-click="collaborate()" ng-if="!session && !waiting">Find Collaborator</button>
+    <button type="button" class="btn btn-outline-danger btn-block" ng-click="collaborate()" ng-if="!waiting && !isConnect">Find Collaborator</button>
     <button class="btn btn-outline-danger btn-block" type="button" disabled ng-if="waiting">
         <span class="spinner-border spinner-border-sm"></span>
         Looking for collaborator
     </button>
-    <div class="chat-box" ng-show="showMessage">
+    <div class="chat-box" ng-show="showMessage && isConnect">
         <div class="message">
             <div class="message-box" id="message-box">
                 <div ng-repeat="msg in session.messages | orderBy : createdDate" class="single-message shadow px-2 py-1 mb-3 rounded clear"
@@ -64,11 +64,11 @@
             </form>
         </div>
     </div>
-    <button type="button" class="btn btn-outline-secondary btn-block" ng-click="toggleMessage()" ng-if="session && !waiting">Messages</button>
+    <button type="button" class="btn btn-outline-secondary btn-block" ng-click="toggleMessage()" ng-if="!waiting && isConnect">Messages</button>
 </div>
 
 <!-- Position it -->
-<div class="toast-box" ng-if="currentQuestionSet.isCollaborative">
+<div class="toast-box" ng-if="currentQuestionSet.isCollaborative && chatBox.toastMessage && chatBox.toastMessage !== ''">
   <!-- Then put toasts within -->
   <div class="toast" data-autohide="true" data-animation="true" data-delay="5000">
     <div class="toast-header bg-light">

@@ -142,7 +142,7 @@
                       <td>{{questionSet.name}}</td>
                       <td>{{questionSet.numOfQuestions}}</td>
                       <td>{{questionSet.isCollaborative ? 'Collaborative' : 'Individual'}}</td>
-                      <td>{{isTeacher ? 'N/A' : questionSet.answers.length / questionSet.numOfQuestions * 100 + '%'}}</td>
+                      <td>{{isTeacher ? 'N/A' : answerQuestionMap[questionSet.questionSetId] ? answerQuestionMap[questionSet.questionSetId].length / questionSet.numOfQuestions * 100 + '%' : '0%'}}</td>
                       <td>
                           <button type="button" class="btn btn-outline-info" ng-click="doQuestionSet(questionSet)">Do</button>
                       </td>

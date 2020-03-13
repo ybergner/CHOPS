@@ -10,9 +10,24 @@ app.config(function($routeProvider){
             templateUrl: '../template/login.html',
             controller: 'loginController'
         }).
-        when('/questions', {
+        when('/questions/:questionSetId', {
             templateUrl: '../template/questionSet.html',
-            controller: 'questionSetController'
+            controller: 'questionSetController',
+            resolve: {
+                questionSet: function($route, questionService) {
+                    return questionService.getQuestionSetList($route.current.params.questionSetId).then(function(res) {
+                        return res.data.data;
+                    });
+                },
+                answers: function($route, answerService) {
+                    return answerService.getAnswersByAccount(null, $route.current.params.questionSetId).then(function(res) {
+                        return res.data.data;
+                    });
+                }
+            }
+        }).
+        otherwise({
+            redirectTo: '/'
         });
 });
 
@@ -20,28 +35,17 @@ app.config(['$compileProvider', function($compileProvider){
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|sms|tel):/);
 }]);
 
-app.factory('questionSetMapping', function() {
+app.factory('questionService', ['$http', function($http) {
     return {
-        list : [
-            {
-                questionSetId : 'Temp',
-                name : 'Test Temp',
-                numOfQuestions : 3,
-                isHidden : false,
-                isCollaborative : false,
-                answers : []
-            },
-            {
-                questionSetId : 'Temp_collaborative',
-                name : 'Test Temp',
-                numOfQuestions : 3,
-                isHidden : false,
-                isCollaborative : true,
-                answers : []
+        getQuestionSetList : function(questionSetId) {
+            if (questionSetId) {
+                return $http.get('api/questionSet/' + questionSetId);
+            } else {
+                return $http.get('api/questionSet');
             }
-        ]
+        },
     };
-});
+}]);
 
 app.factory('enums', function() {
     return {
@@ -58,14 +62,17 @@ app.factory('enums', function() {
 });
 
 app.factory('answerService', ['$http', '$q', 'accountService', function($http, $q, accountService) {
-    var currentQuestionSet;
     return {
-        getAnswersByAccount : function(account) {
+        getAnswersByAccount : function(account, questionSetId) {
             if (!account) {
                 account = accountService.getCurrentAccount();
             }
             if (account) {
-                return $http.get('api/answer/' + account.accountId);
+                if (questionSetId) {
+                    return $http.get('api/answer/' + account.accountId + '/' + questionSetId);
+                } else {
+                    return $http.get('api/answer/' + account.accountId);
+                }
             } else {
                 return $q.reject('No Account Information');
             }
@@ -78,12 +85,6 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
                 return $q.reject('No Account Information');
             }
         },
-        setCurrentQuestionSet : function(questionSet) {
-            currentQuestionSet = questionSet;
-        },
-        getCurrentQuestionSet : function() {
-            return currentQuestionSet;
-        },
         downloadReport : function() {
             var account = accountService.getCurrentAccount();
             if (account) {
@@ -91,7 +92,7 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
             } else {
                 return $q.reject('No Account Information');
             }
-        }
+        },
     };
 }]);
 
@@ -157,9 +158,17 @@ app.factory('socketService', function() {
                 scope.$apply();
                 $('.toast').toast('show');
             });
-            socket.on('account received', function(){
+            socket.on('account received', function(data){
                 console.log('account set up completed in socket.');
                 scope.socket = socket;
+                if (data.session) {
+                    scope.session = data.session;
+                    scope.hintText = data.hintText;
+                    scope.isA = scope.session.accountAId == scope.account.accountId;
+                    angular.extend(scope.currentQuestionSet, data.questionSet);
+                    scope.checkAnswer(scope.currentQuestion);
+                    scope.$apply();
+                }
             });
             socket.on('account in queue', function() {
                 console.log('account waiting in queue');
@@ -168,9 +177,13 @@ app.factory('socketService', function() {
             });
             socket.on('account matched', function(data) {
                 console.log('account matched');
-                scope.session = data;
-                scope.isA = scope.session.accountAId == scope.account.accountId;
-                scope.checkAnswer(scope.currentQuestion);
+                if (!scope.session) {
+                    scope.session = data.session;
+                    scope.isA = scope.session.accountAId == scope.account.accountId;
+                    angular.extend(scope.currentQuestionSet, data.questionSet);
+                    scope.checkAnswer(scope.currentQuestion);
+                }
+                scope.isConnect = true;
                 scope.waiting = false;
                 $('.toast').toast('hide');
                 scope.chatBox.toastMessage = 'Connected with another collaborator.';
@@ -181,6 +194,7 @@ app.factory('socketService', function() {
             socket.on('leave', function(id) {
                 console.log('account id ' + id + ' left');
                 scope.waiting = true;
+                scope.isConnect = false;
                 scope.showMessage = false;
                 $('.toast').toast('hide');
                 scope.chatBox.toastMessage = 'Collaborator disconnected.';
@@ -192,54 +206,29 @@ app.factory('socketService', function() {
                 scope.$apply();
                 scope.chatEl.scrollTop = scope.chatEl.scrollHeight;
             });
-
-            socket.on('already selected hints', function(data){
-                $('.toast').toast('hide');
-                scope.chatBox.toastMessage = 'Collaborator already selected hints ' + data.selectedHints.join() + ' for question ' + data.questionId;
-                if (scope.currentOtherHints.questionId == data.questionId) {
-                    for (let hint of data.selectedHints) {
-                        if (!scope.currentOtherHints.selectedHints.includes(hint)) {
-                            scope.currentOtherHints.selectedHints.push(hint);
-                        }
-                    }
-                }
-                scope.$apply();
-                $('.toast').toast('show');
-            });
-
-            socket.on('new hints selected', function(data){
-                let originalHints;
-                if (data.accountId == scope.account.accountId) {
-                    if (scope.isA) {
-                        originalHints = scope.session.accountASelectedHints;
-                    } else {
-                        originalHints = scope.session.accountBSelectedHints;
-                    }
-                } else {
-                    if (scope.isA) {
-                        originalHints = scope.session.accountBSelectedHints;
-                    } else {
-                        originalHints = scope.session.accountASelectedHints;
-                    }
-                }
+            socket.on('new hints selected', function(data) {
+                let originalHints = scope.isA ? scope.session.accountASelectedHints : scope.session.accountBSelectedHints;
                 let isExisted = false;
                 for (let selectedHints of originalHints) {
                     if (selectedHints.questionId == data.questionId) {
                         isExisted = true;
                         selectedHints.selectedHints = selectedHints.selectedHints.concat(data.selectedHints);
+                        angular.extend(scope.currentHintsText, data.hintText.hintText);
+                        for (let hintText of scope.hintText) {
+                            if (hintText.questionId === data.hintText.questionId) {
+                                angular.extend(hintText.hintText, data.hintText.hintText);
+                                break;
+                            }
+                        }
                         break;
                     }
                 }
                 if (!isExisted) {
                     let newHint = { questionId : data.questionId, selectedHints : data.selectedHints };
-                    if (scope.currentQuestion == data.questionId) {
-                        if (data.accountId == scope.account.accountId) {
-                            scope.originalCurrentHints = newHint;
-                        } else {
-                            scope.currentOtherHints = newHint;
-                        }
-                    }
+                    scope.originalCurrentHints = newHint;
                     originalHints.push(newHint);
+                    scope.currentHintsText = data.hintText.hintText;
+                    scope.hintText.push(data.hintText);
                 }
                 $('.toast').toast('hide');
                 scope.chatBox.toastMessage = 'Student ' +  data.accountId + ' selected hints ' + data.selectedHints.join() + ' for question ' + data.questionId;
@@ -273,7 +262,7 @@ app.controller('loginController', ['$scope', 'accountService', '$location', func
     }
 }]);
 
-app.controller('listController', ['$scope', 'accountService', '$location', 'enums', 'questionSetMapping', 'answerService', function($scope, accountService, $location, enums, questionSetMapping, answerService) {
+app.controller('listController', ['$scope', 'accountService', '$location', 'enums', 'questionService', 'answerService', function($scope, accountService, $location, enums, questionService, answerService) {
     $scope.account = accountService.getCurrentAccount();
     $scope.accountTypeEnum = enums.accountType;
     if (!$scope.account) {
@@ -332,32 +321,39 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
                 URL.revokeObjectURL(link.href);
             });
         };
-    } else {
-        answerService.getAnswersByAccount().then(function(res){
-            var answers = res.data.data;
-            for (let ans of answers) {
-                for (let questionSet of $scope.questionSetList) {
-                    if (ans.questionSetId == questionSet.questionSetId) {
-                        questionSet.answers[ans.questionId - 1] = ans;
-                        break;
+    }
+    $scope.questionSetList = [];
+    $scope.answerQuestionMap = {};
+    questionService.getQuestionSetList().then(function(res){
+        $scope.questionSetList = res.data.data;
+        if (!$scope.isTeacher) {
+            answerService.getAnswersByAccount().then(function(res){
+                var answers = res.data.data;
+                for (let ans of answers) {
+                    for (let questionSet of $scope.questionSetList) {
+                        if (ans.questionSetId == questionSet.questionSetId) {
+                            if (!$scope.answerQuestionMap[ans.questionSetId]) {
+                                $scope.answerQuestionMap[ans.questionSetId] = [];
+                            }
+                            $scope.answerQuestionMap[ans.questionSetId].push(ans);
+                            break;
+                        }
                     }
                 }
-            }
-        });
-    }
-    $scope.questionSetList = angular.copy(questionSetMapping.list);
+            });
+        }
+    });
 
     $scope.doQuestionSet = function(questionSet) {
-        answerService.setCurrentQuestionSet(questionSet);
-        $location.path('/questions');
+        $location.path('/questions/' + questionSet.questionSetId);
     };
 }]);
 
-app.controller('questionSetController', ['$scope', 'accountService', 'answerService', '$location', '$q', 'enums', 'socketService', function($scope, accountService, answerService, $location, $q, enums, socketService) {
+app.controller('questionSetController', ['$scope', 'questionSet', 'answers', 'accountService', 'answerService', '$location', '$q', 'enums', 'socketService', function($scope, questionSet, answers, accountService, answerService, $location, $q, enums, socketService) {
     $scope.account = $scope.account || accountService.getCurrentAccount();
-    $scope.currentQuestionSet = answerService.getCurrentQuestionSet();
+    $scope.currentQuestionSet = questionSet;
+    $scope.answers = answers || [];
     if (!$scope.currentQuestionSet) {
-        $scope.currentQuestionSet = { answers : [] };
         $location.path('/');
     }
     $scope.logout = function() {
@@ -370,31 +366,26 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
 
     $scope.currentQuestion = 1;
     $scope.isTeacher = $scope.account && $scope.account.accountType === enums.accountType.teacher;
-    $scope.previousAnswers = angular.copy($scope.currentQuestionSet.answers);
+    $scope.previousAnswers = angular.copy($scope.answers);
     $scope.currentHints = {};
-    $scope.currentOtherHints = {};
     $scope.originalCurrentHints = {};
+    $scope.hintText = [];
     var checkAnswer = $scope.checkAnswer =  function(questionId) {
-        if (!$scope.currentQuestionSet.answers[questionId - 1]) {
-            $scope.currentQuestionSet.answers[questionId - 1] = {
+        if (!$scope.answers[questionId - 1]) {
+            $scope.answers[questionId - 1] = {
                 questionId : questionId,
                 questionSetId : $scope.currentQuestionSet.questionSetId,
                 answer : {},
                 isCollaborative : $scope.currentQuestionSet.isCollaborative
             }
+            if ($scope.currentQuestionSet.questions[questionId - 1].type === 'multipleChoice') {
+                $scope.answers[questionId - 1].answer.multipleChoice = {};
+            }
         }
         if ($scope.session) {
             $scope.currentHints = {questionId : questionId, selectedHints : []};
-            $scope.currentOtherHints = {questionId : questionId, selectedHints : []};
             $scope.originalCurrentHints = {questionId : questionId, selectedHints : []};
-            let selfAccountSelectedHints, otherAccountSelectedHints;
-            if ($scope.isA) {
-                selfAccountSelectedHints = $scope.session.accountASelectedHints;
-                otherAccountSelectedHints = $scope.session.accountBSelectedHints;
-            } else {
-                selfAccountSelectedHints = $scope.session.accountBSelectedHints;
-                otherAccountSelectedHints = $scope.session.accountASelectedHints;
-            }
+            let selfAccountSelectedHints = $scope.isA ? $scope.session.accountASelectedHints : $scope.session.accountBSelectedHints;
             for (let selectedHints of selfAccountSelectedHints) {
                 if (selectedHints.questionId == questionId) {
                     $scope.originalCurrentHints = selectedHints;
@@ -402,9 +393,10 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
                     break;
                 }
             }
-            for (let selectedHints of otherAccountSelectedHints) {
-                if (selectedHints.questionId == questionId) {
-                    $scope.currentOtherHints = selectedHints;
+            $scope.currentHintsText = {};
+            for (let hintText of $scope.hintText) {
+                if (hintText.questionId === questionId) {
+                    $scope.currentHintsText = hintText.hintText;
                     break;
                 }
             }
@@ -435,13 +427,16 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
     };
 
     $scope.validateAnswer = function(index) {
-        if ($scope.currentQuestionSet.answers[index].answer.singleChoice) {
-            return $scope.currentQuestionSet.answers[index].answer.singleChoice && $scope.currentQuestionSet.answers[index].answer.singleChoice !== '';
-        } else if ($scope.currentQuestionSet.answers[index].answer.openQuestion) {
-            return $scope.currentQuestionSet.answers[index].answer.openQuestion && $scope.currentQuestionSet.answers[index].answer.openQuestion !== '';
-        } else if ($scope.currentQuestionSet.answers[index].answer.multipleChoice) {
-            for (let key of Object.keys($scope.currentQuestionSet.answers[index].answer.multipleChoice)) {
-                if ($scope.currentQuestionSet.answers[index].answer.multipleChoice[key]) {
+        if (!angular.isNumber(index)) {
+            index = $scope.currentQuestion - 1;
+        }
+        if ($scope.answers[index].answer.singleChoice) {
+            return $scope.answers[index].answer.singleChoice && $scope.answers[index].answer.singleChoice !== '';
+        } else if ($scope.answers[index].answer.openQuestion) {
+            return $scope.answers[index].answer.openQuestion && $scope.answers[index].answer.openQuestion !== '';
+        } else if ($scope.answers[index].answer.multipleChoice) {
+            for (let key of Object.keys($scope.answers[index].answer.multipleChoice)) {
+                if ($scope.answers[index].answer.multipleChoice[key]) {
                     return true;
                 }
             }
@@ -449,13 +444,8 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
         return false;
     };
 
-    if ($scope.currentQuestionSet.isCollaborative) {
-        if (!$scope.isTeacher) {
-            socketService.socketSetup($scope);
-        }
-        $scope.templateFolderPath = 'template/questions/collaborative/';
-    } else {
-        $scope.templateFolderPath = 'template/questions/individual/';
+    if ($scope.currentQuestionSet.isCollaborative && !$scope.isTeacher) {
+        socketService.socketSetup($scope);
     }
 
     $scope.showMessage = false;
@@ -491,7 +481,8 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
                     submitHints.push(hint);
                 }
             }
-            if (submitHints.length) {
+            if (submitHints.length &&
+                submitHints.length + $scope.originalCurrentHints.selectedHints.length <= $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxHintAllowedPerPerson) {
                 $scope.socket.emit('select hints', {
                     selectedHints : submitHints,
                     questionId : $scope.currentQuestion
@@ -501,9 +492,13 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
     };
 
     $scope.checkHints = function(hint) {
-        return ($scope.originalCurrentHints.selectedHints && $scope.originalCurrentHints.selectedHints.includes(hint))
-         || ($scope.currentOtherHints.selectedHints && $scope.currentOtherHints.selectedHints.includes(hint));
+        return $scope.originalCurrentHints.selectedHints && $scope.originalCurrentHints.selectedHints.includes(hint);
     };
+
+    $scope.disableHints = function() {
+        return ($scope.currentHints.selectedHints && $scope.currentHints.selectedHints.length > $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxHintAllowedPerPerson) ||
+            ($scope.originalCurrentHints.selectedHints && $scope.originalCurrentHints.selectedHints.length == $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxHintAllowedPerPerson); 
+    }
 
     $scope.toggleHints = function(hint) {
         let index = $scope.currentHints.selectedHints.indexOf(hint);
@@ -519,9 +514,9 @@ app.controller('questionSetController', ['$scope', 'accountService', 'answerServ
         for (let i = 0; i < $scope.currentQuestionSet.numOfQuestions; i++) {
             if (!$scope.isTeacher && $scope.validateAnswer(i)) {
                 if (!$scope.previousAnswers[i]) {
-                    promises.push(answerService.crud('create', $scope.currentQuestionSet.answers[i]));
-                } else if(!angular.equals($scope.previousAnswers[i], $scope.currentQuestionSet.answers[i])) {
-                    promises.push(answerService.crud('update', $scope.currentQuestionSet.answers[i]));
+                    promises.push(answerService.crud('create', $scope.answers[i]));
+                } else if(!angular.equals($scope.previousAnswers[i], $scope.answers[i])) {
+                    promises.push(answerService.crud('update', $scope.answers[i]));
                 }
             }
         }

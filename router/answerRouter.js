@@ -22,6 +22,23 @@ router.get('/answer/:accountId', function(req, res) {
     });
 });
 
+// get answers by student id
+router.get('/answer/:accountId/:questionSetId', function(req, res) {
+    Answer.find({accountId: req.params.accountId, questionSetId: req.params.questionSetId}).lean().exec(function(err, result) {
+        if (err) {
+            console.log('Cannot get answer ' + req.params.accountId);
+            res.status(500).send('Cannot get answer ' + req.params.accountId);
+        } else {
+            if (!result) {
+                console.log('Cannot find answer ' + req.params.accountId);
+                res.json({});
+            } else {
+                res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.answer)});
+            }
+        }
+    });
+});
+
 // add/update new answer
 router.post('/answer', function(req, res) {
     if (req.body.account && req.body.account.accountType == Enum.accountType.student) {

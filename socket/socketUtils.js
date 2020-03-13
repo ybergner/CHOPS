@@ -1,5 +1,6 @@
 'use strict';
 var sessionRouter = require('../router/sessionRouter.js');
+var questionRouter = require('../router/questionRouter.js');
 var utils = {};
 
 utils.setUpSocket = function(io) {
@@ -20,10 +21,29 @@ utils.setUpSocket = function(io) {
                 sessionRouter.getSessionById(data.accountId, data.questionSetId).then(function(sessions) {
                     if (sessions && sessions.length) {
                         accountSessionSocketMap[data.accountId].session = sessions[0] || {};
+                        let isA = accountSessionSocketMap[data.accountId].session.accountAId === data.accountId;
+                        let accountSelectedHints = isA ? accountSessionSocketMap[data.accountId].session.accountASelectedHints : accountSessionSocketMap[data.accountId].session.accountBSelectedHints;
+                        let hintText = [];
+                        for (let selectedHints of accountSelectedHints) {
+                            let hintsText = questionRouter.getHint(accountSessionSocketMap[data.accountId].questionSetId, selectedHints.questionId, isA);
+                            let selectedHintsText = {};
+                            for (let key of selectedHints.selectedHints) {
+                                selectedHintsText[key] = hintsText[key];
+                            }
+                            hintText.push({
+                                questionId : selectedHints.questionId,
+                                hintText : selectedHintsText
+                            });
+                        }
+                        socket.emit('account received', {
+                            session : accountSessionSocketMap[data.accountId].session,
+                            questionSet : questionRouter.getQuestionSet(data.questionSetId, isA),
+                            hintText : hintText
+                        });
                     } else {
                         accountSessionSocketMap[data.accountId].session = {};
+                        socket.emit('account received', {});
                     }
-                    socket.emit('account received', {});
                 });
             }
         });
@@ -52,7 +72,15 @@ utils.setUpSocket = function(io) {
                         accountSessionSocketMap[matchedAccountId].session = accountSessionSocketMap[socket._userName].session;
                         socket.join(socket._roomName);
                         accountSessionSocketMap[matchedAccountId].socket.join(socket._roomName);
-                        io.in(socket._roomName).emit('account matched', accountSessionSocketMap[socket._userName].session);
+                        let isA = accountSessionSocketMap[socket._userName].session.accountAId == socket._userName;
+                        socket.emit('account matched', {
+                            session : accountSessionSocketMap[socket._userName].session,
+                            questionSet : questionRouter.getQuestionSet(accountSessionSocketMap[socket._userName].questionSetId, isA)
+                        });
+                        accountSessionSocketMap[matchedAccountId].socket.emit('account matched', {
+                            session : accountSessionSocketMap[socket._userName].session,
+                            questionSet : questionRouter.getQuestionSet(accountSessionSocketMap[socket._userName].questionSetId, !isA)
+                        });
                     } else {
                         // did not find the collaborated account, put current account into queue
                         accountQueue.push(socket._userName);
@@ -86,7 +114,15 @@ utils.setUpSocket = function(io) {
                         counter++;
                         socket.join(socket._roomName);
                         accountSessionSocketMap[matchedAccountId].socket.join(socket._roomName);
-                        io.in(socket._roomName).emit('account matched', accountSessionSocketMap[socket._userName].session);
+                        let isA = true;
+                        socket.emit('account matched', {
+                            session : accountSessionSocketMap[socket._userName].session,
+                            questionSet : questionRouter.getQuestionSet(accountSessionSocketMap[socket._userName].questionSetId, isA)
+                        });
+                        accountSessionSocketMap[matchedAccountId].socket.emit('account matched', {
+                            session : accountSessionSocketMap[socket._userName].session,
+                            questionSet : questionRouter.getQuestionSet(accountSessionSocketMap[socket._userName].questionSetId, !isA)
+                        });
                     } else {
                         // no one is in queue, put current account into queue
                         accountQueue.push(socket._userName);
@@ -100,9 +136,11 @@ utils.setUpSocket = function(io) {
             }
         });
 
-        socket.on('disconnect', function(){
-            if (accountSessionSocketMap[socket._userName] && accountSessionSocketMap[socket._userName].isConnect) {
+        socket.on('disconnect', function() {
+            if (accountSessionSocketMap[socket._userName] && (accountSessionSocketMap[socket._userName].isConnect || accountSessionSocketMap[socket._userName].session._id)) {
                 sessionRouter.addOrUpdateSession(accountSessionSocketMap[socket._userName].session);
+            }
+            if (accountSessionSocketMap[socket._userName] && accountSessionSocketMap[socket._userName].isConnect) {
                 if (accountSessionSocketMap[socket._userName].session.accountAId == socket._userName) {
                     // mark other connected socket as disconnected to avoid duplicate saving operations
                     accountSessionSocketMap[accountSessionSocketMap[socket._userName].session.accountBId].isConnect = false;
@@ -140,34 +178,15 @@ utils.setUpSocket = function(io) {
             }
             let alreadySelectedHints = [];
             let validHints = [].concat(data.selectedHints);
-            let otherAccountSelectedHints;
             let selfAccountSelectedHints;
+            let isA = false;
             if (accountSessionSocketMap[socket._userName].session.accountAId == socket._userName) {
-                // user is account A, check account B
+                // user is account A
                 selfAccountSelectedHints =  accountSessionSocketMap[socket._userName].session.accountASelectedHints;
-                otherAccountSelectedHints = accountSessionSocketMap[socket._userName].session.accountBSelectedHints;
+                isA = true;
             } else {
-                // user is account B, check account A
+                // user is account B
                 selfAccountSelectedHints =  accountSessionSocketMap[socket._userName].session.accountBSelectedHints;
-                otherAccountSelectedHints = accountSessionSocketMap[socket._userName].session.accountASelectedHints;
-            }
-            for (let selectedHints of otherAccountSelectedHints) {
-                if (selectedHints.questionId == data.questionId) {
-                    for (let hint of data.selectedHints) {
-                        if (selectedHints.selectedHints.includes(hint)) {
-                            alreadySelectedHints.push(hint);
-                            let index = validHints.indexOf(hint);
-                            if (index > -1) {
-                                validHints.splice(index, 1);
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-            if (alreadySelectedHints.length) {
-                socket.emit('already selected hints',
-                { questionId : data.questionId, selectedHints : alreadySelectedHints });
             }
             if (validHints.length) {
                 let isExisted = false;
@@ -185,8 +204,17 @@ utils.setUpSocket = function(io) {
                 if (!isExisted) {
                     selfAccountSelectedHints.push({questionId : data.questionId, selectedHints : validHints});
                 }
-                io.in(socket._roomName).emit('new hints selected',
-                { questionId : data.questionId, selectedHints : validHints, accountId : socket._userName });
+                let hintsText = questionRouter.getHint(accountSessionSocketMap[socket._userName].questionSetId, data.questionId, isA);
+                let selectedHintsText = {};
+                for (let key of validHints) {
+                    selectedHintsText[key] = hintsText[key];
+                }
+                let hintText = {
+                    questionId : data.questionId,
+                    hintText : selectedHintsText
+                };
+                socket.emit('new hints selected',
+                { questionId : data.questionId, selectedHints : validHints, accountId : socket._userName, hintText : hintText });
             }
         });
 

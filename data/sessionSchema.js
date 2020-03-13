@@ -6,12 +6,12 @@ var messageSchema = new Schema({
     accountId : { type : Number, required : true },
     message : { type : String, trim : true },
     createdDate : { type : Date, default : Date.now }
-});
+}, { _id : false });
 
 var selectedHintsSchema = new Schema({
     questionId: { type : Number, required : true },
     selectedHints: { type : [String] }
-});
+}, { _id : false });
 
 var sessionSchema = new Schema({
     accountAId : { type : Number, required : true },

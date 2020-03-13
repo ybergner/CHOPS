@@ -1,0 +1,67 @@
+<div ng-if="!currentQuestionSet.isCollaborative || session">
+    <h6 class="card-title">{{ currentQuestionSet.questions[currentQuestion - 1].title }}</h6>
+    <p class="card-text">{{ currentQuestionSet.questions[currentQuestion - 1].text }}</p>
+    <img ng-if="currentQuestionSet.questions[currentQuestion - 1].image"
+        src="{{'template/questions/individual/Temp/asset/' + currentQuestionSet.questions[currentQuestion - 1].image}}"
+        class="card-img-top" alt="question image">
+
+    <div ng-if="currentQuestionSet.questions[currentQuestion - 1].hint" class="card">
+        <div class="card-body">
+            <h5 class="card-title">Hints</h5>
+            <div ng-repeat="(key, value) in currentQuestionSet.questions[currentQuestion - 1].hint track by key">
+                <div class="form-check" ng-if="currentQuestionSet.questions[currentQuestion - 1].maxHintAllowedPerPerson > 1">
+                  <input class="form-check-input" type="checkbox" id="{{'hint-check' + key}}"
+                    ng-checked="checkHints(key)"
+                    ng-click="toggleHints(key)"
+                    ng-disabled="checkHints(key) || originalCurrentHints.selectedHints.length === currentQuestionSet.questions[currentQuestion - 1].maxHintAllowedPerPerson">
+                  <label class="form-check-label" for="{{'hint-check' + key}}">
+                      {{value}}
+                  </label>
+                </div>
+                <div class="form-check" ng-if="currentQuestionSet.questions[currentQuestion - 1].maxHintAllowedPerPerson == 1">
+                  <input class="form-check-input" type="radio" id="{{'hint-radio' + key}}"
+                    value={{key}} ng-model="currentHints.selectedHints[0]" ng-disabled="checkHints(key) || originalCurrentHints.selectedHints.length === currentQuestionSet.questions[currentQuestion - 1].maxHintAllowedPerPerson">
+                  <label class="form-check-label" for="{{'hint-radio' + key}}">
+                      {{value}}
+                  </label>
+                </div>
+                <div ng-if="checkHints(key)">
+                    {{ currentHintsText[key] }}
+                </div>
+            </div>
+            <div class="pull-right">
+                <button type="button" class="btn btn-outline-primary" ng-click="selectHints()" ng-disabled="disableHints()">Get Hints</button>
+            </div>
+        </div>
+    </div>
+    <div ng-if="currentQuestionSet.questions[currentQuestion - 1].type === 'singleChoice'">
+        <div ng-repeat="(key, value) in currentQuestionSet.questions[currentQuestion - 1].option track by key" class="form-check">
+            <input class="form-check-input" type="radio" name="singleChoice" id="{{'radio' + key}}" value="{{key}}"
+              ng-model="answers[currentQuestion - 1].answer.singleChoice"
+              ng-disabled="answers[currentQuestion - 1]._id">
+            <label class="form-check-label" for="{{'radio' + key}}">
+              {{ value }}
+            </label>
+        </div>
+    </div>
+    <div ng-if="currentQuestionSet.questions[currentQuestion - 1].type === 'multipleChoice'">
+        <div ng-repeat="(key, value) in currentQuestionSet.questions[currentQuestion - 1].option track by key" class="form-check">
+            <input class="form-check-input" type="checkbox" id="{{'check' + key}}"
+              ng-model="answers[currentQuestion - 1].answer.multipleChoice[key]"
+              ng-disabled="answers[currentQuestion - 1]._id">
+            <label class="form-check-label" for="{{'check' + key}}">
+              {{ value }}
+            </label>
+        </div>
+    </div>
+    <div ng-if="currentQuestionSet.questions[currentQuestion - 1].type === 'openQuestion'">
+        <textarea class="form-control" name="openQuestion" id="openQuestion" placeholder="Enter your answers here." rows="5"
+            ng-model="answers[currentQuestion - 1].answer.openQuestion"
+            ng-disabled="answers[currentQuestion - 1]._id">
+        </textarea>
+    </div>
+</div>
+
+<div ng-if="currentQuestionSet.isCollaborative && !session">
+    You do not have collaborator to do the questions, try to find one by clicking on below button.
+</div>

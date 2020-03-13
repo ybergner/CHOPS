@@ -60,6 +60,11 @@ router.addOrUpdateSession = function(data) {
               console.log('Cannot create session');
               console.log('Session to be saved : ');
               console.log(data);
+          } else {
+              data.messages = result.message;
+              data.accountASelectedHints = result.accountASelectedHints;
+              data.accountBSelectedHints = result.accountBSelectedHints;
+              data._id = result._id;
           }
         });
     }
