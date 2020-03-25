@@ -1,9 +1,0 @@
-<div>
-    <h6 class="card-title">Question title 3</h6>
-    <p class="card-text">Some text of the question</p>
-    <img src="{{templateFolderPath + currentQuestionSet.questionSetId + '/asset/600x400.png'}}" class="card-img-top" alt="question image">
-    <textarea class="form-control" name="openQuestion" id="openQuestion" placeholder="Enter your answers here." rows="5"
-        ng-model="currentQuestionSet.answers[currentQuestion - 1].answer.openQuestion"
-        ng-disabled="currentQuestionSet.answers[currentQuestion - 1]._id">
-    </textarea>
-</div>

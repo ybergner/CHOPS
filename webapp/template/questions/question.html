@@ -2,7 +2,7 @@
     <h6 class="card-title">{{ currentQuestionSet.questions[currentQuestion - 1].title }}</h6>
     <p class="card-text">{{ currentQuestionSet.questions[currentQuestion - 1].text }}</p>
     <img ng-if="currentQuestionSet.questions[currentQuestion - 1].image"
-        src="{{'template/questions/individual/Temp/asset/' + currentQuestionSet.questions[currentQuestion - 1].image}}"
+        src="{{'template/questions/asset/' + currentQuestionSet.questions[currentQuestion - 1].image}}"
         class="card-img-top" alt="question image">
 
     <div ng-if="currentQuestionSet.questions[currentQuestion - 1].hint" class="card">
