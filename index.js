@@ -12,6 +12,7 @@ var socketUtils = require('./socket/socketUtils.js');
 var answerRouter = require('./router/answerRouter.js');
 var studentRouter = require('./router/studentRouter.js');
 var sessionRouter = require('./router/sessionRouter.js');
+var hintRouter = require('./router/hintRouter.js');
 var spreadSheetRouter = require('./router/spreadSheetRouter.js');
 var questionRouter = require('./router/questionRouter.js');
 //var dbUrl = 'mongodb+srv://kzheng:kzheng@cluster0-7wnfd.mongodb.net/test?retryWrites=true&w=majority';
@@ -36,7 +37,7 @@ mongoose.connect(dbUrl, {useNewUrlParser: true}, function(err){
     }
 });
 
-app.use('/api', [answerRouter, studentRouter, sessionRouter, spreadSheetRouter, questionRouter]);
+app.use('/api', [answerRouter, studentRouter, sessionRouter, spreadSheetRouter, questionRouter, hintRouter]);
 
 app.get('/favicon.ico', function(req, res){
     res.send('Currently no favicon');

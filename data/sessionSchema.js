@@ -8,19 +8,12 @@ var messageSchema = new Schema({
     createdDate : { type : Date, default : Date.now }
 }, { _id : false });
 
-var selectedHintsSchema = new Schema({
-    questionId: { type : Number, required : true },
-    selectedHints: { type : [String] }
-}, { _id : false });
-
 var sessionSchema = new Schema({
     accountAId : { type : Number, required : true },
     accountBId : { type : Number, required : true },
     questionSetId : { type : String, trim : true },
     messages : { type : [messageSchema] },
-    lastUpdatedDate : { type : Date },
-    accountASelectedHints: { type : [selectedHintsSchema] },
-    accountBSelectedHints: { type : [selectedHintsSchema] },
+    lastUpdatedDate : { type : Date }
 });
 
 module.exports = mongoose.model('session', sessionSchema);

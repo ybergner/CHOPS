@@ -64,7 +64,9 @@
             </form>
         </div>
     </div>
-    <button type="button" class="btn btn-outline-secondary btn-block" ng-click="toggleMessage()" ng-if="!waiting && isConnect">Messages</button>
+    <button type="button" class="btn btn-outline-secondary btn-block" ng-click="toggleMessage()" ng-if="!waiting && isConnect">
+        Messages <span class="badge badge-danger" ng-show="chatBox.unreadMessage">{{chatBox.unreadMessage}}</span>
+    </button>
 </div>
 
 <!-- Position it -->

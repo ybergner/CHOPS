@@ -22,23 +22,9 @@ utils.setUpSocket = function(io) {
                     if (sessions && sessions.length) {
                         accountSessionSocketMap[data.accountId].session = sessions[0] || {};
                         let isA = accountSessionSocketMap[data.accountId].session.accountAId === data.accountId;
-                        let accountSelectedHints = isA ? accountSessionSocketMap[data.accountId].session.accountASelectedHints : accountSessionSocketMap[data.accountId].session.accountBSelectedHints;
-                        let hintText = [];
-                        for (let selectedHints of accountSelectedHints) {
-                            let hintsText = questionRouter.getHint(accountSessionSocketMap[data.accountId].questionSetId, selectedHints.questionId, isA);
-                            let selectedHintsText = {};
-                            for (let key of selectedHints.selectedHints) {
-                                selectedHintsText[key] = hintsText[key];
-                            }
-                            hintText.push({
-                                questionId : selectedHints.questionId,
-                                hintText : selectedHintsText
-                            });
-                        }
                         socket.emit('account received', {
                             session : accountSessionSocketMap[data.accountId].session,
-                            questionSet : questionRouter.getQuestionSet(data.questionSetId, isA),
-                            hintText : hintText
+                            questionSet : questionRouter.getQuestionSet(data.questionSetId, isA)
                         });
                     } else {
                         accountSessionSocketMap[data.accountId].session = {};
@@ -103,9 +89,7 @@ utils.setUpSocket = function(io) {
                             accountAId : socket._userName,
                             accountBId : matchedAccountId,
                             questionSetId : accountSessionSocketMap[socket._userName].questionSetId,
-                            messages : [],
-                            accountASelectedHints : [],
-                            accountBSelectedHints : []
+                            messages : []
                         };
                         accountSessionSocketMap[matchedAccountId].socket._roomName = "First Time Room " + counter;
                         accountSessionSocketMap[matchedAccountId].isConnect = true;
@@ -169,53 +153,6 @@ utils.setUpSocket = function(io) {
             let message = { accountId : socket._userName, message : data, createdDate : new Date() };
             accountSessionSocketMap[socket._userName].session.messages.push(message);
             io.in(socket._roomName).emit('new message', message);
-        });
-
-        socket.on('select hints', function(data){
-            if (socket._userName == "invalid_socket") {
-                socket.emit('account already has socket', {});
-                return;
-            }
-            let alreadySelectedHints = [];
-            let validHints = [].concat(data.selectedHints);
-            let selfAccountSelectedHints;
-            let isA = false;
-            if (accountSessionSocketMap[socket._userName].session.accountAId == socket._userName) {
-                // user is account A
-                selfAccountSelectedHints =  accountSessionSocketMap[socket._userName].session.accountASelectedHints;
-                isA = true;
-            } else {
-                // user is account B
-                selfAccountSelectedHints =  accountSessionSocketMap[socket._userName].session.accountBSelectedHints;
-            }
-            if (validHints.length) {
-                let isExisted = false;
-                for (let selectedHints of selfAccountSelectedHints) {
-                    if (selectedHints.questionId == data.questionId) {
-                        isExisted = true;
-                        for (let hint of validHints) {
-                            if (!selectedHints.selectedHints.includes(hint)) {
-                                selectedHints.selectedHints.push(hint);
-                            }
-                        }
-                        break;
-                    }
-                }
-                if (!isExisted) {
-                    selfAccountSelectedHints.push({questionId : data.questionId, selectedHints : validHints});
-                }
-                let hintsText = questionRouter.getHint(accountSessionSocketMap[socket._userName].questionSetId, data.questionId, isA);
-                let selectedHintsText = {};
-                for (let key of validHints) {
-                    selectedHintsText[key] = hintsText[key];
-                }
-                let hintText = {
-                    questionId : data.questionId,
-                    hintText : selectedHintsText
-                };
-                socket.emit('new hints selected',
-                { questionId : data.questionId, selectedHints : validHints, accountId : socket._userName, hintText : hintText });
-            }
         });
 
     });
