@@ -1,0 +1,34 @@
+This is the guide for hosting collaborative online testing on your own computer.
+
+Requirements: 
+1. You must have "Node.js" on your computer. if you are using Windows, downloading "Node.js" will also give you the "Node.js commend prompt.
+2. You must have your own document-oriented database. We suggest to use MongoDB, and you will need the connection string of your database.
+		If you are MongoDB, you can find your connection URL by:
+			1. Sign in your MongoDB account.
+			2. Creating your Clusters.
+			2. Clicking "connect" under the name of your Cluster (this button is in the mid left followed by metrics and collections), then select "Connect your application".
+			3. Setting "DRIVER"="Node.js", "VERSION"="2.0.14 or later".
+			4. Copy the connection string and change the "<password>" to your account password.
+
+You need to update the `dbUrl` variable to your database connection in **index.js**.
+
+Note: You don't need add your own data or load a sample database, the project will initialize an account for you.
+The default teachers' account is "123", password "admin".
+
+Running:
+1. Go to the directory of this project in cmd.
+2. If this is the first running, type `npm install`.
+3. Type `node index.js` to localhost, the default link will be `localhost:8888`.
+
+
+To create questions:
+you need to update the json in `data/questions.json` in line 25, you need to define a unique string id for the question set id.
+`name` is the displayed name of the question set id, this can be different from the unique string id.
+`numOfQuestions` is the total number of questions each set has.
+`isHidden` is a boolean value to determine whether we should display it in the page.
+`questions` is an array of questions.
+Each question will have `type` : 'singleChoice' | 'multipleChoice' | 'openQuestion',
+`title`, `text`, `image`, `option`.
+If the question set is collaborative, each question will also have `maxHintAllowedPerPerson`, `versionA`, `verionsB`, `hint` and `hintText`.
+
+If you want add images: save your images to `../webapp/template/questions/asset`.
