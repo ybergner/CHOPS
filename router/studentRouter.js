@@ -122,7 +122,7 @@ router.setUpAdmin = function() {
                 accountId : 123,
                 accountName : 'admin',
                 accountType : Enum.accountType.teacher,
-                email : 'kzheng1111@gmail.com',
+                email : 'test@gmail.com',
                 password : 'admin'
             }, function(err, result) {
                 if (err) {
