@@ -60,6 +60,18 @@ var convertHint = function(dbObject) {
     return dbObject;
 };
 
+var convertAction = function(dbObject) {
+    if (dbObject) {
+        let res = {};
+        res._id = dbObject._id;
+        res.accountId = dbObject.accountId;
+        res.questionSetId = dbObject.questionSetId;
+        res.actionItems = dbObject.actionItems;
+        return res;
+    }
+    return dbObject;
+};
+
 var convert = function(dbObject, schemaType) {
     if (schemaType) {
         if (schemaType === Enum.schemaType.account) {
@@ -70,6 +82,8 @@ var convert = function(dbObject, schemaType) {
             return convertSession(dbObject);
         } else if (schemaType === Enum.schemaType.hint) {
             return convertHint(dbObject);
+        } else if (schemaType === Enum.schemaType.action) {
+            return convertAction(dbObject);
         }
     }
     return dbObject;

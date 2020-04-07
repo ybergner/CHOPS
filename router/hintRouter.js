@@ -133,7 +133,7 @@ router.post('/hint', function(req, res) {
 router.deleteHintsByAccountId = function(accountId) {
     return Hint.deleteMany({accountId : accountId}).then(function(result) {
         if (!result) {
-            console.log('Cannot find hint by account id: ' + id);
+            console.log('Cannot find hint by account id: ' + accountId);
             return null;
         } else {
             return result;

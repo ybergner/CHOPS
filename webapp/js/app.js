@@ -94,6 +94,14 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
                 return $q.reject('No Account Information');
             }
         },
+        createActionItem : function(questionSetId, actionItem) {
+            var account = accountService.getCurrentAccount();
+            if (account) {
+                return $http.post('api/action', {account: account, data: actionItem, questionSetId: questionSetId});
+            } else {
+                return $q.reject('No Account Information');
+            }
+        },
         downloadReport : function() {
             var account = accountService.getCurrentAccount();
             if (account) {
@@ -415,6 +423,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answers', 'hi
 
     $scope.next = function() {
         if ($scope.currentQuestion < $scope.currentQuestionSet.numOfQuestions) {
+            createActionItem('next', $scope.currentQuestion);
             $scope.currentQuestion++;
             checkAnswer($scope.currentQuestion);
         }
@@ -422,8 +431,21 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answers', 'hi
 
     $scope.prev = function() {
         if($scope.currentQuestion > 1) {
+            createActionItem('prev', $scope.currentQuestion);
             $scope.currentQuestion--;
             checkAnswer($scope.currentQuestion);
+        }
+    };
+
+    function createActionItem(action, questionId) {
+        if (!$scope.previousAnswers.length) {
+            let actionItem = {
+                questionId: questionId,
+                action: action,
+                answer : $scope.answers[questionId - 1].answer,
+                createdDate : new Date()
+            };
+            answerService.createActionItem($scope.currentQuestionSet.questionSetId, actionItem).then();
         }
     };
 
@@ -528,6 +550,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answers', 'hi
     };
 
     $scope.submit = function() {
+        createActionItem('submit', $scope.currentQuestion);
         let promises = [];
         for (let i = 0; i < $scope.currentQuestionSet.numOfQuestions; i++) {
             if (!$scope.isTeacher && $scope.validateAnswer(i)) {

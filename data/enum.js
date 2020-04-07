@@ -13,6 +13,7 @@ module.exports = Object.freeze({
       account : 1,
       answer : 2,
       session : 3,
-      hint : 4
+      hint : 4,
+      action : 5
     }
 });

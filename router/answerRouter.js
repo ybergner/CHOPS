@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var Answer = require('../data/answerSchema.js');
+var Action = require('../data/actionSchema.js');
 var Enum = require('../data/enum.js');
 var utils = require('../data/utils.js');
 
@@ -61,7 +62,6 @@ router.post('/answer', function(req, res) {
         //         } else {
         //             result.answer = req.body.data.answer;
         //             result.lastUpdatedDate = new Date();
-        //             result.selectedHint = req.body.data.selectedHint;
         //             result.markModified('answer');
         //             result.save(function(saveErr) {
         //                 if (saveErr) {
@@ -82,10 +82,59 @@ router.post('/answer', function(req, res) {
 
 });
 
+// add/update new action
+router.post('/action', function(req, res) {
+    if (req.body.account && req.body.account.accountType == Enum.accountType.student) {
+        Action.findOne({accountId: req.body.account.accountId, questionSetId: req.body.questionSetId}).then(function(result) {
+            if (!result) {
+                // create new action
+                let action = {
+                    accountId : req.body.account.accountId,
+                    questionSetId : req.body.questionSetId,
+                    actionItems : []
+                };
+                action.actionItems.push(req.body.data);
+                Action.create(action, function(err, result) {
+                    if (err || !result) {
+                        console.log('Cannot create action');
+                        res.status(500).send('Cannot create action');
+                    } else {
+                        res.json({success : true});
+                    }
+                });
+            } else {
+                // update existing action
+                result.actionItems.push(req.body.data);
+                result.save(function(saveErr) {
+                    if (saveErr) {
+                        console.log('Cannot update action ' + result._id);
+                        res.status(500).send('Cannot update action ' + result._id);
+                    } else {
+                        res.json({success : true});
+                    }
+                });
+            }
+        });
+    } else {
+        res.status(404).send('Only student can save action');
+    }
+});
+
+router.deleteActionsByAccountId = function(accountId) {
+    return Action.deleteMany({accountId : accountId}).then(function(result) {
+        if (!result) {
+            console.log('Cannot find actions by account id: ' + accountId);
+            return null;
+        } else {
+            return result;
+        }
+    });
+};
+
 router.deleteAnswersByAccountId = function(accountId) {
     return Answer.deleteMany({accountId : accountId}).then(function(result) {
         if (!result) {
-            console.log('Cannot find answers by account id: ' + id);
+            console.log('Cannot find answers by account id: ' + accountId);
             return null;
         } else {
             return result;
