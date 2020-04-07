@@ -2,8 +2,9 @@
 var express = require('express');
 var router = express.Router();
 var Account = require('../data/accountSchema.js');
-var Answer = require('../data/answerSchema.js');
-var Session = require('../data/sessionSchema.js');
+var answerRouter = require('./answerRouter.js');
+var sessionRouter = require('./sessionRouter.js');
+var hintRouter = require('./hintRouter.js');
 var Enum = require('../data/enum.js');
 var utils = require('../data/utils.js');
 
@@ -102,8 +103,10 @@ router.post('/student', function(req, res){
                           console.log('Cannot find student ' + req.body.data.accountId);
                           res.status(500).send(req.body.data.accountId);
                       } else {
-                          Answer.deleteAnswersByAccountId(req.body.data.accountId);
-                          //Session.deleteSessionByAccountId(req.body.data.accountId);
+                          answerRouter.deleteAnswersByAccountId(req.body.data.accountId);
+                          answerRouter.deleteActionsByAccountId(req.body.data.accountId);
+                          hintRouter.deleteHintsByAccountId(req.body.data.accountId);
+                          //sessionRouter.deleteSessionByAccountId(req.body.data.accountId);
                           res.json({success : true});
                       }
                   }
