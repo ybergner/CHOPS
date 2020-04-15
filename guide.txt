@@ -32,3 +32,11 @@ Each question will have `type` : 'singleChoice' | 'multipleChoice' | 'openQuesti
 If the question set is collaborative, each question will also have `maxHintAllowedPerPerson`, `versionA`, `verionsB`, `hint` and `hintText`.
 
 If you want add images: save your images to `../webapp/template/questions/asset`.
+
+
+To access database:
+Go to `https://cloud.mongodb.com/v2#/clusters`.
+email:uywang@ucdavis.edu
+password:QE-49af78cHij-10
+
+Then you can see the database by clicking `connections`.

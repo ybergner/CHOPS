@@ -167,6 +167,131 @@
                     }
                 }
             ]
+        },
+        {
+        	"questionSetId" : "Test_collaborative_1",
+            "name" : "Test 1",
+            "numOfQuestions" : 3,
+            "isHidden" : false,
+            "questions" : [
+                {
+                    "type" : "singleChoice",
+                    "title" : "Right Triangle",
+                    "maxHintAllowedPerPerson" : 1,
+                    "versionA" : {
+                        "text" : "You will collaborate with your partner to solve the area of this triangle. The only thing you know is A=3, each of you can request one hint:",
+                        "image" : "Rtriangle.svg",
+                        "hint" : {
+                            "a" : "B",
+                            "b" : "C",
+                            "c" : "Angle y"
+                        },
+                        "hintText" : {
+                            "a" : "4",
+                            "b" : "5",
+                            "c" : "53 degree"
+                        },
+                        "option" : {
+                            "a" : "area = 5",
+                            "b" : "area = 6",
+                            "c" : "area = 7"
+                        }
+                    },
+                    "versionB" : {
+                        "text" : "You will collaborate with your partner to solve the area of this triangle. The only thing you know is A=3, each of you can request one hint:",
+                        "image" : "Rtriangle.svg",
+                        "hint" : {
+                            "d" : "B",
+                            "e" : "C",
+                            "f" : "Angle y"
+                        },
+                        "hintText" : {
+                            "d" : "4",
+                            "e" : "5",
+                            "f" : "53 degree"
+                        },
+                        "option" : {
+                            "a" : "area = 5",
+                            "b" : "area = 6",
+                            "c" : "area = 7"
+                        }
+                    }
+                },
+                {
+                    "type" : "multipleChoice",
+                    "title" : "Calculation",
+                    "maxHintAllowedPerPerson" : 2,
+                    "versionA" : {
+                        "text" : "Each of you have different 4 numbers in the hint, pick two numbers from your set and together you and your partner will have the smallest standard deviation. Calculate the average:",
+                        
+                        "hint" : {
+                            "a" : "0",
+                            "b" : "1",
+                            "c" : "143",
+                            "d" : "145"
+                        },
+                        "hintText" : {
+                            "a" : "You picked 0",
+                            "b" : "You picked 1",
+                            "c" : "You picked 143",
+                            "d" : "You picked 145"
+                        },
+                        "option" : {
+                            "a" : "144",
+                            "b" : "18",
+                            "c" : "None of the above"
+                        }
+                    },
+                    "versionB" : {
+                        "text" : "Each of you have different 4 numbers in the hint, pick two numbers from your set and together you and your partner will have the smallest standard deviation. Calculate the average:",
+                        
+                        "hint" : {
+                            "e" : "15",
+                            "f" : "20",
+                            "g" : "140",
+                            "h" : "147"
+                        },
+                        "hintText" : {
+                            "e" : "You picked 15",
+                            "f" : "You picked 20",
+                            "g" : "You picked 140",
+                            "h" : "You picked 147"
+                        },
+                        "option" : {
+                            "a" : "144",
+                            "b" : "18",
+                            "c" : "None of the above"
+                        }
+                    }
+                },
+                {
+                    "type" : "openQuestion",
+                    "title" : "Combination",
+                    "maxHintAllowedPerPerson" : 1,
+                    "versionA" : {
+                        "text" : "Bob uses a code to lock his phone. Select your hint to continue",
+                        "image" : "Q3A.jpg",
+                        "hint" : {
+                            "a" : "Select your hint to continue"
+                        },
+                        "hintText" : {
+                            "a" : "Bob uses a 4-digit code to lock his phone. He cannot remember what the code is, but he remembers that it uses distinct numbers. He decided to try all possible codes. In the worst case, how many different codes would Bob has to try?"
+                        },
+                        "option" : {}
+                    },
+                    "versionB" : {
+                        "text" : "Bob uses a code to lock his phone. Select your hint to continue",
+                        "image" : "Q3B.jfif",
+                        "hint" : {
+                            "f" : "Sixth Hint version B"
+                        },
+                        "hintText" : {
+                            "f" : "Bob uses a code to lock his phone. He cannot remember what the code is, but he remembers that it contains only odd numbers and no number repeats more than once. He decided to try all possible codes (order matters) that use these five numbers. In the worst case, how many different codes would Bob have to try?"
+                        },
+                        "option" : {}
+                    }
+                }
+            ]
         }
     ]
 }
