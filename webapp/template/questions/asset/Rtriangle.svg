@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   width="346"
+   height="294"
+   id="svg2">
+  <g
+     transform="matrix(3.510524,0,0,3.510524,-238.6164,-2.170853)"
+     id="g12">
+<g style="fill:none;stroke:#000000;stroke-width:0.74719799">
+    <path
+       d="M 152.826,13.335 V 70.028 H 81.96 z"
+       id="path18" />
+    <path
+       d="M 152.826,65.776 H 148.574 V 70.028"
+       id="path26" />
+</g>
+<g style="font-family:Noto Serif">
+<g style="font-size:10px">
+    <text id="path20" x="72.8" y="75.9">A</text>
+    <text id="path22" x="154.5" y="12">B</text>
+    <text id="path24" x="155.2" y="76.8">C</text>
+</g>
+<g style="font-size:9px;font-style:italic">
+    <text id="path28" x="114.9" y="80">b</text>
+    <text id="path30" x="155.4" y="44.2">a</text>
+    <text id="path32" x="110" y="39.1">c</text>
+
+</g>
+</g>
+  </g>
+</svg>

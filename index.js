@@ -15,7 +15,7 @@ var sessionRouter = require('./router/sessionRouter.js');
 var hintRouter = require('./router/hintRouter.js');
 var spreadSheetRouter = require('./router/spreadSheetRouter.js');
 var questionRouter = require('./router/questionRouter.js');
-var dbUrl = '';
+var dbUrl = 'mongodb://Amped:Amped@cluster0-shard-00-00-sr2mn.mongodb.net:27017,cluster0-shard-00-01-sr2mn.mongodb.net:27017,cluster0-shard-00-02-sr2mn.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority';
 
 //bodyParser set up for json object return
 app.use(bodyParser.urlencoded({extended: true}));
