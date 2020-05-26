@@ -6,7 +6,7 @@ var Enum = require('../data/enum.js');
 var utils = require('../data/utils.js');
 
 router.getSessionById = function(accountId, questionSetId) {
-    var queryObject = { $or : [{accountAId : accountId}, {accountBId : accountId}] };
+    var queryObject = { $or : [{accountAId : accountId}, {accountBId : accountId}], currentGiveUpNumber: null};
     if (questionSetId) {
         queryObject.questionSetId = questionSetId;
     }
@@ -31,6 +31,19 @@ router.deleteSessionByAccountId = function(accountId) {
     });
 };
 
+router.getSessionCurrentGiveUpNumber = function(data) {
+    if (!data.currentGiveUpNumber) {
+        return Session.find({accountAId : data.accountAId, accountBId : data.accountBId, currentGiveUpNumber: {$ne: null}}).then(function(result) {
+            if (!result) {
+                console.log('Cannot find session from ' + data);
+                return 1;
+            } else {
+                return result.length + 1;
+            }
+        });
+    }
+}
+
 // add/update session, it is called when a socket ends
 router.addOrUpdateSession = function(data) {
     if (data._id) {
@@ -40,6 +53,7 @@ router.addOrUpdateSession = function(data) {
                 console.log('Session to be saved : ');
                 console.log(data);
             } else {
+                result.currentGiveUpNumber = data.currentGiveUpNumber;
                 result.messages = data.messages;
                 result.lastUpdatedDate = new Date();
                 result.save(function(saveErr) {

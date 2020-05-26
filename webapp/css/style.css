@@ -44,13 +44,13 @@ span.page-link {
 
 .chat {
     position: fixed;
-    width: 355px;
+    width: 350px;
     left: 5px;
     bottom: 8px
 }
 
-.chat-box {
-    margin-bottom: 5px;
+.question-section {
+    margin-left: 350px;
 }
 
 .btn-outline-secondary, .btn-outline-danger {
@@ -59,7 +59,7 @@ span.page-link {
 
 .message-box {
     background-color:#f2f2f2;
-    height:400px;
+    height:500px;
     border-radius:5px;
     overflow:auto;
     padding: 13px;

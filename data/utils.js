@@ -20,12 +20,12 @@ var convertAnswer = function(dbObject) {
     if (dbObject) {
         let res = {};
         res._id = dbObject._id;
-        res.questionId = dbObject.questionId;
-        res.answer = dbObject.answer;
         res.accountId = dbObject.accountId;
         res.lastUpdatedDate = dbObject.lastUpdatedDate;
+        res.answers = dbObject.answers;
         res.questionSetId = dbObject.questionSetId;
         res.isCollaborative = dbObject.isCollaborative;
+        res.currentGiveUpNumber = dbObject.currentGiveUpNumber;
         return res;
     }
     return dbObject;
@@ -37,9 +37,12 @@ var convertSession = function(dbObject) {
         res._id = dbObject._id;
         res.accountAId = dbObject.accountAId;
         res.accountBId = dbObject.accountBId;
+        res.accountAName = dbObject.accountAName;
+        res.accountBName = dbObject.accountBName;
         res.questionSetId = dbObject.questionSetId;
         res.messages = dbObject.messages;
         res.lastUpdatedDate = dbObject.lastUpdatedDate;
+        res.currentGiveUpNumber = dbObject.currentGiveUpNumber;
         return res;
     }
     return dbObject;
@@ -49,12 +52,12 @@ var convertHint = function(dbObject) {
     if (dbObject) {
         let res = {};
         res._id = dbObject._id;
-        res.questionId = dbObject.questionId;
-        res.selectedHints = dbObject.selectedHints;
         res.accountId = dbObject.accountId;
         res.lastUpdatedDate = dbObject.lastUpdatedDate;
         res.questionSetId = dbObject.questionSetId;
         res.isA = dbObject.isA;
+        res.hints = dbObject.hints;
+        res.currentGiveUpNumber = dbObject.currentGiveUpNumber;
         return res;
     }
     return dbObject;

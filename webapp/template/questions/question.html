@@ -38,7 +38,7 @@
         <div ng-repeat="(key, value) in currentQuestionSet.questions[currentQuestion - 1].option track by key" class="form-check">
             <input class="form-check-input" type="radio" name="singleChoice" id="{{'radio' + key}}" value="{{key}}"
               ng-model="answers[currentQuestion - 1].answer.singleChoice"
-              ng-disabled="answers[currentQuestion - 1]._id">
+              ng-disabled="answers[currentQuestion - 1].createdDate">
             <label class="form-check-label" for="{{'radio' + key}}">
               {{ value }}
             </label>
@@ -48,7 +48,7 @@
         <div ng-repeat="(key, value) in currentQuestionSet.questions[currentQuestion - 1].option track by key" class="form-check">
             <input class="form-check-input" type="checkbox" id="{{'check' + key}}"
               ng-model="answers[currentQuestion - 1].answer.multipleChoice[key]"
-              ng-disabled="answers[currentQuestion - 1]._id">
+              ng-disabled="answers[currentQuestion - 1].createdDate">
             <label class="form-check-label" for="{{'check' + key}}">
               {{ value }}
             </label>
@@ -57,7 +57,7 @@
     <div ng-if="currentQuestionSet.questions[currentQuestion - 1].type === 'openQuestion'">
         <textarea class="form-control" name="openQuestion" id="openQuestion" placeholder="Enter your answers here." rows="5"
             ng-model="answers[currentQuestion - 1].answer.openQuestion"
-            ng-disabled="answers[currentQuestion - 1]._id">
+            ng-disabled="answers[currentQuestion - 1].createdDate">
         </textarea>
     </div>
 </div>

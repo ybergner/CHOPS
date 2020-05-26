@@ -11,9 +11,12 @@ var messageSchema = new Schema({
 var sessionSchema = new Schema({
     accountAId : { type : Number, required : true },
     accountBId : { type : Number, required : true },
+    accountAName : { type : String, trim : true },
+    accountBName : { type : String, trim : true },
     questionSetId : { type : String, trim : true },
     messages : { type : [messageSchema] },
-    lastUpdatedDate : { type : Date }
+    lastUpdatedDate : { type : Date },
+    currentGiveUpNumber : { type : Number }
 });
 
 module.exports = mongoose.model('session', sessionSchema);

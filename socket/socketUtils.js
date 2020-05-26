@@ -9,25 +9,26 @@ utils.setUpSocket = function(io) {
     var counter = 0;
     io.on('connection', function(socket) {
         socket.on('account', function(data) {
-            if (accountSessionSocketMap[data.accountId]) {
+            if (accountSessionSocketMap[data.account.accountId]) {
                 socket._userName = "invalid_socket";
                 socket.emit('account already has socket', {});
             } else {
-                socket._userName = data.accountId;
-                accountSessionSocketMap[data.accountId] = {};
-                accountSessionSocketMap[data.accountId].isConnect = false;
-                accountSessionSocketMap[data.accountId].socket = socket;
-                accountSessionSocketMap[data.accountId].questionSetId = data.questionSetId;
-                sessionRouter.getSessionById(data.accountId, data.questionSetId).then(function(sessions) {
+                socket._userName = data.account.accountId;
+                accountSessionSocketMap[data.account.accountId] = {};
+                accountSessionSocketMap[data.account.accountId].isConnect = false;
+                accountSessionSocketMap[data.account.accountId].socket = socket;
+                accountSessionSocketMap[data.account.accountId].accountName = data.account.accountName;
+                accountSessionSocketMap[data.account.accountId].questionSetId = data.questionSetId;
+                sessionRouter.getSessionById(data.account.accountId, data.questionSetId).then(function(sessions) {
                     if (sessions && sessions.length) {
-                        accountSessionSocketMap[data.accountId].session = sessions[0] || {};
-                        let isA = accountSessionSocketMap[data.accountId].session.accountAId === data.accountId;
+                        accountSessionSocketMap[data.account.accountId].session = sessions[0] || {};
+                        let isA = accountSessionSocketMap[data.account.accountId].session.accountAId === data.account.accountId;
                         socket.emit('account received', {
-                            session : accountSessionSocketMap[data.accountId].session,
+                            session : accountSessionSocketMap[data.account.accountId].session,
                             questionSet : questionRouter.getQuestionSet(data.questionSetId, isA)
                         });
                     } else {
-                        accountSessionSocketMap[data.accountId].session = {};
+                        accountSessionSocketMap[data.account.accountId].session = {};
                         socket.emit('account received', {});
                     }
                 });
@@ -87,7 +88,9 @@ utils.setUpSocket = function(io) {
                         accountSessionSocketMap[socket._userName].isConnect = true;
                         accountSessionSocketMap[socket._userName].session = {
                             accountAId : socket._userName,
+                            accountAName : accountSessionSocketMap[socket._userName].accountName,
                             accountBId : matchedAccountId,
+                            accountBName : accountSessionSocketMap[matchedAccountId].accountName,
                             questionSetId : accountSessionSocketMap[socket._userName].questionSetId,
                             messages : []
                         };
@@ -124,6 +127,7 @@ utils.setUpSocket = function(io) {
             if (accountSessionSocketMap[socket._userName] && (accountSessionSocketMap[socket._userName].isConnect || accountSessionSocketMap[socket._userName].session._id)) {
                 sessionRouter.addOrUpdateSession(accountSessionSocketMap[socket._userName].session);
             }
+            let isGiveUp = false;
             if (accountSessionSocketMap[socket._userName] && accountSessionSocketMap[socket._userName].isConnect) {
                 if (accountSessionSocketMap[socket._userName].session.accountAId == socket._userName) {
                     // mark other connected socket as disconnected to avoid duplicate saving operations
@@ -134,6 +138,7 @@ utils.setUpSocket = function(io) {
                     accountSessionSocketMap[accountSessionSocketMap[socket._userName].session.accountAId].isConnect = false;
                     accountQueue.push(accountSessionSocketMap[socket._userName].session.accountAId);
                 }
+                isGiveUp = !!accountSessionSocketMap[socket._userName].session.currentGiveUpNumber;
             }
             var index = accountQueue.indexOf(socket._userName);
             if (index > -1) {
@@ -141,7 +146,17 @@ utils.setUpSocket = function(io) {
             }
             delete accountSessionSocketMap[socket._userName];
             if (socket._roomName) {
-                socket.to(socket._roomName).emit('leave', socket._userName);
+                let message = isGiveUp ? 'give up leaving' : 'leave';
+                socket.to(socket._roomName).emit(message, socket._userName);
+            }
+        });
+
+        socket.on('giveUpSession', function() {
+            if (accountSessionSocketMap[socket._userName] && !accountSessionSocketMap[socket._userName].session.currentGiveUpNumber) {
+                sessionRouter.getSessionCurrentGiveUpNumber(accountSessionSocketMap[socket._userName].session).then(function(num) {
+                    accountSessionSocketMap[socket._userName].session.currentGiveUpNumber = num;
+                    socket.emit('give up completed', {});
+                });
             }
         });
 
