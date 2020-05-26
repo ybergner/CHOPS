@@ -8,7 +8,7 @@ var utils = require('../data/utils.js');
 
 // get answers by student id
 router.get('/answer/:accountId', function(req, res) {
-    Answer.find({accountId: req.params.accountId}).lean().exec(function(err, result) {
+    Answer.find({accountId: req.params.accountId, currentGiveUpNumber: null}).lean().exec(function(err, result) {
         if (err) {
             console.log('Cannot get answer ' + req.params.accountId);
             res.status(500).send('Cannot get answer ' + req.params.accountId);
@@ -25,7 +25,7 @@ router.get('/answer/:accountId', function(req, res) {
 
 // get answers by student id
 router.get('/answer/:accountId/:questionSetId', function(req, res) {
-    Answer.find({accountId: req.params.accountId, questionSetId: req.params.questionSetId}).lean().exec(function(err, result) {
+    Answer.find({accountId: req.params.accountId, questionSetId: req.params.questionSetId, currentGiveUpNumber: null}).lean().exec(function(err, result) {
         if (err) {
             console.log('Cannot get answer ' + req.params.accountId);
             res.status(500).send('Cannot get answer ' + req.params.accountId);
@@ -78,6 +78,43 @@ router.post('/answer', function(req, res) {
         }
     } else {
         res.status(404).send('Only student can submit answer');
+    }
+
+});
+
+// add/update new answer
+router.post('/giveUpAnswer', function(req, res) {
+    if (req.body.account && req.body.account.accountType == Enum.accountType.student) {
+        if (req.body.data._id && !req.body.data.currentGiveUpNumber) {
+            Answer.find({accountId: req.body.account.accountId, questionSetId: req.body.data.questionSetId, currentGiveUpNumber: {$ne: null}}).lean().exec(function(err, results) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('system error');
+                } else if (results) {
+                    Answer.findById(req.body.data._id).then(function(result) {
+                        if (!result) {
+                            console.log('Cannot get answer ' + req.body._id);
+                            res.status(500).send('Cannot get answer ' + req.body._id);
+                        } else {
+                            result.lastUpdatedDate = new Date();
+                            result.currentGiveUpNumber = results.length + 1;
+                            result.save(function(saveErr) {
+                                if (saveErr) {
+                                    console.log('Cannot update answer ' + result._id);
+                                    res.status(500).send('Cannot update answer ' + result._id);
+                                } else {
+                                    res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.answer)});
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            res.status(404).send('invalid operation');
+        }
+    } else {
+        res.status(404).send('Only student can give up answer');
     }
 
 });

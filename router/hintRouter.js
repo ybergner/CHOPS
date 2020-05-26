@@ -8,7 +8,7 @@ var questionRouter = require('./questionRouter.js');
 
 // get answers by student id
 router.get('/hint/:accountId', function(req, res) {
-    Hint.find({accountId: req.params.accountId}).lean().exec(function(err, result) {
+    Hint.find({accountId: req.params.accountId, currentGiveUpNumber: null}).lean().exec(function(err, result) {
         if (err) {
             console.log('Cannot get hint ' + req.params.accountId);
             res.status(500).send('Cannot get hint ' + req.params.accountId);
@@ -25,7 +25,7 @@ router.get('/hint/:accountId', function(req, res) {
 
 // get answers by student id
 router.get('/hint/:accountId/:questionSetId', function(req, res) {
-    Hint.find({accountId: req.params.accountId, questionSetId: req.params.questionSetId}).lean().exec(function(err, result) {
+    Hint.find({accountId: req.params.accountId, questionSetId: req.params.questionSetId, currentGiveUpNumber: null}).lean().exec(function(err, result) {
         if (err) {
             console.log('Cannot get hint ' + req.params.accountId);
             res.status(500).send('Cannot get hint ' + req.params.accountId);
@@ -35,16 +35,18 @@ router.get('/hint/:accountId/:questionSetId', function(req, res) {
                 res.json({});
             } else {
                 let hintText = [];
-                for (let selectedHints of result) {
-                    let hintsText = questionRouter.getHint(selectedHints.questionSetId, selectedHints.questionId, selectedHints.isA);
-                    let selectedHintsText = {};
-                    for (let key of selectedHints.selectedHints) {
-                        selectedHintsText[key] = hintsText[key];
+                for (let res of result) {
+                    for (let individualHint of res.hints) {
+                        let hintsText = questionRouter.getHint(res.questionSetId, individualHint.questionId, res.isA);
+                        let selectedHintsText = {};
+                        for (let key of individualHint.selectedHints) {
+                            selectedHintsText[key] = hintsText[key];
+                        }
+                        hintText.push({
+                            questionId : individualHint.questionId,
+                            hintText : selectedHintsText
+                        });
                     }
-                    hintText.push({
-                        questionId : selectedHints.questionId,
-                        hintText : selectedHintsText
-                    });
                 }
                 res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.hint), hintText : hintText});
             }
@@ -55,11 +57,15 @@ router.get('/hint/:accountId/:questionSetId', function(req, res) {
 // add/update new answer
 router.post('/hint', function(req, res) {
     if (req.body.account && req.body.account.accountType == Enum.accountType.student) {
-        if (req.body.operation == 'create' && !req.body.data._id) {
-            req.body.data.accountId = req.body.account.accountId;
-            req.body.data.lastUpdatedDate = new Date();
+        if (req.body.operation == 'create' && !req.body.data.createdDate) {
+            let newHint = {};
+            newHint.accountId = req.body.account.accountId;
+            newHint.lastUpdatedDate = new Date();
+            newHint.questionSetId = req.body.questionSetId;
+            newHint.isA = req.body.isA;
+            newHint.hints = [req.body.data];
             if (req.body.data.selectedHints && req.body.data.selectedHints.length) {
-                let hintsText = questionRouter.getHint(req.body.data.questionSetId, req.body.data.questionId, req.body.data.isA);
+                let hintsText = questionRouter.getHint(req.body.questionSetId, req.body.data.questionId, req.body.isA);
                 let selectedHintsText = {};
                 for (let key of req.body.data.selectedHints) {
                     selectedHintsText[key] = hintsText[key];
@@ -68,7 +74,7 @@ router.post('/hint', function(req, res) {
                     questionId : req.body.data.questionId,
                     hintText : selectedHintsText
                 };
-                Hint.create(req.body.data, function(err, result) {
+                Hint.create(newHint, function(err, result) {
                   if (err || !result) {
                       console.log('Cannot create hint');
                       res.status(500).send(req.body.data);
@@ -79,23 +85,32 @@ router.post('/hint', function(req, res) {
             } else {
                 res.status(404).send('selectedHints cannot be empty');
             }
-        } else if (req.body.operation == 'update' || req.body.data._id) {
+        } else if (req.body.operation == 'update' || req.body.data.createdDate) {
             if (req.body.data.selectedHints && req.body.data.selectedHints.length) {
-                Hint.findById(req.body.data._id).then(function(result) {
+                Hint.findById(req.body.hintId).then(function(result) {
                     if (!result) {
-                        console.log('Cannot get hint ' + req.body.data._id);
-                        res.status(500).send('Cannot get hint ' + req.body.data._id);
+                        console.log('Cannot get hint ' + req.body.hintId);
+                        res.status(500).send('Cannot get hint ' + req.body.hintId);
                     } else {
                         let validHints = [];
-                        for (let selectedHints of result.selectedHints) {
+                        let dbIndividualHint;
+                        for (let hint of result.hints) {
+                            if (hint.questionId == req.body.data.questionId) {
+                                dbIndividualHint = hint;
+                                break;
+                            }
+                        }
+                        if (dbIndividualHint) {
                             for (let hint of req.body.data.selectedHints) {
-                                if (!selectedHints.includes(hint)) {
+                                if (!dbIndividualHint.selectedHints.includes(hint)) {
                                     validHints.push(hint);
                                 }
                             }
+                        } else {
+                            validHints = req.body.data.selectedHints;
                         }
                         if (validHints.length) {
-                            let hintsText = questionRouter.getHint(req.body.data.questionSetId, req.body.data.questionId, req.body.data.isA);
+                            let hintsText = questionRouter.getHint(result.questionSetId, req.body.data.questionId, result.isA);
                             let selectedHintsText = {};
                             for (let key of req.body.data.selectedHints) {
                                 selectedHintsText[key] = hintsText[key];
@@ -104,12 +119,17 @@ router.post('/hint', function(req, res) {
                                 questionId : req.body.data.questionId,
                                 hintText : selectedHintsText
                             };
-                            result.selectedHints = req.body.data.selectedHints;
+                            if (!dbIndividualHint) {
+                                dbIndividualHint = {questionId: req.body.data.questionId, selectedHints: req.body.data.selectedHints};
+                                result.hints.push(dbIndividualHint);
+                            } else {
+                                dbIndividualHint.selectedHints = req.body.data.selectedHints;
+                            }
                             result.lastUpdatedDate = new Date();
                             result.save(function(saveErr) {
                                 if (saveErr) {
-                                    console.log('Cannot update hint ' + req.body.data._id);
-                                    res.status(500).send('Cannot update hint ' + req.body.data._id);
+                                    console.log('Cannot update hint ' + result._id);
+                                    res.status(500).send('Cannot update hint ' + result._id);
                                 } else {
                                     res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.hint), hintText : hintText});
                                 }
@@ -128,6 +148,33 @@ router.post('/hint', function(req, res) {
     } else {
         res.status(404).send('Only student can submit hint');
     }
+});
+
+router.post('/giveUpHint', function(req, res) {
+    Hint.find({accountId: req.body.account.accountId, questionSetId: req.body.questionSetId, currentGiveUpNumber: {$ne: null}}).lean().exec(function(err, results) {
+        if (err) {
+            console.log('Cannot get hint ' + req.body.account.accountId);
+            res.status(500).send('Cannot get hint ' + req.body.account.accountId);
+        } else if (results) {
+            Hint.findById(req.body.hintId).then(function(result) {
+                if (!result) {
+                    console.log('Cannot get hint ' + req.body.hintId);
+                    res.status(500).send('Cannot get hint ' + req.body.hintId);
+                } else {
+                    result.lastUpdatedDate = new Date();
+                    result.currentGiveUpNumber = results.length + 1;
+                    result.save(function(saveErr) {
+                        if (saveErr) {
+                            console.log('Cannot update hint ' + result._id);
+                            res.status(500).send('Cannot update hint ' + result._id);
+                        } else {
+                            res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.hint)});
+                        }
+                    });
+                }
+            });
+        }
+    });
 });
 
 router.deleteHintsByAccountId = function(accountId) {
