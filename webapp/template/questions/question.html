@@ -34,6 +34,14 @@
             </div>
         </div>
     </div>
+    <div ng-if="currentQuestionSet.questions[currentQuestion - 1].hasCollaborationAnswer" class="card">
+        <div class="card-body">
+            <h5 class="card-title">Your collaboration Answer</h5>
+            <div class="form-group">
+                <input class="form-control" type="number" ng-model="answers[currentQuestion - 1].collaborationAnswer">
+            </div>
+        </div>
+    </div>
     <div ng-if="currentQuestionSet.questions[currentQuestion - 1].type === 'singleChoice'">
         <div ng-repeat="(key, value) in currentQuestionSet.questions[currentQuestion - 1].option track by key" class="form-check">
             <input class="form-check-input" type="radio" name="singleChoice" id="{{'radio' + key}}" value="{{key}}"
