@@ -66,7 +66,8 @@
                             "a" : "First Choise version A",
                             "b" : "Second Choice version A",
                             "c" : "Third Choice version A"
-                        }
+                        },
+                        "hasCollaborationAnswer": true
                     },
                     "versionB" : {
                         "text" : "Some text of the question 1 version B",
@@ -85,7 +86,8 @@
                             "a" : "First Choise version B",
                             "b" : "Second Choice version B",
                             "c" : "Third Choice version B"
-                        }
+                        },
+                        "hasCollaborationAnswer": true
                     }
                 },
                 {

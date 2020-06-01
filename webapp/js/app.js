@@ -417,7 +417,6 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     $scope.previousAnswers = angular.copy($scope.answers);
     $scope.currentHints = {};
     $scope.originalCurrentHints = {};
-    //questionSetId : $scope.currentQuestionSet.questionSetId, isCollaborative : $scope.currentQuestionSet.isCollaborative
     var checkAnswer = $scope.checkAnswer =  function(questionId) {
         if (!$scope.answers[questionId - 1]) {
             $scope.answers[questionId - 1] = {
@@ -427,6 +426,9 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
             if ($scope.currentQuestionSet.questions[questionId - 1].type === 'multipleChoice') {
                 $scope.answers[questionId - 1].answer.multipleChoice = {};
             }
+        }
+        if ($scope.answers[questionId - 1].collaborationAnswer && !isNaN($scope.answers[questionId - 1].collaborationAnswer)) {
+            $scope.answers[questionId - 1].collaborationAnswer = Number($scope.answers[questionId - 1].collaborationAnswer);
         }
         if ($scope.session) {
             $scope.currentHints = {questionId : questionId, selectedHints : []};
@@ -491,6 +493,9 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     $scope.validateAnswer = function(index) {
         if (!angular.isNumber(index)) {
             index = $scope.currentQuestion - 1;
+        }
+        if ($scope.currentQuestionSet.questions[index].hasCollaborationAnswer && isNaN($scope.answers[index].collaborationAnswer)){
+            return false;
         }
         if ($scope.answers[index].answer.singleChoice) {
             return $scope.answers[index].answer.singleChoice && $scope.answers[index].answer.singleChoice !== '';
