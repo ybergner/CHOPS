@@ -1,6 +1,6 @@
 <nav class="navbar navbar-light bg-light flex-pull-right">
     <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#giveUpModal"
-        ng-if="(!currentQuestionSet.isCollaborative && answersObject._id && !answersObject.currentGiveUpNumber) || (currentQuestionSet.isCollaborative && session && !session.currentGiveUpNumber)">
+        ng-if="(!currentQuestionSet.isCollaborative && answersObject.isSubmitted && !answersObject.currentGiveUpNumber) || (currentQuestionSet.isCollaborative && session && !session.currentGiveUpNumber)">
         Give Up
     </button>
     <button class="btn btn-primary" type="button" ng-click="home()">
@@ -53,7 +53,7 @@
             <li class="page-item" ng-class="{'disabled' : currentQuestion >= currentQuestionSet.numOfQuestions || !validateAnswer()}">
               <button class="page-link" ng-click="next()" ng-disabled="currentQuestion >= currentQuestionSet.numOfQuestions || !validateAnswer()">Next</button>
             </li>
-            <li class="page-item" ng-show="currentQuestion == currentQuestionSet.numOfQuestions" ng-class="{'disabled' : !validateAnswer()}">
+            <li class="page-item" ng-show="currentQuestion == currentQuestionSet.numOfQuestions && !answersObject.isSubmitted" ng-class="{'disabled' : !validateAnswer()}">
               <button class="page-link" ng-click="submit()" ng-disabled="!validateAnswer()">Submit</button>
             </li>
           </ul>
@@ -62,10 +62,11 @@
 </div>
 
 <div class="chat" ng-if="currentQuestionSet.isCollaborative">
-    <button type="button" class="btn btn-outline-danger btn-block" ng-click="collaborate()" ng-if="!waiting && !isConnect">Find Collaborator</button>
+    <button type="button" class="btn btn-outline-danger btn-block" ng-click="collaborate()"
+        ng-if="!waiting && !isConnect">{{session ? ('Connect with ' + (isA ? session.accountBName : session.accountAName)) : 'Find Collaborator'}}</button>
     <button class="btn btn-outline-danger btn-block" type="button" disabled ng-if="waiting">
         <span class="spinner-border spinner-border-sm"></span>
-        Looking for collaborator
+        {{session ? ('Waiting for ' + (isA ? session.accountBName : session.accountAName)) : 'Looking for collaborator'}}
     </button>
     <div ng-show="showMessage && isConnect">
         <div class="message">

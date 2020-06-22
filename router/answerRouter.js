@@ -54,25 +54,25 @@ router.post('/answer', function(req, res) {
                   res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.answer)});
               }
             });
-        // } else if (req.body.operation == 'update' || req.body.data._id) {
-        //     Answer.findById(req.body.data._id).then(function(result) {
-        //         if (!result) {
-        //             console.log('Cannot get answer ' + req.body.data._id);
-        //             res.status(500).send('Cannot get answer ' + req.body.data._id);
-        //         } else {
-        //             result.answer = req.body.data.answer;
-        //             result.lastUpdatedDate = new Date();
-        //             result.markModified('answer');
-        //             result.save(function(saveErr) {
-        //                 if (saveErr) {
-        //                     console.log('Cannot update answer ' + req.body.data._id);
-        //                     res.status(500).send('Cannot update answer ' + req.body.data._id);
-        //                 } else {
-        //                     res.json({success : true});
-        //                 }
-        //             });
-        //         }
-        //     });
+        } else if (req.body.operation == 'update' || req.body.data._id) {
+            Answer.findById(req.body.data._id).then(function(result) {
+                if (!result) {
+                    console.log('Cannot get answer ' + req.body.data._id);
+                    res.status(500).send('Cannot get answer ' + req.body.data._id);
+                } else {
+                    result.answers = req.body.data.answers;
+                    result.isSubmitted = req.body.data.isSubmitted;
+                    result.lastUpdatedDate = new Date();
+                    result.save(function(saveErr) {
+                        if (saveErr) {
+                            console.log('Cannot update answer ' + req.body.data._id);
+                            res.status(500).send('Cannot update answer ' + req.body.data._id);
+                        } else {
+                            res.json({success : true});
+                        }
+                    });
+                }
+            });
         } else {
             res.status(404).send('invalid operation');
         }
@@ -98,6 +98,7 @@ router.post('/giveUpAnswer', function(req, res) {
                         } else {
                             result.lastUpdatedDate = new Date();
                             result.currentGiveUpNumber = results.length + 1;
+                            result.isSubmitted = true;
                             result.save(function(saveErr) {
                                 if (saveErr) {
                                     console.log('Cannot update answer ' + result._id);
