@@ -26,6 +26,7 @@ var convertAnswer = function(dbObject) {
         res.questionSetId = dbObject.questionSetId;
         res.isCollaborative = dbObject.isCollaborative;
         res.currentGiveUpNumber = dbObject.currentGiveUpNumber;
+        res.isSubmitted = dbObject.isSubmitted;
         return res;
     }
     return dbObject;

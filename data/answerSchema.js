@@ -15,7 +15,8 @@ var answerSchema = new Schema({
     answers : { type : [individualAnswerSchema] },
     questionSetId: { type : String, trim : true },
     isCollaborative : { type : Boolean },
-    currentGiveUpNumber : { type : Number }
+    currentGiveUpNumber : { type : Number },
+    isSubmitted: { type : Boolean }
 });
 
 module.exports = mongoose.model('answer', answerSchema);

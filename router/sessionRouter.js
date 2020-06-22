@@ -5,6 +5,23 @@ var Session = require('../data/sessionSchema.js');
 var Enum = require('../data/enum.js');
 var utils = require('../data/utils.js');
 
+// get sessions by student id
+router.get('/session/:accountId', function(req, res) {
+    Session.find({ $or : [{accountAId : req.params.accountId}, {accountBId : req.params.accountId}], currentGiveUpNumber: null}).lean().exec(function(err, result) {
+        if (err) {
+            console.log('Cannot get session ' + req.params.accountId);
+            res.status(500).send('Cannot get session ' + req.params.accountId);
+        } else {
+            if (!result) {
+                console.log('Cannot find session ' + req.params.accountId);
+                res.json({});
+            } else {
+                res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.session)});
+            }
+        }
+    });
+});
+
 router.getSessionById = function(accountId, questionSetId) {
     var queryObject = { $or : [{accountAId : accountId}, {accountBId : accountId}], currentGiveUpNumber: null};
     if (questionSetId) {
