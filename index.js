@@ -16,6 +16,7 @@ var hintRouter = require('./router/hintRouter.js');
 var spreadSheetRouter = require('./router/spreadSheetRouter.js');
 var questionRouter = require('./router/questionRouter.js');
 var dbUrl = '';
+var port = process.env.PORT || 8888;
 
 //bodyParser set up for json object return
 app.use(bodyParser.urlencoded({extended: true}));
@@ -46,6 +47,6 @@ app.use(function(req, res){
     res.sendFile('app.html', { root : __dirname + '/webapp' });
 });
 
-server.listen(8888);
+server.listen(port);
 
-console.log('Server Started');
+console.log('Server Started, listening on port: ' + port);
