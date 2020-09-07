@@ -1,0 +1,15 @@
+{
+    "type" : "openQuestion",
+    "title" : "054MG_M",
+    "maxHintAllowedPerPerson" : 0,
+    "versionA" : {
+        "text" : "With your partner, choose lengths for the line segments MN and PQ such that the distance between the midpoint of MN and the midpoint of PQ is 30cm. You will enter the length of MN.",
+        "image" : "054MG_M.jpg",
+        "option" : {}
+    },
+    "versionB" : {
+        "text" : "With your partner, choose lengths for the line segments MN and PQ such that the distance between the midpoint of MN and the midpoint of PQ is 30cm. You will enter the length of PQ.",
+        "image" : "054MG_M.jpg",
+        "option" : {}
+    }
+}

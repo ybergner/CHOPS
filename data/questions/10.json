@@ -1,0 +1,43 @@
+{
+    "type" : "openQuestion",
+    "title" : "008EG_H",
+    "maxHintAllowedPerPerson" : 1,
+    "versionA" : {
+        "text" : "The diagram is part of a scale drawing of a house. What is the length, in feet, of the side labeled x. You and your partner can each make ONE selection from the following list of hints. Use this information to provide your answer in the box below.",
+        "image" : "008EG_H.jpg",
+        "hint" : {
+            "a" : "A",
+            "b" : "B",
+            "c" : "C",
+            "d" : "D",
+            "e" : "E"
+        },
+        "hintText" : {
+            "a" : "48",
+            "b" : "30",
+            "c" : "12",
+            "d" : "6",
+            "e" : "24"
+        },
+        "option" : {}
+    },
+    "versionB" : {
+        "text" : "The diagram is part of a scale drawing of a house. What is the length, in feet, of the side labeled x. You and your partner can each make ONE selection from the following list of hints. Use this information to provide your answer in the box below.",
+        "image" : "008EG_H.jpg",
+        "hint" : {
+            "a" : "A",
+            "b" : "B",
+            "c" : "C",
+            "d" : "D",
+            "e" : "E"
+        },
+        "hintText" : {
+            "a" : "48",
+            "b" : "30",
+            "c" : "12",
+            "d" : "6",
+            "e" : "24"
+        },
+        "option" : {}
+    }
+}

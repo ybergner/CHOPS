@@ -1,0 +1,39 @@
+{
+    "type" : "openQuestion",
+    "title" : "082HG_H",
+    "maxHintAllowedPerPerson" : 1,
+    "versionA" : {
+        "text" : "In the figure above, the two triangles are similar. What is the value of x. You and your partner can each make ONE selection from the following list of hints. Use this information to provide your answer in the box below.",
+        "image" : "082HG_H.jpg",
+        "hint" : {
+            "a" : "length A",
+            "b" : "length B",
+            "c" : "length C",
+            "d" : "length D"
+        },
+        "hintText" : {
+            "a" : "8",
+            "b" : "6",
+            "c" : "8",
+            "d" : "12.8"
+        },
+        "option" : {}
+    },
+    "versionB" : {
+        "text" : "In the figure above, the two triangles are similar. What is the value of x. You and your partner can each make ONE selection from the following list of hints. Use this information to provide your answer in the box below.",
+        "image" : "082HG_H.jpg",
+        "hint" : {
+            "a" : "length A",
+            "b" : "length B",
+            "c" : "length C",
+            "d" : "length D"
+        },
+        "hintText" : {
+            "a" : "8",
+            "b" : "6",
+            "c" : "8",
+            "d" : "12.8"
+        },
+        "option" : {}
+    }
+}

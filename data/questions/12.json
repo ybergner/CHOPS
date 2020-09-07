@@ -1,0 +1,15 @@
+{
+    "type" : "openQuestion",
+    "title" : "096HD_J",
+    "maxHintAllowedPerPerson" : 0,
+    "versionA" : {
+        "text" : "The following question refers to the data shown below, as well as the data shown to your collaboration partner. Your table shows the pulse rate per minute of a group of 100 adults. For example, 5 adults have a pulse rate from 40-49 inclusive. However, some ink has been spilled on the table.  What is the average pulse rate per minute for these 100 people?",
+        "image" : "096HD_J_A.png",
+        "option" : {}
+    },
+    "versionB" : {
+        "text" : " The following question refers to the data shown below, as well as the data shown to your collaboration partner. Your figure shows the pulse rate per minute of a group of 100 adults. For example, 5 adults have a pulse rate from 40-49 inclusive. However, some ink has been spilled on the figure. What is the average pulse rate per minute for these 100 people?",
+        "image" : "096HD_J_B.png",
+        "option" : {}
+    }
+}

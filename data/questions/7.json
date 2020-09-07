@@ -1,0 +1,43 @@
+{
+    "type" : "singleChoice",
+    "title" : "Right Triangle",
+    "maxHintAllowedPerPerson" : 1,
+    "versionA" : {
+        "text" : "You will collaborate with your partner to solve the area of this triangle. The only thing you know is A=3, each of you can request one hint:",
+        "image" : "Rtriangle.svg",
+        "hint" : {
+            "a" : "B",
+            "b" : "C",
+            "c" : "Angle y"
+        },
+        "hintText" : {
+            "a" : "4",
+            "b" : "5",
+            "c" : "53 degree"
+        },
+        "option" : {
+            "a" : "area = 5",
+            "b" : "area = 6",
+            "c" : "area = 7"
+        }
+    },
+    "versionB" : {
+        "text" : "You will collaborate with your partner to solve the area of this triangle. The only thing you know is A=3, each of you can request one hint:",
+        "image" : "Rtriangle.svg",
+        "hint" : {
+            "d" : "B",
+            "e" : "C",
+            "f" : "Angle y"
+        },
+        "hintText" : {
+            "d" : "4",
+            "e" : "5",
+            "f" : "53 degree"
+        },
+        "option" : {
+            "a" : "area = 5",
+            "b" : "area = 6",
+            "c" : "area = 7"
+        }
+    }
+}

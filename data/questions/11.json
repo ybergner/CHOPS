@@ -1,0 +1,31 @@
+{
+    "type" : "openQuestion",
+    "title" : "101AD_COL_J",
+    "maxHintAllowedPerPerson" : 1,
+    "versionA" : {
+        "text" : " What is a possible value of x which satisfies both the equation below, as well as the equation provided to your collaboration partner?",
+
+        "hint" : {
+            "a" : "Your equation"
+
+        },
+        "hintText" : {
+            "e" : "x^2-3x-18=0"
+
+        },
+        "option" : {}
+    },
+    "versionB" : {
+        "text" : " What is a possible value of x which satisfies both the equation below, as well as the equation provided to your collaboration partner?",
+
+        "hint" : {
+            "a" : "Your equation"
+
+        },
+        "hintText" : {
+            "e" : "x^2-9x+18=0"
+
+        },
+        "option" : {}
+    }
+}

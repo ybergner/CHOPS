@@ -1,0 +1,49 @@
+{
+    "type" : "openQuestion",
+    "title" : "083HG_H",
+    "maxHintAllowedPerPerson" : 1,
+    "versionA" : {
+        "text" : " In the figure above, ABDG is a parallelogram and CDEF is a rectangle. What is the length of side AB to the nearest hundredth?  You and your partner can each make ONE selection from the following list of hints. Use this information to provide your answer in the box below.",
+        "image" : "083HG_H.png",
+        "hint" : {
+            "a" : "length of AG",
+            "b" : "length of BC",
+            "c" : "length of CG",
+            "d" : "length of DE",
+            "e" : "length of EF",
+            "f" : "length of FG"
+
+        },
+        "hintText" : {
+            "a" : "AG = 20",
+            "b" : "BC = 11",
+            "c" : "CG = 10",
+            "d" : "DE = 16",
+            "e" : "EF = 9",
+            "f" : "FG = 6"
+        },
+        "option" : {}
+    },
+    "versionB" : {
+        "text" : " In the figure above, ABDG is a parallelogram and CDEF is a rectangle. What is the length of side AB to the nearest hundredth?  You and your partner can each make ONE selection from the following list of hints. Use this information to provide your answer in the box below.",
+        "image" : "083HG_H.png",
+        "hint" : {
+            "a" : "length of AG",
+            "b" : "length of BC",
+            "c" : "length of CG",
+            "d" : "length of DE",
+            "e" : "length of EF",
+            "f" : "length of FG"
+
+        },
+        "hintText" : {
+            "a" : "AG = 20",
+            "b" : "BC = 11",
+            "c" : "CG = 10",
+            "d" : "DE = 16",
+            "e" : "EF = 9",
+            "f" : "FG = 6"
+        },
+        "option" : {}
+    }
+}
