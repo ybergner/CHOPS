@@ -1,0 +1,35 @@
+{
+    "type" : "openQuestion",
+    "title" : "Collaborative Question title 3",
+    "maxHintAllowedPerPerson" : 1,
+    "versionA" : {
+        "text" : "Some text of the question 3 version A",
+        "image" : "600x400.png",
+        "hint" : {
+            "a" : "First Hint version A",
+            "b" : "Second Hint version A",
+            "c" : "Third Hint version A"
+        },
+        "hintText" : {
+            "a" : "Some Text showing after choosing hint a Q3 version A",
+            "b" : "Some Text showing after choosing hint b Q3 version A",
+            "c" : "Some Text showing after choosing hint c Q3 version A"
+        },
+        "option" : {}
+    },
+    "versionB" : {
+        "text" : "Some text of the question 3 version B",
+        "image" : "600x400.png",
+        "hint" : {
+            "d" : "Fourth Hint version B",
+            "e" : "Fifth Hint version B",
+            "f" : "Sixth Hint version B"
+        },
+        "hintText" : {
+            "d" : "Some Text showing after choosing hint d Q3 version B",
+            "e" : "Some Text showing after choosing hint e Q3 version B",
+            "f" : "Some Text showing after choosing hint f Q3 version B"
+        },
+        "option" : {}
+    }
+}

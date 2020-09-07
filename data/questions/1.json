@@ -1,0 +1,11 @@
+{
+    "type" : "singleChoice",
+    "title" : "Question title 1",
+    "text" : "Some text of the question 1",
+    "image" : "600x400.png",
+    "option" : {
+        "a" : "First Choise",
+        "b" : "Second Choice",
+        "c" : "Third Choice"
+    }
+}

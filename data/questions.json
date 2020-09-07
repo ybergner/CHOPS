@@ -3,38 +3,11 @@
         {
             "questionSetId" : "Temp",
             "name" : "Test Temp",
-            "numOfQuestions" : 3,
             "isHidden" : false,
             "questions" : [
-                {
-                    "type" : "singleChoice",
-                    "title" : "Question title 1",
-                    "text" : "Some text of the question 1",
-                    "image" : "600x400.png",
-                    "option" : {
-                        "a" : "First Choise",
-                        "b" : "Second Choice",
-                        "c" : "Third Choice"
-                    }
-                },
-                {
-                    "type" : "multipleChoice",
-                    "title" : "Question title 2",
-                    "text" : "Some text of the question 2",
-                    "image" : "300x200.jpg",
-                    "option" : {
-                        "a" : "First Checkbox",
-                        "b" : "Second Checkbox",
-                        "c" : "Third Checkbox"
-                    }
-                },
-                {
-                    "type" : "openQuestion",
-                    "title" : "Question title 3",
-                    "text" : "Some text of the question 3",
-                    "image" : "600x400.png",
-                    "option" : {}
-                }
+                "1.json",
+                "2.json",
+                "3.json"
             ]
         }
     ],
@@ -42,130 +15,11 @@
         {
             "questionSetId" : "Temp_collaborative",
             "name" : "Test Temp",
-            "numOfQuestions" : 3,
             "isHidden" : false,
             "questions" : [
-                {
-                    "type" : "singleChoice",
-                    "title" : "Collaborative Question title 1",
-                    "maxHintAllowedPerPerson" : 2,
-                    "versionA" : {
-                        "text" : "Some text of the question 1 version A",
-                        "image" : "600x400.png",
-                        "hint" : {
-                            "a" : "First Hint version A",
-                            "b" : "Second Hint version A",
-                            "c" : "Third Hint version A"
-                        },
-                        "hintText" : {
-                            "a" : "Some Text showing after choosing hint a Q1 version A",
-                            "b" : "Some Text showing after choosing hint b Q1 version A",
-                            "c" : "Some Text showing after choosing hint c Q1 version A"
-                        },
-                        "option" : {
-                            "a" : "First Choise version A",
-                            "b" : "Second Choice version A",
-                            "c" : "Third Choice version A"
-                        }
-                    },
-                    "versionB" : {
-                        "text" : "Some text of the question 1 version B",
-                        "image" : "600x400.png",
-                        "hint" : {
-                            "d" : "Fourth Hint version B",
-                            "e" : "Fifth Hint version B",
-                            "f" : "Sixth Hint version B"
-                        },
-                        "hintText" : {
-                            "d" : "Some Text showing after choosing hint d Q1 version B",
-                            "e" : "Some Text showing after choosing hint e Q1 version B",
-                            "f" : "Some Text showing after choosing hint f Q1 version B"
-                        },
-                        "option" : {
-                            "a" : "First Choise version B",
-                            "b" : "Second Choice version B",
-                            "c" : "Third Choice version B"
-                        }
-                    }
-                },
-                {
-                    "type" : "multipleChoice",
-                    "title" : "Collaborative Question title 2",
-                    "maxHintAllowedPerPerson" : 2,
-                    "versionA" : {
-                        "text" : "Some text of the question 2 version A",
-                        "image" : "600x400.png",
-                        "hint" : {
-                            "a" : "First Hint version A",
-                            "b" : "Second Hint version A",
-                            "c" : "Third Hint version A"
-                        },
-                        "hintText" : {
-                            "a" : "Some Text showing after choosing hint a Q2 version A",
-                            "b" : "Some Text showing after choosing hint b Q2 version A",
-                            "c" : "Some Text showing after choosing hint c Q2 version A"
-                        },
-                        "option" : {
-                            "a" : "First Checkbox version A",
-                            "b" : "Second Checkbox version A",
-                            "c" : "Third Checkbox version A"
-                        }
-                    },
-                    "versionB" : {
-                        "text" : "Some text of the question 2 version B",
-                        "image" : "600x400.png",
-                        "hint" : {
-                            "d" : "Fourth Hint version B",
-                            "e" : "Fifth Hint version B",
-                            "f" : "Sixth Hint version B"
-                        },
-                        "hintText" : {
-                            "d" : "Some Text showing after choosing hint d Q2 version B",
-                            "e" : "Some Text showing after choosing hint e Q2 version B",
-                            "f" : "Some Text showing after choosing hint f Q2 version B"
-                        },
-                        "option" : {
-                            "a" : "First Checkbox version B",
-                            "b" : "Second Checkbox version B",
-                            "c" : "Third Checkbox version B"
-                        }
-                    }
-                },
-                {
-                    "type" : "openQuestion",
-                    "title" : "Collaborative Question title 3",
-                    "maxHintAllowedPerPerson" : 1,
-                    "versionA" : {
-                        "text" : "Some text of the question 3 version A",
-                        "image" : "600x400.png",
-                        "hint" : {
-                            "a" : "First Hint version A",
-                            "b" : "Second Hint version A",
-                            "c" : "Third Hint version A"
-                        },
-                        "hintText" : {
-                            "a" : "Some Text showing after choosing hint a Q3 version A",
-                            "b" : "Some Text showing after choosing hint b Q3 version A",
-                            "c" : "Some Text showing after choosing hint c Q3 version A"
-                        },
-                        "option" : {}
-                    },
-                    "versionB" : {
-                        "text" : "Some text of the question 3 version B",
-                        "image" : "600x400.png",
-                        "hint" : {
-                            "d" : "Fourth Hint version B",
-                            "e" : "Fifth Hint version B",
-                            "f" : "Sixth Hint version B"
-                        },
-                        "hintText" : {
-                            "d" : "Some Text showing after choosing hint d Q3 version B",
-                            "e" : "Some Text showing after choosing hint e Q3 version B",
-                            "f" : "Some Text showing after choosing hint f Q3 version B"
-                        },
-                        "option" : {}
-                    }
-                }
+                "4.json",
+                "5.json",
+                "6.json"
             ]
         },
         {
@@ -223,7 +77,7 @@
                     "maxHintAllowedPerPerson" : 2,
                     "versionA" : {
                         "text" : "Each of you have different 4 numbers in the hint, pick two numbers from your set and together you and your partner will have the smallest standard deviation. Calculate the average:",
-                        
+
                         "hint" : {
                             "a" : "0",
                             "b" : "1",
@@ -244,7 +98,7 @@
                     },
                     "versionB" : {
                         "text" : "Each of you have different 4 numbers in the hint, pick two numbers from your set and together you and your partner will have the smallest standard deviation. Calculate the average:",
-                        
+
                         "hint" : {
                             "e" : "15",
                             "f" : "20",
@@ -320,7 +174,7 @@
                             "d" : "6",
                             "e" : "24"
                         },
-                        "option" : {} 
+                        "option" : {}
                     },
                     "versionB" : {
                         "text" : "The diagram is part of a scale drawing of a house. What is the length, in feet, of the side labeled x. You and your partner can each make ONE selection from the following list of hints. Use this information to provide your answer in the box below.",
@@ -339,7 +193,7 @@
                             "d" : "6",
                             "e" : "24"
                         },
-                        "option" : {} 
+                        "option" : {}
                     }
                 },
                 {
@@ -348,10 +202,10 @@
                     "maxHintAllowedPerPerson" : 1,
                     "versionA" : {
                         "text" : " What is a possible value of x which satisfies both the equation below, as well as the equation provided to your collaboration partner?",
-                        
+
                         "hint" : {
                             "a" : "Your equation"
-      
+
                         },
                         "hintText" : {
                             "e" : "x^2-3x-18=0"
@@ -361,10 +215,10 @@
                     },
                     "versionB" : {
                         "text" : " What is a possible value of x which satisfies both the equation below, as well as the equation provided to your collaboration partner?",
-                        
+
                         "hint" : {
                             "a" : "Your equation"
-      
+
                         },
                         "hintText" : {
                             "e" : "x^2-9x+18=0"
@@ -415,7 +269,7 @@
                             "c" : "8",
                             "d" : "12.8"
                         },
-                        "option" : {} 
+                        "option" : {}
                     },
                     "versionB" : {
                         "text" : "In the figure above, the two triangles are similar. What is the value of x. You and your partner can each make ONE selection from the following list of hints. Use this information to provide your answer in the box below.",
@@ -432,7 +286,7 @@
                             "c" : "8",
                             "d" : "12.8"
                         },
-                        "option" : {} 
+                        "option" : {}
                     }
                 },
                 {
@@ -449,7 +303,7 @@
                             "d" : "length of DE",
                             "e" : "length of EF",
                             "f" : "length of FG"
-      
+
                         },
                         "hintText" : {
                             "a" : "AG = 20",
@@ -471,7 +325,7 @@
                             "d" : "length of DE",
                             "e" : "length of EF",
                             "f" : "length of FG"
-      
+
                         },
                         "hintText" : {
                             "a" : "AG = 20",

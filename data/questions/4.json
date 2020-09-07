@@ -1,0 +1,45 @@
+{
+    "type" : "singleChoice",
+    "title" : "Collaborative Question title 1",
+    "maxHintAllowedPerPerson" : 2,
+    "versionA" : {
+        "text" : "Some text of the question 1 version A",
+        "image" : "600x400.png",
+        "hint" : {
+            "a" : "First Hint version A",
+            "b" : "Second Hint version A",
+            "c" : "Third Hint version A"
+        },
+        "hintText" : {
+            "a" : "Some Text showing after choosing hint a Q1 version A",
+            "b" : "Some Text showing after choosing hint b Q1 version A",
+            "c" : "Some Text showing after choosing hint c Q1 version A"
+        },
+        "option" : {
+            "a" : "First Choise version A",
+            "b" : "Second Choice version A",
+            "c" : "Third Choice version A"
+        },
+        "hasCollaborationAnswer": true
+    },
+    "versionB" : {
+        "text" : "Some text of the question 1 version B",
+        "image" : "600x400.png",
+        "hint" : {
+            "d" : "Fourth Hint version B",
+            "e" : "Fifth Hint version B",
+            "f" : "Sixth Hint version B"
+        },
+        "hintText" : {
+            "d" : "Some Text showing after choosing hint d Q1 version B",
+            "e" : "Some Text showing after choosing hint e Q1 version B",
+            "f" : "Some Text showing after choosing hint f Q1 version B"
+        },
+        "option" : {
+            "a" : "First Choise version B",
+            "b" : "Second Choice version B",
+            "c" : "Third Choice version B"
+        },
+        "hasCollaborationAnswer": true
+    }
+}

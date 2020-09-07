@@ -1,4 +1,6 @@
 'use strict';
+var glob = require('glob');
+var fsPromises = require('fs').promises;
 var express = require('express');
 var _ = require('lodash');
 var router = express.Router();
@@ -10,35 +12,82 @@ const hintsMap = {};
 // for question page
 const questionSetMap = {};
 
-for (let individualQ of questions.individual) {
-    if (!individualQ.isHidden) {
-        questionSetList.push({
-            questionSetId : individualQ.questionSetId,
-            name : individualQ.name,
-            numOfQuestions : individualQ.numOfQuestions,
-            isCollaborative : false
-        });
-        questionSetMap[individualQ.questionSetId] = _.omit(individualQ, 'isHidden');
-        questionSetMap[individualQ.questionSetId].isCollaborative = false;
+glob('data/questions/*.json', function(err1, files) {
+    if (err1) {
+        console.log('Someting wrong with glob, cannot read files from folder.');
+        console.log(err1);
     }
-}
+    let questionMap = {};
+    let allPromises = [];
+    files.forEach(function(file) {
+        allPromises.push(fsPromises.readFile(file, 'utf8').then(function(data) {
+            if (data) {
+                var obj = JSON.parse(data);
+                questionMap[file.substring(file.lastIndexOf('/') + 1)] = obj;
+            } else {
+                console.log('cannot read individual file: ' + file);
+            }
+            return data;
+        }));
+    });
+    Promise.all(allPromises).then(function(values) {
+        setUpMapping(questionMap);
+    });
+});
 
-for (let collaborativeQ of questions.collaborative) {
-    if (!collaborativeQ.isHidden) {
-        questionSetList.push({
-            questionSetId : collaborativeQ.questionSetId,
-            name : collaborativeQ.name,
-            numOfQuestions : collaborativeQ.numOfQuestions,
-            isCollaborative : true
-        });
-        questionSetMap[collaborativeQ.questionSetId] = _.omit(collaborativeQ, 'isHidden');
-        questionSetMap[collaborativeQ.questionSetId].isCollaborative = true;
-        hintsMap[collaborativeQ.questionSetId] = [];
-        for (let index = 0; index < collaborativeQ.numOfQuestions; index++) {
-            hintsMap[collaborativeQ.questionSetId][index] = {
-                versionA : questionSetMap[collaborativeQ.questionSetId].questions[index].versionA.hintText,
-                versionB : questionSetMap[collaborativeQ.questionSetId].questions[index].versionB.hintText
-            };
+var setUpMapping = function(questionMap) {
+    for (let individualQ of questions.individual) {
+        if (!individualQ.isHidden) {
+            questionSetList.push({
+                questionSetId : individualQ.questionSetId,
+                name : individualQ.name,
+                numOfQuestions : individualQ.numOfQuestions || individualQ.questions.length,
+                isCollaborative : false
+            });
+            let questions = [];
+            individualQ.questions.forEach(function(fileName) {
+                if (questionMap[fileName]) {
+                    questions.push(questionMap[fileName]);
+                } else {
+                    console.log('something wrong with questions.json macthing questions in question set ' + individualQ.questionSetId);
+                    process.exit(1);
+                }
+            });
+            individualQ.questions = questions;
+            individualQ.numOfQuestions = individualQ.numOfQuestions || individualQ.questions.length;
+            questionSetMap[individualQ.questionSetId] = _.omit(individualQ, 'isHidden');
+            questionSetMap[individualQ.questionSetId].isCollaborative = false;
+        }
+    }
+
+    for (let collaborativeQ of questions.collaborative) {
+        if (!collaborativeQ.isHidden) {
+            questionSetList.push({
+                questionSetId : collaborativeQ.questionSetId,
+                name : collaborativeQ.name,
+                numOfQuestions : collaborativeQ.numOfQuestions || collaborativeQ.questions.length,
+                isCollaborative : true
+            });
+            let questions = [];
+            collaborativeQ.questions.forEach(function(fileName) {
+                if (questionMap[fileName]) {
+                    questions.push(questionMap[fileName]);
+                } else {
+                    console.log('something wrong with questions.json macthing questions in question set ' + collaborativeQ.questionSetId);
+                    process.exit(1);
+                }
+            });
+            collaborativeQ.questions = questions;
+            collaborativeQ.numOfQuestions = collaborativeQ.numOfQuestions || collaborativeQ.questions.length;
+            questionSetMap[collaborativeQ.questionSetId] = _.omit(collaborativeQ, 'isHidden');
+            questionSetMap[collaborativeQ.questionSetId].isCollaborative = true;
+            hintsMap[collaborativeQ.questionSetId] = [];
+            for (let index = 0; index < collaborativeQ.questions.length; index++) {
+                hintsMap[collaborativeQ.questionSetId][index] = {
+                    versionA : questionSetMap[collaborativeQ.questionSetId].questions[index].versionA.hintText,
+                    versionB : questionSetMap[collaborativeQ.questionSetId].questions[index].versionB.hintText
+                };
+            }
         }
     }
 }
