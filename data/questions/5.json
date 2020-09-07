@@ -1,0 +1,43 @@
+{
+    "type" : "multipleChoice",
+    "title" : "Collaborative Question title 2",
+    "maxHintAllowedPerPerson" : 2,
+    "versionA" : {
+        "text" : "Some text of the question 2 version A",
+        "image" : "600x400.png",
+        "hint" : {
+            "a" : "First Hint version A",
+            "b" : "Second Hint version A",
+            "c" : "Third Hint version A"
+        },
+        "hintText" : {
+            "a" : "Some Text showing after choosing hint a Q2 version A",
+            "b" : "Some Text showing after choosing hint b Q2 version A",
+            "c" : "Some Text showing after choosing hint c Q2 version A"
+        },
+        "option" : {
+            "a" : "First Checkbox version A",
+            "b" : "Second Checkbox version A",
+            "c" : "Third Checkbox version A"
+        }
+    },
+    "versionB" : {
+        "text" : "Some text of the question 2 version B",
+        "image" : "600x400.png",
+        "hint" : {
+            "d" : "Fourth Hint version B",
+            "e" : "Fifth Hint version B",
+            "f" : "Sixth Hint version B"
+        },
+        "hintText" : {
+            "d" : "Some Text showing after choosing hint d Q2 version B",
+            "e" : "Some Text showing after choosing hint e Q2 version B",
+            "f" : "Some Text showing after choosing hint f Q2 version B"
+        },
+        "option" : {
+            "a" : "First Checkbox version B",
+            "b" : "Second Checkbox version B",
+            "c" : "Third Checkbox version B"
+        }
+    }
+}

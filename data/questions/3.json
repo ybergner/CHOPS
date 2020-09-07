@@ -1,0 +1,7 @@
+{
+    "type" : "openQuestion",
+    "title" : "Question title 3",
+    "text" : "Some text of the question 3",
+    "image" : "600x400.png",
+    "option" : {}
+}

@@ -1,0 +1,11 @@
+{
+    "type" : "multipleChoice",
+    "title" : "Question title 2",
+    "text" : "Some text of the question 2",
+    "image" : "300x200.jpg",
+    "option" : {
+        "a" : "First Checkbox",
+        "b" : "Second Checkbox",
+        "c" : "Third Checkbox"
+    }
+}
