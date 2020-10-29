@@ -23,7 +23,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 //static folder set up
-app.use(express.static(path.join(__dirname, './webapp')));
+app.use(express.static(path.join(__dirname, './webapp'), {
+    setHeaders: function (res, path) {
+        if (path.includes('asset')) {
+            res.set('cache-control', 'public, max-age=86400');
+        }
+    }
+}));
 
 mongoose.connect(dbUrl, {useNewUrlParser: true}, function(err){
     if (err) {
