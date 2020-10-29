@@ -51,6 +51,19 @@
                 "14.json",
                 "15.json"
             ]
+        },
+        {
+            "questionSetId" : "Jiading_1",
+            "name" : "嘉定二中-一",
+            "isHidden" : false,
+            "questions" : [
+                "quartic equation C.json",
+                "draw a chip C.json",
+                "dead battery C.json",
+                "puppy C.json",
+                "slope and intercept C.json",
+                "fund raiser C.json"
+            ]
         }
     ]
 }
