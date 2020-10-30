@@ -242,6 +242,8 @@ app.factory('socketService', function() {
                     angular.extend(scope.currentQuestionSet, data.questionSet);
                     scope.checkAnswer(scope.currentQuestion);
                     scope.$apply();
+                } else {
+                    scope.checkIfPreviousGiveUp();
                 }
             });
             socket.on('account in queue', function() {
@@ -565,6 +567,26 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         $location.path('/');
         if (useApply) {
             $scope.$apply();
+        }
+    };
+
+    $scope.checkIfPreviousGiveUp = function() {
+        let promises = [];
+        if ($scope.answersObject._id && !$scope.answersObject.currentGiveUpNumber) {
+            promises.push(answerService.giveUpAnswer($scope.answersObject));
+        }
+        if ($scope.hintsObject.allSelectedHints._id && !$scope.hintsObject.allSelectedHints.currentGiveUpNumber) {
+            promises.push(hintService.giveUpHint($scope.currentQuestionSet.questionSetId, $scope.hintsObject.allSelectedHints._id));
+        }
+        if (promises.length > 0) {
+            $q.all(promises).then(function(){
+                $scope.chatBox.toastMessage = 'Collaborator give up this session, you will be redirect to home page after 1 seconds.';
+                $scope.$apply();
+                $('.toast').toast('show');
+                setTimeout(function() {
+                    $scope.home(true);
+                }, 1000);
+            });
         }
     };
 
