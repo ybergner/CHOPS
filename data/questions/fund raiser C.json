@@ -23,7 +23,7 @@
             "g" : "B班中的学生数为：15人"
         },
         "option" : {},
-        "hasCollaborationAnswer": true
+        "hasCollaborationAnswer": false
     },
     "versionB" : {
         "text" : "",
@@ -46,6 +46,6 @@
             "g" : "B班中的学生数为：15人"
         },
         "option" : {},
-        "hasCollaborationAnswer": true
+        "hasCollaborationAnswer": false
     }
 }
