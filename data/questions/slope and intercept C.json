@@ -1,6 +1,6 @@
 {
     "type" : "openQuestion",
-    "title" : "斜率和截距",
+    "title" : "题目:斜率和截距",
     "maxHintAllowedPerPerson" : 0,
     "versionA" : {
         "text" : "你和你的小伙伴将选择合适的斜率和截距使直线通过点(-3, -1). 注意: 截距将有你的合作伙伴选择，只填入你选择的斜率。",

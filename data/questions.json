@@ -3,7 +3,7 @@
         {
             "questionSetId" : "Temp",
             "name" : "Test Temp",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "1.json",
                 "2.json",
@@ -15,7 +15,7 @@
         {
             "questionSetId" : "Temp_collaborative",
             "name" : "Test Temp",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "4.json",
                 "5.json",
@@ -25,7 +25,7 @@
         {
             "questionSetId" : "Test_collaborative_1",
             "name" : "Test 1",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "7.json",
                 "8.json",
@@ -35,7 +35,7 @@
         {
             "questionSetId" : "Math_collaborative_1",
             "name" : "Math_Test_1",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "10.json",
                 "11.json",
@@ -45,7 +45,7 @@
         {
             "questionSetId" : "Math_collaborative_2",
             "name" : "Math_Test_2",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "13.json",
                 "14.json",
@@ -59,10 +59,17 @@
             "questions" : [
                 "quartic equation C.json",
                 "draw a chip C.json",
+                "fund raiser C.json"
+            ]
+        },
+        {
+            "questionSetId" : "Jiading_2",
+            "name" : "嘉定二中-二",
+            "isHidden" : false,
+            "questions" : [
                 "dead battery C.json",
                 "puppy C.json",
-                "slope and intercept C.json",
-                "fund raiser C.json"
+                "slope and intercept C.json"
             ]
         }
     ]
