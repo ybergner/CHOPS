@@ -580,12 +580,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         }
         if (promises.length > 0) {
             $q.all(promises).then(function(){
-                $scope.chatBox.toastMessage = 'Collaborator give up this session, you will be redirect to home page after 1 seconds.';
-                $scope.$apply();
-                $('.toast').toast('show');
-                setTimeout(function() {
-                    $scope.home(true);
-                }, 1000);
+                $scope.home();
             });
         }
     };
