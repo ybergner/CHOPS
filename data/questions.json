@@ -55,7 +55,7 @@
         {
             "questionSetId" : "Jiading_1",
             "name" : "嘉定二中-一",
-            "isHidden" : true,
+            "isHidden" : false,
             "questions" : [
                 "quartic equation C.json",
                 "draw a chip C.json",
@@ -65,7 +65,7 @@
         {
             "questionSetId" : "Jiading_2",
             "name" : "嘉定二中-二",
-            "isHidden" : true,
+            "isHidden" : false,
             "questions" : [
                 "dead battery C.json",
                 "puppy C.json",
