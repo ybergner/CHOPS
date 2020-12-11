@@ -55,7 +55,7 @@
         {
             "questionSetId" : "Jiading_1",
             "name" : "嘉定二中-一",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "quartic equation C.json",
                 "draw a chip C.json",
@@ -65,11 +65,21 @@
         {
             "questionSetId" : "Jiading_2",
             "name" : "嘉定二中-二",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "dead battery C.json",
                 "puppy C.json",
                 "slope and intercept C.json"
+            ]
+        },
+        {
+            "questionSetId" : "Jiading_final",
+            "name" : "嘉定二中-期末",
+            "isHidden" : false,
+            "questions" : [
+                "odd_even number C.json",
+                "puppy C.json",
+                "two diagrams C.json"
             ]
         }
     ]
