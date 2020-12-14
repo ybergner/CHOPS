@@ -4,13 +4,15 @@ var router = express.Router();
 var Session = require('../data/sessionSchema.js');
 var Enum = require('../data/enum.js');
 var utils = require('../data/utils.js');
+var questionRouter = require('./questionRouter.js');
 
 // get sessions by student id
 router.get('/session/:accountId', function(req, res) {
-    Session.find({ $or : [{accountAId : req.params.accountId}, {accountBId : req.params.accountId}], currentGiveUpNumber: null}).lean().exec(function(err, result) {
+    let questionSetIds = questionRouter.getAllAvailableQuestionSetIds();
+    Session.find({ $or : [{accountAId : req.params.accountId}, {accountBId : req.params.accountId}], currentGiveUpNumber: null, questionSetId: {$in: questionSetIds}}).lean().exec(function(err, result) {
         if (err) {
             console.log('Cannot get session ' + req.params.accountId);
-            res.status(500).send('Cannot get session ' + req.params.accountId);
+            res.status(403).send('Cannot get session ' + req.params.accountId);
         } else {
             if (!result) {
                 console.log('Cannot find session ' + req.params.accountId);

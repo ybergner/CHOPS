@@ -120,6 +120,10 @@ router.getHint = function(questionSetId, questionId, isA) {
     return isA ? hints.versionA : hints.versionB;
 };
 
+router.getAllAvailableQuestionSetIds = function() {
+    return Object.keys(questionSetMap);
+}
+
 // get all questionSets
 router.get('/questionSet', function(req, res) {
     res.json({success : true, data : questionSetList});
@@ -131,7 +135,7 @@ router.get('/questionSet/:questionSetId', function(req, res) {
     if (questionSet) {
         res.json({success : true, data : questionSet});
     } else {
-        res.status(500).send('invalid question set id');
+        res.status(403).send('invalid question set id');
     }
 });
 
