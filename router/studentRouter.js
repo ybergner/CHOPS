@@ -22,10 +22,10 @@ router.post('/validatePassword', function(req, res){
     Account.findOne({accountId : req.body.accountId, password : req.body.password}).lean().exec(function(err, result) {
         if (err) {
             console.log('Cannot validate password');
-            res.status(500).send('Cannot validate password');
+            res.status(401).send('Cannot validate password');
         } else {
             if (!result) {
-                res.status(404).send('Invalid password');
+                res.status(401).send('Invalid password');
             } else {
                 res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.account)});
             }
@@ -37,12 +37,12 @@ router.post('/validatePassword', function(req, res){
 router.post('/students', function(req, res){
     validateTeacher(req.body.account).then(function(isValid) {
         if (!isValid) {
-            res.status(404).send('No Permission');
+            res.status(401).send('No Permission');
         } else {
             Account.find({accountType: Enum.accountType.student}).lean().exec(function(err, result) {
               if (err) {
                   console.log('Cannot get all students');
-                  res.status(500).send('Cannot get all students');
+                  res.status(403).send('Cannot get all students');
               } else {
                   if (!result) {
                       console.log('Collection is empty');
@@ -60,14 +60,14 @@ router.post('/students', function(req, res){
 router.post('/student', function(req, res){
     validateTeacher(req.body.account).then(function(isValid) {
         if (!isValid) {
-            res.status(404).send('No Permission');
+            res.status(401).send('No Permission');
         } else {
             if (req.body.operation == 'create') {
                 req.body.data.accountType = Enum.accountType.student;
                 Account.create(req.body.data, function(err, result) {
                   if (err) {
                       console.log('Cannot create student');
-                      res.status(500).send(req.body.data);
+                      res.status(403).send(req.body.data);
                   } else {
                       res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.account)});
                   }
@@ -76,7 +76,7 @@ router.post('/student', function(req, res){
                 Account.findOne({accountId : req.body.data.accountId, accountType: Enum.accountType.student}).exec(function(err, result) {
                     if (err || !result) {
                         console.log('Cannot get student' + req.body.data.accountId);
-                        res.status(500).send('Cannot get student' + req.body.data.accountId);
+                        res.status(403).send('Cannot get student' + req.body.data.accountId);
                     } else {
                         result.accountId = req.body.data.accountId;
                         result.accountName = req.body.data.accountName;
@@ -86,7 +86,7 @@ router.post('/student', function(req, res){
                         result.save(function(saveErr) {
                             if (saveErr) {
                                 console.log('Cannot update student ' + req.body.data.accountId);
-                                res.status(500).send('Cannot update student ' + req.body.data.accountId);
+                                res.status(403).send('Cannot update student ' + req.body.data.accountId);
                             } else {
                                 res.json({success : true});
                             }
@@ -97,11 +97,11 @@ router.post('/student', function(req, res){
                 Account.deleteOne({accountId : req.body.data.accountId, accountType: Enum.accountType.student}).exec(function(err, result) {
                   if (err) {
                       console.log('Cannot get student ' + req.body.data.accountId);
-                      res.status(500).send('Cannot get student ' + req.body.data.accountId);
+                      res.status(403).send('Cannot get student ' + req.body.data.accountId);
                   } else {
                       if (!result) {
                           console.log('Cannot find student ' + req.body.data.accountId);
-                          res.status(500).send(req.body.data.accountId);
+                          res.status(403).send(req.body.data.accountId);
                       } else {
                           answerRouter.deleteAnswersByAccountId(req.body.data.accountId);
                           answerRouter.deleteActionsByAccountId(req.body.data.accountId);

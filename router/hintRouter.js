@@ -8,10 +8,11 @@ var questionRouter = require('./questionRouter.js');
 
 // get answers by student id
 router.get('/hint/:accountId', function(req, res) {
-    Hint.find({accountId: req.params.accountId, currentGiveUpNumber: null}).lean().exec(function(err, result) {
+    let questionSetIds = questionRouter.getAllAvailableQuestionSetIds();
+    Hint.find({accountId: req.params.accountId, currentGiveUpNumber: null, questionSetId: {$in: questionSetIds}}).lean().exec(function(err, result) {
         if (err) {
             console.log('Cannot get hint ' + req.params.accountId);
-            res.status(500).send('Cannot get hint ' + req.params.accountId);
+            res.status(403).send('Cannot get hint ' + req.params.accountId);
         } else {
             if (!result) {
                 console.log('Cannot find hint ' + req.params.accountId);
@@ -28,7 +29,7 @@ router.get('/hint/:accountId/:questionSetId', function(req, res) {
     Hint.find({accountId: req.params.accountId, questionSetId: req.params.questionSetId, currentGiveUpNumber: null}).lean().exec(function(err, result) {
         if (err) {
             console.log('Cannot get hint ' + req.params.accountId);
-            res.status(500).send('Cannot get hint ' + req.params.accountId);
+            res.status(403).send('Cannot get hint ' + req.params.accountId);
         } else {
             if (!result) {
                 console.log('Cannot find hint ' + req.params.accountId);
@@ -77,7 +78,7 @@ router.post('/hint', function(req, res) {
                 Hint.create(newHint, function(err, result) {
                   if (err || !result) {
                       console.log('Cannot create hint');
-                      res.status(500).send(req.body.data);
+                      res.status(403).send(req.body.data);
                   } else {
                       res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.hint), hintText : hintText});
                   }
@@ -90,7 +91,7 @@ router.post('/hint', function(req, res) {
                 Hint.findById(req.body.hintId).then(function(result) {
                     if (!result) {
                         console.log('Cannot get hint ' + req.body.hintId);
-                        res.status(500).send('Cannot get hint ' + req.body.hintId);
+                        res.status(403).send('Cannot get hint ' + req.body.hintId);
                     } else {
                         let validHints = [];
                         let dbIndividualHint;
@@ -129,7 +130,7 @@ router.post('/hint', function(req, res) {
                             result.save(function(saveErr) {
                                 if (saveErr) {
                                     console.log('Cannot update hint ' + result._id);
-                                    res.status(500).send('Cannot update hint ' + result._id);
+                                    res.status(403).send('Cannot update hint ' + result._id);
                                 } else {
                                     res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.hint), hintText : hintText});
                                 }
@@ -154,19 +155,19 @@ router.post('/giveUpHint', function(req, res) {
     Hint.find({accountId: req.body.account.accountId, questionSetId: req.body.questionSetId, currentGiveUpNumber: {$ne: null}}).lean().exec(function(err, results) {
         if (err) {
             console.log('Cannot get hint ' + req.body.account.accountId);
-            res.status(500).send('Cannot get hint ' + req.body.account.accountId);
+            res.status(403).send('Cannot get hint ' + req.body.account.accountId);
         } else if (results) {
             Hint.findById(req.body.hintId).then(function(result) {
                 if (!result) {
                     console.log('Cannot get hint ' + req.body.hintId);
-                    res.status(500).send('Cannot get hint ' + req.body.hintId);
+                    res.status(403).send('Cannot get hint ' + req.body.hintId);
                 } else {
                     result.lastUpdatedDate = new Date();
                     result.currentGiveUpNumber = results.length + 1;
                     result.save(function(saveErr) {
                         if (saveErr) {
                             console.log('Cannot update hint ' + result._id);
-                            res.status(500).send('Cannot update hint ' + result._id);
+                            res.status(403).send('Cannot update hint ' + result._id);
                         } else {
                             res.json({success : true, data : utils.convertToFrontEndObject(result, Enum.schemaType.hint)});
                         }
