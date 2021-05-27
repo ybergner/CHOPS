@@ -122,7 +122,7 @@ router.setUpAdmin = function() {
         if (!result) {
             console.log('No admin account found, creating one.');
             Account.create({
-                accountId : 123,
+                accountId : 'admin',
                 accountName : 'admin',
                 accountType : Enum.accountType.teacher,
                 email : 'test@gmail.com',

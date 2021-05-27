@@ -10,7 +10,7 @@ var individualAnswerSchema = new Schema({
 }, { _id : false });
 
 var answerSchema = new Schema({
-    accountId: { type : Number, required : true },
+    accountId: { type : String, required : true },
     lastUpdatedDate: { type : Date },
     answers : { type : [individualAnswerSchema] },
     questionSetId: { type : String, trim : true },
