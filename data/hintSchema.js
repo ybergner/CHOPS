@@ -9,7 +9,7 @@ var individualHintSchema = new Schema({
 }, { _id : false });
 
 var hintSchema = new Schema({
-    accountId: { type : Number, required : true },
+    accountId: { type : String, required : true },
     lastUpdatedDate: { type : Date },
     questionSetId: { type : String, trim : true },
     isA : { type : Boolean },

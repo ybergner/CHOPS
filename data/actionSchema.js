@@ -10,7 +10,7 @@ var actionItemSchema = new Schema({
 }, { _id : false });
 
 var actionSchema = new Schema({
-    accountId : { type : Number, required : true },
+    accountId : { type : String, required : true },
     questionSetId : { type : String, trim : true },
     actionItems : { type : [actionItemSchema] }
 });
