@@ -42,6 +42,20 @@ router.get('/answer/:accountId/:questionSetId', function(req, res) {
     });
 });
 
+
+// check answers
+router.post('/checkAnswer', function(req, res) {
+    if (req.body.data && req.body.data.length) {
+        let feedbacks = [];
+        for (let attempt of req.body.data) {
+            feedbacks.push(questionRouter.checkAnswers(attempt, req.body.questionSetId, req.body.questionId, req.body.isA));
+        }
+        res.json({success : true, data : feedbacks});
+    } else {
+        res.status(403).send('Getting empty data');
+    }
+});
+
 // add/update new answer
 router.post('/answer', function(req, res) {
     if (req.body.account && req.body.account.accountType == Enum.accountType.student) {

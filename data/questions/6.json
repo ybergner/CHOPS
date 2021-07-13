@@ -15,7 +15,12 @@
             "b" : "Some Text showing after choosing hint b Q3 version A",
             "c" : "Some Text showing after choosing hint c Q3 version A"
         },
-        "option" : {}
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "matchInList",
+            "methodParams" : [1, 2, 3, 4],
+            "maxAttempts" : 3
+        }
     },
     "versionB" : {
         "text" : "Some text of the question 3 version B",
@@ -30,6 +35,11 @@
             "e" : "Some Text showing after choosing hint e Q3 version B",
             "f" : "Some Text showing after choosing hint f Q3 version B"
         },
-        "option" : {}
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "matchInRange",
+            "methodParams" : [1, 4],
+            "maxAttempts" : 2
+        }
     }
 }

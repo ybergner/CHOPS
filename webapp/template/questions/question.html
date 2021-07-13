@@ -68,6 +68,29 @@
             ng-disabled="answersObject.isSubmitted">
         </textarea>
     </div>
+    <div ng-if="answers[currentQuestion - 1].attemptedAnswers && answers[currentQuestion - 1].attemptedAnswers.length &&
+        attemptedAnswerFeedback[currentQuestion - 1] && attemptedAnswerFeedback[currentQuestion - 1].length">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Attempt #</th>
+                    <th>Answer</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(key, value) in answers[currentQuestion - 1].attemptedAnswers track by key"
+                    ng-class="{'table-success': attemptedAnswerFeedback[currentQuestion - 1][key].isCorrected,
+                    'table-danger': !attemptedAnswerFeedback[currentQuestion - 1][key].isCorrected}">
+                    <td>{{ key + 1 }}</td>
+                    <td>
+                        {{getCurrentAnswerString(value)}}
+                    </td>
+                    <td>{{attemptedAnswerFeedback[currentQuestion - 1][key].feedback}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div ng-if="currentQuestionSet.isCollaborative && !session">
