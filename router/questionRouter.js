@@ -5,6 +5,7 @@ var express = require('express');
 var _ = require('lodash');
 var router = express.Router();
 var questions = require('../data/questions.json');
+var checkAnswerSettingUtils = require('../data/checkAnswerSettingUtils.js');
 
 // for list page
 const questionSetList = [];
@@ -57,6 +58,17 @@ var setUpMapping = function(questionMap) {
             individualQ.numOfQuestions = individualQ.numOfQuestions || individualQ.questions.length;
             questionSetMap[individualQ.questionSetId] = _.omit(individualQ, 'isHidden');
             questionSetMap[individualQ.questionSetId].isCollaborative = false;
+            for (let index = 0; index < individualQ.questions.length; index++) {
+                if (individualQ.questions[index].checkAnswerSettings) {
+                    individualQ.questions[index].hasCheckAnswerSettings = true;
+                    individualQ.questions[index].maxAttempts = individualQ.questions[index].checkAnswerSettings.maxAttempts;
+                    individualQ.questions[index].checkAnswers = function (answer) {
+                        return checkAnswerSettingUtils[individualQ.questions[index].checkAnswerSettings.methodName](answer, individualQ.questions[index].checkAnswerSettings.methodParams);
+                    };
+                } else {
+                    individualQ.questions[index].hasCheckAnswerSettings = false;
+                }
+            }
         }
     }
 
@@ -87,6 +99,24 @@ var setUpMapping = function(questionMap) {
                     versionA : questionSetMap[collaborativeQ.questionSetId].questions[index].versionA.hintText,
                     versionB : questionSetMap[collaborativeQ.questionSetId].questions[index].versionB.hintText
                 };
+                if (collaborativeQ.questions[index].versionA.checkAnswerSettings) {
+                    collaborativeQ.questions[index].versionA.hasCheckAnswerSettings = true;
+                    collaborativeQ.questions[index].versionA.maxAttempts = collaborativeQ.questions[index].versionA.checkAnswerSettings.maxAttempts;
+                    collaborativeQ.questions[index].versionA.checkAnswers = function (answer) {
+                        return checkAnswerSettingUtils[collaborativeQ.questions[index].versionA.checkAnswerSettings.methodName](answer, collaborativeQ.questions[index].versionA.checkAnswerSettings.methodParams);
+                    };
+                } else {
+                    collaborativeQ.questions[index].versionA.hasCheckAnswerSettings = false;
+                }
+                if (collaborativeQ.questions[index].versionB.checkAnswerSettings) {
+                    collaborativeQ.questions[index].versionB.hasCheckAnswerSettings = true;
+                    collaborativeQ.questions[index].versionB.maxAttempts = collaborativeQ.questions[index].versionB.checkAnswerSettings.maxAttempts;
+                    collaborativeQ.questions[index].versionB.checkAnswers = function (answer) {
+                        return checkAnswerSettingUtils[collaborativeQ.questions[index].versionB.checkAnswerSettings.methodName](answer, collaborativeQ.questions[index].versionB.checkAnswerSettings.methodParams);
+                    };
+                } else {
+                    collaborativeQ.questions[index].versionB.hasCheckAnswerSettings = false;
+                }
             }
         }
     }
@@ -94,13 +124,21 @@ var setUpMapping = function(questionMap) {
 
 router.getQuestionSet = function(questionSetId, isA) {
     if (questionSetMap[questionSetId]) {
-        if (!questionSetMap[questionSetId].isCollaborative) {
-            return questionSetMap[questionSetId];
+        let questionSet = _.cloneDeep(questionSetMap[questionSetId]);
+        if (!questionSet.isCollaborative) {
+            for (let question of questionSet.questions) {
+                delete question.checkAnswerSettings;
+                delete question.checkAnswers;
+            }
+            return questionSet;
         } else {
-            let questionSet = _.cloneDeep(questionSetMap[questionSetId]);
             for (let question of questionSet.questions) {
                 delete question.versionA.hintText;
                 delete question.versionB.hintText;
+                delete question.versionA.checkAnswerSettings;
+                delete question.versionA.checkAnswers;
+                delete question.versionB.checkAnswerSettings;
+                delete question.versionB.checkAnswers;
                 if (isA === true) {
                     _.assign(question, question.versionA);
                 } else if (isA === false) {
@@ -122,7 +160,31 @@ router.getHint = function(questionSetId, questionId, isA) {
 
 router.getAllAvailableQuestionSetIds = function() {
     return Object.keys(questionSetMap);
-}
+};
+
+router.checkAnswers = function(answerObject, questionSetId, questionId, isA) {
+    let answer;
+    if (questionSetMap[questionSetId].questions[questionId - 1].type == 'singleChoice') {
+        answer = answerObject.singleChoice;
+    } else if (questionSetMap[questionSetId].questions[questionId - 1].type == 'multipleChoice') {
+        answer = [];
+        for (const property in answerObject.multipleChoice) {
+            if (answerObject.multipleChoice[property]) {
+                answer.push(answerObject.multipleChoice[property]);
+            }
+        }
+        answer.sort();
+    } else if (questionSetMap[questionSetId].questions[questionId - 1].type == 'openQuestion') {
+        answer = answerObject.openQuestion;
+    }
+    if (!questionSetMap[questionSetId].isCollaborative) {
+        return questionSetMap[questionSetId].questions[questionId - 1].checkAnswers(answer);
+    } else if (isA) {
+        return questionSetMap[questionSetId].questions[questionId - 1].versionA.checkAnswers(answer);
+    } else {
+        return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers(answer);
+    }
+};
 
 // get all questionSets
 router.get('/questionSet', function(req, res) {

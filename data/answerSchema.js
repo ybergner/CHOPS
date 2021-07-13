@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 var individualAnswerSchema = new Schema({
     questionId: { type : Number, required : true },
     answer: {}, // mixed schema type,
+    attemptedAnswers: [],
     collaborationAnswer: { type : String, trim : true },
     createdDate : { type : Date, default : Date.now }
 }, { _id : false });

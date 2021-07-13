@@ -1,7 +1,7 @@
 <nav class="navbar navbar-light bg-light flex-pull-right">
     <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#giveUpModal"
         ng-if="(!currentQuestionSet.isCollaborative && answersObject.isSubmitted && !answersObject.currentGiveUpNumber) || (currentQuestionSet.isCollaborative && session && !session.currentGiveUpNumber)">
-        Give Up
+        Exit
     </button>
     <button class="btn btn-primary" type="button" ng-click="home()">
         Home
@@ -21,7 +21,7 @@
         </button>
       </div>
       <div class="modal-body">
-          Giving up current answers / collaboration will remove your previous saved answers, hints, and messages.
+          Exiting current answers / collaboration will remove your previous saved answers, hints, and messages.
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" ng-click="giveUp()">Confirm</button>
@@ -47,6 +47,13 @@
     <div ng-class="{'container-fluid' : currentQuestionSet.isCollaborative, 'container' : !currentQuestionSet.isCollaborative}">
         <nav aria-label="Question Pagination">
           <ul class="pagination justify-content-end">
+            <li class="page-item" ng-class="{'disabled' : !validateAnswer()}"
+                ng-if="currentQuestionSet.questions[currentQuestion - 1].hasCheckAnswerSettings && !answersObject.isSubmitted && !(currentQuestionSet.questions[currentQuestion - 1].maxAttempts &&
+                answers[currentQuestion - 1].attemptedAnswers && currentQuestionSet.questions[currentQuestion - 1].maxAttempts <= answers[currentQuestion - 1].attemptedAnswers.length)">
+              <button class="page-link" ng-click="checkAttempt()" ng-disabled="!validateAnswer()">
+                  Check Answer {{!currentQuestionSet.questions[currentQuestion - 1].maxAttempts ? '' : !answers[currentQuestion - 1].attemptedAnswers ? '(' + currentQuestionSet.questions[currentQuestion - 1].maxAttempts + ')' :
+                '(' + (currentQuestionSet.questions[currentQuestion - 1].maxAttempts - answers[currentQuestion - 1].attemptedAnswers.length) + ')'}}</button>
+            </li>
             <li class="page-item" ng-class="{'disabled' : currentQuestion <= 1}">
               <button class="page-link" ng-click="prev()" ng-disabled="currentQuestion <= 1">Previous</button>
             </li>
@@ -74,11 +81,9 @@
             <div class="message-box" id="message-box">
                 <div ng-repeat="msg in session.messages | orderBy : createdDate" class="single-message shadow px-2 py-1 mb-3 rounded clear"
                     ng-class="{'text-primary bg-light pull-left' : msg.accountId != account.accountId, 'text-light bg-primary pull-right' : msg.accountId == account.accountId}">
-                    <div ng-if="msg.accountId != account.accountId">
+                    <div>
                         <span>{{ msg.message }}</span>
-                    </div>
-                    <div ng-if="msg.accountId == account.accountId">
-                        <span>{{ msg.message }}</span>
+                        <span class="message-time">{{ msg.createdDate | date : 'shortTime' }}</span>
                     </div>
                 </div>
             </div>

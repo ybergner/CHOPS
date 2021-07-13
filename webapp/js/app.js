@@ -118,6 +118,9 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
                 return $q.reject('No Account Information');
             }
         },
+        checkAnswer : function(questionSetId, questionId, isA, data) {
+            return $http.post('api/checkAnswer', {questionSetId: questionSetId, questionId: questionId, isA: isA, data: data});
+        }
     };
 }]);
 
@@ -260,6 +263,7 @@ app.factory('socketService', function() {
                     scope.checkAnswer(scope.currentQuestion);
                 }
                 scope.isConnect = true;
+                scope.showMessage = true;
                 scope.waiting = false;
                 $('.toast').toast('hide');
                 let collaboratorName = scope.isA ? scope.session.accountBName : scope.session.accountAName;
@@ -428,6 +432,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     $scope.currentQuestionSet = questionSet;
     $scope.answersObject = answersObject;
     $scope.answers = $scope.answersObject.answers || [];
+    $scope.attemptedAnswerFeedback = [];
     $scope.hintsObject = hintsObject;
     if (!$scope.currentQuestionSet) {
         $location.path('/');
@@ -463,6 +468,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         if ($scope.answers[questionId - 1].collaborationAnswer && !isNaN($scope.answers[questionId - 1].collaborationAnswer)) {
             $scope.answers[questionId - 1].collaborationAnswer = Number($scope.answers[questionId - 1].collaborationAnswer);
         }
+        getAttemptAnswerFeeback();
         if ($scope.session) {
             $scope.currentHints = {questionId : questionId, selectedHints : []};
             $scope.originalCurrentHints = {questionId : questionId, selectedHints : []};
@@ -509,6 +515,46 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         }
     };
 
+    $scope.checkAttempt = function() {
+        if ($scope.isTeacher) {
+            if (!$scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
+                $scope.answers[$scope.currentQuestion - 1].attemptedAnswers = [];
+            }
+            $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.push(angular.copy($scope.answers[$scope.currentQuestion - 1].answer));
+            getAttemptAnswerFeeback();
+        } else {
+            checkAnswerDiffAndUpdate('checkAnswer');
+        }
+    }
+
+    $scope.getCurrentAnswerString = function(answerObject) {
+        if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].type == 'singleChoice') {
+            return answerObject.singleChoice;
+        } else if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].type == 'multipleChoice') {
+            let answer = [];
+            for (let property in answerObject.multipleChoice) {
+                if (answerObject.multipleChoice[property]) {
+                    answer.push(answerObject.multipleChoice[property]);
+                }
+            }
+            answer.sort();
+            return answer.join(',');
+        } else if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].type == 'openQuestion') {
+            return answerObject.openQuestion;
+        }
+    }
+
+    function getAttemptAnswerFeeback() {
+        if (!$scope.answers[$scope.currentQuestion - 1].attemptedAnswers || !$scope.answers[$scope.currentQuestion - 1].attemptedAnswers.length) {
+            return;
+        }
+        if (!$scope.attemptedAnswerFeedback[$scope.currentQuestion - 1] || $scope.attemptedAnswerFeedback[$scope.currentQuestion - 1].length !== $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.length) {
+            answerService.checkAnswer($scope.currentQuestionSet.questionSetId, $scope.currentQuestion, $scope.isA, $scope.answers[$scope.currentQuestion - 1].attemptedAnswers).then(function(res) {
+                $scope.attemptedAnswerFeedback[$scope.currentQuestion - 1] = res.data.data;
+            });
+        }
+    }
+
     function checkAnswerDiffAndUpdate(nextAction) {
         let data = {
             _id : $scope.answersObject._id,
@@ -518,11 +564,18 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         };
         if (!$scope.isTeacher && !$scope.answersObject.isSubmitted) {
             if ((!$scope.previousAnswers[$scope.currentQuestion - 1]) ||
+                nextAction === 'checkAnswer' ||
                 ($scope.answers[$scope.currentQuestion - 1].collaborationAnswer != $scope.previousAnswers[$scope.currentQuestion - 1].collaborationAnswer) ||
                 ($scope.answers[$scope.currentQuestion - 1].answer.singleChoice && !angular.equals($scope.answers[$scope.currentQuestion - 1].answer.singleChoice, $scope.previousAnswers[$scope.currentQuestion - 1].answer.singleChoice)) ||
                 ($scope.answers[$scope.currentQuestion - 1].answer.openQuestion && !angular.equals($scope.answers[$scope.currentQuestion - 1].answer.openQuestion, $scope.previousAnswers[$scope.currentQuestion - 1].answer.openQuestion)) ||
                 ($scope.answers[$scope.currentQuestion - 1].answer.multipleChoice && !angular.equals($scope.answers[$scope.currentQuestion - 1].answer.multipleChoice, $scope.previousAnswers[$scope.currentQuestion - 1].answer.multipleChoice))) {
                 let action = $scope.answersObject._id ? 'update' : 'create';
+                if (nextAction === 'checkAnswer') {
+                    if (!$scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
+                        $scope.answers[$scope.currentQuestion - 1].attemptedAnswers = [];
+                    }
+                    $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.push(angular.copy($scope.answers[$scope.currentQuestion - 1].answer));
+                }
                 answerService.crud(action, data).then(function(res) {
                     if (action === 'create') {
                         $scope.answersObject = angular.copy(res.data.data);
@@ -534,6 +587,8 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
                     } else if (nextAction === 'next') {
                         $scope.currentQuestion++;
                         checkAnswer($scope.currentQuestion);
+                    } else if (nextAction === 'checkAnswer') {
+                        getAttemptAnswerFeeback();
                     }
                 });
             } else {

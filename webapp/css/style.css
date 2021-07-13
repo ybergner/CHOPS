@@ -79,3 +79,10 @@ span.page-link {
 .toast-box .toast {
     width: 350px;
 }
+
+.message-time {
+    display: block;
+    font-size: 12px;
+    color: #adb5bd;
+    text-align: right;
+}
