@@ -17,8 +17,8 @@ To create questions, you need to update the json in `data/questions.json` in lin
 `questions` is an array of questions.
 Each question will have `type` : 'singleChoice' | 'multipleChoice' | 'openQuestion',
 `title`, `text`, `image`, `option`.
-If the question set is collaborative, each question will also have `maxHintAllowedPerPerson`, `versionA`, `verionsB`, `hint` and `hintText`.
+If the question set is collaborative, each question will also have `maxHintAllowedPerPerson`, `versionA`, `verionsB`, `checkAnswerSettings`, `hint`, and `hintText`.
+`checkAnswerSettings` accepts the following inputs: `methodName`, `methodParams`, and `maxAttempts`.
 
 
 Collaborative question set supports online partner searching which when matched in a pair students can chat via messager and select hints to interact with other.
-

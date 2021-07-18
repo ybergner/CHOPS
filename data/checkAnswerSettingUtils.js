@@ -5,7 +5,7 @@ var utils = {};
 utils.matchExact = function(answer, params) {
     if (answer == params) {
         return {
-            //feedback: 'Corrected.',
+            feedback: 'Corrected.',
             isCorrected: true
         };
     } else {
