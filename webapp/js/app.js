@@ -783,9 +783,11 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         if (!$scope.isTeacher && !$scope.answersObject.isSubmitted) {
             let action = $scope.answersObject._id ? 'update' : 'create';
             answerService.crud(action, data).then(function(){
+                $('#submitModal').modal('hide');
                 $scope.home();
             });
         } else {
+            $('#submitModal').modal('hide');
             $scope.home();
         }
     };
