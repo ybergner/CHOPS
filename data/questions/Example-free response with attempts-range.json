@@ -1,0 +1,23 @@
+{
+    "type" : "openQuestion",
+    "title" : "Example-single multiple choice with attempts",
+    "maxHintAllowedPerPerson" : 2,
+    "versionA" : {
+        "text" : "In this type of question, it is similar as the previous one and you will need to input an answer. The potential solution is in a range, share your information with you partner to find the right values. You can only input one value at a time. Your information, the answer is not smaller than 1.",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "matchInRange",
+            "methodParams" : [1, 4],
+            "maxAttempts" : 3
+        }
+    },
+    "versionB" : {
+        "text" : "In this type of question, it is similar as the previous one and you will need to input an answer. The potential solution is in a range, share your information with you partner to find the right values. You can only input one value at a time. Your information, the answer is not greater than 4.",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "matchInRange",
+            "methodParams" : [1, 4],
+            "maxAttempts" : 3
+        }
+    }
+}

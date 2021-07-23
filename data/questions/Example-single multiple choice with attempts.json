@@ -1,0 +1,53 @@
+{
+    "type" : "singleChoice",
+    "title" : "Example of single choice question with attempts",
+    "maxHintAllowedPerPerson" : 1,
+    "versionA" : {
+        "text" : "In this type of question, you will be collaborative with a partner. Before actually solving for the answer. Each of you can select extra information from the hint. In this case, you can choose one out of three hints. It would be helpful if you and you parnter can exchange ideas before selecting hints and share information before selecting the answer. Notice that you have exactly 3 chances for 3 choices so you will eventually get the right answer.",
+        "image" : "600x400.png",
+        "hint" : {
+            "a" : "First Hint-version A",
+            "b" : "Second Hint-version A",
+            "c" : "Third Hint-version A"
+        },
+        "hintText" : {
+            "a" : "b is not the right answer",
+            "b" : "b is not the right answer",
+            "c" : "b is not the right answer"
+        },
+        "option" : {
+            "a" : "Choice A",
+            "b" : "Choice B",
+            "c" : "Choice C"
+        },        
+        "checkAnswerSettings" : {
+            "methodName" : "matchInList",
+            "methodParams" : ["a"],
+            "maxAttempts" : 3
+        }
+    },
+    "versionB" : {
+        "text" : "In this type of question, you will be collaborative with a partner. Before actually solving for the answer. Each of you can select extra information from the hint. In this case, you can choose one out of three hints. It would be helpful if you and you parnter can exchange ideas before selecting hints and share information before selecting the answer. Notice that you have exactly 3 chances for 3 choices so you will eventually get the right answer.",
+        "image" : "600x400.png",
+        "hint" : {
+            "d" : "First Hint-version B",
+            "e" : "Second Hint-version B",
+            "f" : "Third Hint-version B"
+        },
+        "hintText" : {
+            "d" : "c is not the right answer",
+            "e" : "c is not the right answer",
+            "f" : "c is not the right answer"
+        },
+        "option" : {
+            "a" : "Choice A",
+            "b" : "Choice B",
+            "c" : "Choice C"
+        },   
+        "checkAnswerSettings" : {
+            "methodName" : "matchInList",
+            "methodParams" : ["a"],
+            "maxAttempts" : 3
+        }
+    }
+}

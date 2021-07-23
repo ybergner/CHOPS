@@ -3,7 +3,7 @@
         {
             "questionSetId" : "Temp",
             "name" : "Test Temp",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "1.json",
                 "2.json",
@@ -15,7 +15,7 @@
         {
             "questionSetId" : "Temp_collaborative",
             "name" : "Test Temp",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "4.json",
                 "5.json",
@@ -35,7 +35,7 @@
         {
             "questionSetId" : "Math_collaborative_1",
             "name" : "Math_Test_1",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "10.json",
                 "11.json",
@@ -45,7 +45,7 @@
         {
             "questionSetId" : "Math_collaborative_2",
             "name" : "Math_Test_2",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "13.json",
                 "14.json",
@@ -80,6 +80,16 @@
                 "odd_even number C.json",
                 "puppy C.json",
                 "two diagrams C.json"
+            ]
+        },
+        {
+            "questionSetId" : "Example questions with attempts",
+            "name" : "Example questions with attempts",
+            "isHidden" : false,
+            "questions" : [
+                "Example-single multiple choice with attempts.json",
+                "Example-free response with attempts-list.json",
+                "Example-free response with attempts-range.json"
             ]
         }
     ]

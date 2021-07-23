@@ -1,0 +1,45 @@
+{
+    "type" : "openQuestion",
+    "title" : "Example-single multiple choice with attempts",
+    "maxHintAllowedPerPerson" : 2,
+    "versionA" : {
+        "text" : "In this type of question, it is similar as the previous one but you will need to input an answer instead multiple choices. You can choose 2 hints out of 3 in this question.",
+        "image" : "600x400.png",
+        "hint" : {
+            "a" : "First Hint version A",
+            "b" : "Second Hint version A",
+            "c" : "Third Hint version A"
+        },
+        "hintText" : {
+            "a" : "One of the answers is 1",
+            "b" : "One of the answers is 2",
+            "c" : "One of the answers is 3"
+        },
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "matchInList",
+            "methodParams" : [1, 2, 3, 4],
+            "maxAttempts" : 3
+        }
+    },
+    "versionB" : {
+        "text" : "In this type of question, it is similar as the previous one but you will need to input an answer instead multiple choices. You can choose 2 hints out of 3 in this question.",
+        "image" : "600x400.png",
+        "hint" : {
+            "d" : "Fourth Hint version B",
+            "e" : "Fifth Hint version B",
+            "f" : "Sixth Hint version B"
+        },
+        "hintText" : {
+            "d" : "One of the answers is 4",
+            "e" : "One of the answers is 3",
+            "f" : "One of the answers is 2"
+        },
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "matchInList",
+            "methodParams" : [1, 2, 3, 4],
+            "maxAttempts" : 3
+        }
+    }
+}

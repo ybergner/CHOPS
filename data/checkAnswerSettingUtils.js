@@ -5,7 +5,7 @@ var utils = {};
 utils.matchExact = function(answer, params) {
     if (answer == params) {
         return {
-            feedback: 'Corrected.',
+            feedback: 'Your answer is correct.',
             isCorrected: true
         };
     } else {
@@ -21,7 +21,7 @@ utils.matchInList = function(answer, params) {
         return p == answer;
     })) {
         return {
-            feedback: 'Custom Corrected answer feedback',
+            feedback: 'Your answer is correct.',
             isCorrected: true
         };
     } else {
@@ -35,12 +35,12 @@ utils.matchInList = function(answer, params) {
 utils.matchInRange = function(answer, params) {
     if (answer >= params[0] && answer <= params[1]) {
         return {
-            feedback: 'You got it.',
+            feedback: 'Your answer is correct.',
             isCorrected: true
         };
     } else {
         return {
-            feedback: 'Your answer is too big',
+            feedback: 'Your answer is wrong.',
             isCorrected: false
         };
     }
