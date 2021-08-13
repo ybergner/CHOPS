@@ -170,7 +170,7 @@ router.checkAnswers = function(answerObject, questionSetId, questionId, isA) {
         answer = [];
         for (const property in answerObject.multipleChoice) {
             if (answerObject.multipleChoice[property]) {
-                answer.push(answerObject.multipleChoice[property]);
+                answer.push(property);
             }
         }
         answer.sort();
