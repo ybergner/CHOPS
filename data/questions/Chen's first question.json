@@ -1,0 +1,53 @@
+{
+    "type" : "openQuestion",
+    "title" : "Professor Chen's fist question",
+    "maxHintAllowedPerPerson" : 2,
+    "versionA" : {
+        "text" : "You and your partner are tasked to design a secret weapon for Agent 86 on a secret mission. The secret weapon is a spring gun disguised inside his left shoe (his right shoe containing his famous phone) that can launch a special type of poisonous dart at initial speed 6.5 m/s< v<7.5 m/s, when recoiled for a distance of x cm. Unfortunately, Agent 86 being Agent 86, he handed the two of you a couple of different darts but forgot to tell you the mass of each one. You searched through your lab and found several springs that feels strong enough, but don't know the precise spring constant of each. So the two of you setoff to do some experiments.",
+        "image" : "Chen's local1.png",
+        "hint" : {
+            "a" : "Dart a: h̅=0.64 cm",
+            "b" : "Dart b: h̅=0.21 cm",
+            "c" : "Dart c: h̅=0.13 cm"
+        },
+        "hintText" : {
+            "a" : "m=0.001",
+            "b" : "m=0.003",
+            "c" : "m=0.005"
+        },
+        "option" : {
+            "a" : "Dart a",
+            "b" : "Dart b",
+            "c" : "Dart c"
+        },
+        "checkAnswerSettings" : {
+            "methodName" : "matchInList",
+            "methodParams" : ["a"],
+            "maxAttempts" : 3
+        }
+    },
+    "versionB" : {
+        "text" : "You and your partner are tasked to design a secret weapon for Agent 86 on a secret mission. The secret weapon is a spring gun disguised inside his left shoe (his right shoe containing his famous phone) that can launch a special type of poisonous dart at initial speed 6.5 m/s< v<7.5 m/s, when recoiled for a distance of x cm. Unfortunately, Agent 86 being Agent 86, he handed the two of you a couple of different darts but forgot to tell you the mass of each one. You searched through your lab and found several springs that feels strong enough, but don't know the precise spring constant of each. So the two of you setoff to do some experiments.",
+        "image" : "Chen's local2.png",
+        "hint" : {
+            "d" : "Spring a: d = 15 cm",
+            "e" : "Spring b: d = 35 cm",
+            "f" : "Spring c: d = 55 cm"
+        },
+        "hintText" : {
+            "d" : "k=3N/m",
+            "e" : "k=7N/m",
+            "f" : "k=11N/m"
+        },
+        "option" : {
+            "d" : "Spring a",
+            "e" : "Spring b",
+            "f" : "Spring c"
+        },
+        "checkAnswerSettings" : {
+            "methodName" : "matchInList",
+            "methodParams" : ["d"],
+            "maxAttempts" : 3
+        }
+    }
+}

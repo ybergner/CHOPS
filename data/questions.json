@@ -91,6 +91,14 @@
                 "Example-free response with attempts-list.json",
                 "Example-free response with attempts-range.json"
             ]
+        },
+        {
+            "questionSetId" : "Professor Chen's first question",
+            "name" : "Professor Chen's first question",
+            "isHidden" : false,
+            "questions" : [
+                "Chen's first question.json"
+            ]
         }
     ]
 }
