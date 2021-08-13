@@ -1,10 +1,10 @@
 {
-    "type" : "openQuestion",
+    "type" : "singleChoice",
     "title" : "Professor Chen's fist question",
-    "maxHintAllowedPerPerson" : 2,
+    "maxHintAllowedPerPerson" : 3,
     "versionA" : {
         "text" : "You and your partner are tasked to design a secret weapon for Agent 86 on a secret mission. The secret weapon is a spring gun disguised inside his left shoe (his right shoe containing his famous phone) that can launch a special type of poisonous dart at initial speed 6.5 m/s< v<7.5 m/s, when recoiled for a distance of x cm. Unfortunately, Agent 86 being Agent 86, he handed the two of you a couple of different darts but forgot to tell you the mass of each one. You searched through your lab and found several springs that feels strong enough, but don't know the precise spring constant of each. So the two of you setoff to do some experiments.",
-        "image" : "Chen's local1.png",
+        "image" : "Chen's local1_60.png",
         "hint" : {
             "a" : "Dart a: h̅=0.64 cm",
             "b" : "Dart b: h̅=0.21 cm",
@@ -16,19 +16,19 @@
             "c" : "m=0.005"
         },
         "option" : {
-            "a" : "Dart a",
-            "b" : "Dart b",
-            "c" : "Dart c"
+            "Dart a" : "Dart a",
+            "Dart b" : "Dart b",
+            "Dart c" : "Dart c"
         },
         "checkAnswerSettings" : {
             "methodName" : "matchInList",
-            "methodParams" : ["a"],
+            "methodParams" : ["Dart a"],
             "maxAttempts" : 3
         }
     },
     "versionB" : {
         "text" : "You and your partner are tasked to design a secret weapon for Agent 86 on a secret mission. The secret weapon is a spring gun disguised inside his left shoe (his right shoe containing his famous phone) that can launch a special type of poisonous dart at initial speed 6.5 m/s< v<7.5 m/s, when recoiled for a distance of x cm. Unfortunately, Agent 86 being Agent 86, he handed the two of you a couple of different darts but forgot to tell you the mass of each one. You searched through your lab and found several springs that feels strong enough, but don't know the precise spring constant of each. So the two of you setoff to do some experiments.",
-        "image" : "Chen's local2.png",
+        "image" : "Chen's local2_60.png",
         "hint" : {
             "d" : "Spring a: d = 15 cm",
             "e" : "Spring b: d = 35 cm",
@@ -40,13 +40,13 @@
             "f" : "k=11N/m"
         },
         "option" : {
-            "d" : "Spring a",
-            "e" : "Spring b",
-            "f" : "Spring c"
+            "Spring a" : "Spring a",
+            "Spring b" : "Spring b",
+            "Spring c" : "Spring c"
         },
         "checkAnswerSettings" : {
             "methodName" : "matchInList",
-            "methodParams" : ["d"],
+            "methodParams" : ["Spring a"],
             "maxAttempts" : 3
         }
     }
