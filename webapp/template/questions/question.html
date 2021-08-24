@@ -1,5 +1,7 @@
 <div ng-if="!currentQuestionSet.isCollaborative || session">
     <h6 class="card-title">{{ currentQuestionSet.questions[currentQuestion - 1].title }}</h6>
+    <div ng-show="currentQuestionSet.questions[currentQuestion - 1].latex" id="latex-view">
+    </div>
     <p class="card-text">{{ currentQuestionSet.questions[currentQuestion - 1].text }}</p>
     <img ng-if="currentQuestionSet.questions[currentQuestion - 1].image"
         ng-src="{{'template/questions/asset/' + currentQuestionSet.questions[currentQuestion - 1].image}}"
@@ -68,13 +70,30 @@
             ng-disabled="answersObject.isSubmitted">
         </textarea>
     </div>
+    <div ng-if="currentQuestionSet.questions[currentQuestion - 1].type === 'multipleOpenQuestion'">
+        <div ng-repeat="letter in currentQuestionSet.questions[currentQuestion - 1].multipleOpenQuestionSymbol" class="form-row my-2">
+            <div class="input-group col-sm-9">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">{{letter}}</div>
+                </div>
+                <input type="text" class="form-control" name="{{'multipleOpenQuestion_' + letter}}" id="{{'multipleOpenQuestion_' + letter}}"
+                    ng-model="answers[currentQuestion - 1].answer.multipleOpenQuestion[letter]"
+                    ng-disabled="answersObject.isSubmitted" />
+            </div>
+            <div class="col-sm-3" ng-if="showMultipleOpenQuestionButton(letter)">
+                <button class="btn btn-outline-info" ng-click="checkAttempt(letter)" ng-disabled="!validateAnswer(letter)">
+                        Check Answer {{!currentQuestionSet.questions[currentQuestion - 1].maxAttempts[letter] ? '' : !answers[currentQuestion - 1].attemptedAnswers ? '(' + currentQuestionSet.questions[currentQuestion - 1].maxAttempts[letter] + ')' :
+                    '(' + (currentQuestionSet.questions[currentQuestion - 1].maxAttempts[letter] - getCurrentMultipleOpenQuestionAttempts(letter)) + ')'}}</button>
+            </div>
+        </div>
+    </div>
     <div ng-if="answers[currentQuestion - 1].attemptedAnswers && answers[currentQuestion - 1].attemptedAnswers.length &&
         attemptedAnswerFeedback[currentQuestion - 1] && attemptedAnswerFeedback[currentQuestion - 1].length">
-        <table class="table table-bordered">
+        <table class="table table-bordered" ng-if="currentQuestionSet.questions[currentQuestion - 1].type !== 'multipleOpenQuestion'">
             <thead>
                 <tr>
-                    <th>Attempt #</th>
-                    <th>Answer</th>
+                    <th class="attempt-header">Attempts</th>
+                    <th class="answer-header">Answer</th>
                     <th>Result</th>
                 </tr>
             </thead>
@@ -90,6 +109,28 @@
                 </tr>
             </tbody>
         </table>
+        <div ng-if="currentQuestionSet.questions[currentQuestion - 1].type === 'multipleOpenQuestion'">
+            <table class="table table-bordered" ng-repeat="letter in currentQuestionSet.questions[currentQuestion - 1].multipleOpenQuestionSymbol" ng-if="getCurrentMultipleOpenQuestionAttempts(letter)">
+                <thead>
+                    <tr>
+                        <th class="attempt-header">Attempts ({{letter}})</th>
+                        <th class="answer-header">Answer</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="value in answers[currentQuestion - 1].attemptedAnswers" ng-if="value.multipleOpenQuestion[letter] != null"
+                        ng-class="{'table-success': attemptedAnswerFeedback[currentQuestion - 1][$index][letter].isCorrected,
+                        'table-danger': !attemptedAnswerFeedback[currentQuestion - 1][$index][letter].isCorrected}">
+                        <td>{{ $index + 1 }}</td>
+                        <td>
+                            {{getCurrentAnswerString(value, letter)}}
+                        </td>
+                        <td>{{attemptedAnswerFeedback[currentQuestion - 1][$index][letter].feedback}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

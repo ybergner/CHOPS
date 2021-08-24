@@ -450,6 +450,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     $scope.previousAnswers = angular.copy($scope.answers);
     $scope.currentHints = {};
     $scope.originalCurrentHints = {};
+    let latexComponentContainer;
     var checkAnswer = $scope.checkAnswer =  function(questionId) {
         if (!$scope.answers[questionId - 1]) {
             $scope.answers[questionId - 1] = {
@@ -463,12 +464,28 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
             if ($scope.currentQuestionSet.questions[questionId - 1].type === 'multipleChoice') {
                 $scope.answers[questionId - 1].answer.multipleChoice = {};
                 $scope.previousAnswers[questionId - 1].answer.multipleChoice = {};
+            } else if ($scope.currentQuestionSet.questions[questionId - 1].type === 'multipleOpenQuestion') {
+                $scope.answers[questionId - 1].answer.multipleOpenQuestion = {};
+                $scope.previousAnswers[questionId - 1].answer.multipleOpenQuestion = {};
             }
         }
         if ($scope.answers[questionId - 1].collaborationAnswer && !isNaN($scope.answers[questionId - 1].collaborationAnswer)) {
             $scope.answers[questionId - 1].collaborationAnswer = Number($scope.answers[questionId - 1].collaborationAnswer);
         }
         getAttemptAnswerFeeback();
+        if ($scope.currentQuestionSet.questions[questionId - 1].latex) {
+            if (!latexComponentContainer) {
+                latexComponentContainer = document.getElementById('latex-view');
+            }
+            if (latexComponentContainer) {
+                if (latexComponentContainer.firstChild) {
+                    latexComponentContainer.removeChild(latexComponentContainer.firstChild);
+                }
+                let latexComponent = document.createElement('latex-js');
+                latexComponent.textContent = $scope.currentQuestionSet.questions[questionId - 1].latex;
+                latexComponentContainer.appendChild(latexComponent);
+            }
+        }
         if ($scope.session) {
             $scope.currentHints = {questionId : questionId, selectedHints : []};
             $scope.originalCurrentHints = {questionId : questionId, selectedHints : []};
@@ -515,19 +532,35 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         }
     };
 
-    $scope.checkAttempt = function() {
+    $scope.checkAttempt = function(letter) {
         if ($scope.isTeacher) {
             if (!$scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
                 $scope.answers[$scope.currentQuestion - 1].attemptedAnswers = [];
             }
-            $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.push(angular.copy($scope.answers[$scope.currentQuestion - 1].answer));
-            getAttemptAnswerFeeback();
+            if (letter) {
+                pushLetterIntoAttemptedAnswers(letter);
+            } else {
+                $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.push(angular.copy($scope.answers[$scope.currentQuestion - 1].answer));
+            }
+            getAttemptAnswerFeeback(letter);
         } else {
-            checkAnswerDiffAndUpdate('checkAnswer');
+            checkAnswerDiffAndUpdate('checkAnswer', letter);
         }
     }
 
-    $scope.getCurrentAnswerString = function(answerObject) {
+    function pushLetterIntoAttemptedAnswers(letter) {
+        for (let ans of $scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
+            if (ans.multipleOpenQuestion && ans.multipleOpenQuestion[letter] == null) {
+                ans.multipleOpenQuestion[letter] = $scope.answers[$scope.currentQuestion - 1].answer.multipleOpenQuestion[letter];
+                return;
+            }
+        }
+        let newAns = {multipleOpenQuestion : {}};
+        newAns.multipleOpenQuestion[letter] = $scope.answers[$scope.currentQuestion - 1].answer.multipleOpenQuestion[letter];
+        $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.push(newAns);
+    }
+
+    $scope.getCurrentAnswerString = function(answerObject, letter) {
         if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].type == 'singleChoice') {
             return answerObject.singleChoice;
         } else if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].type == 'multipleChoice') {
@@ -541,21 +574,23 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
             return answer.join(',');
         } else if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].type == 'openQuestion') {
             return answerObject.openQuestion;
+        } else if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].type == 'multipleOpenQuestion') {
+            return answerObject.multipleOpenQuestion[letter];
         }
     }
 
-    function getAttemptAnswerFeeback() {
+    function getAttemptAnswerFeeback(letter) {
         if (!$scope.answers[$scope.currentQuestion - 1].attemptedAnswers || !$scope.answers[$scope.currentQuestion - 1].attemptedAnswers.length) {
             return;
         }
-        if (!$scope.attemptedAnswerFeedback[$scope.currentQuestion - 1] || $scope.attemptedAnswerFeedback[$scope.currentQuestion - 1].length !== $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.length) {
+        if (!$scope.attemptedAnswerFeedback[$scope.currentQuestion - 1] || $scope.attemptedAnswerFeedback[$scope.currentQuestion - 1].length !== $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.length || letter) {
             answerService.checkAnswer($scope.currentQuestionSet.questionSetId, $scope.currentQuestion, $scope.isA, $scope.answers[$scope.currentQuestion - 1].attemptedAnswers).then(function(res) {
                 $scope.attemptedAnswerFeedback[$scope.currentQuestion - 1] = res.data.data;
             });
         }
     }
 
-    function checkAnswerDiffAndUpdate(nextAction) {
+    function checkAnswerDiffAndUpdate(nextAction, letter) {
         let data = {
             _id : $scope.answersObject._id,
             answers : $scope.answers,
@@ -568,13 +603,18 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
                 ($scope.answers[$scope.currentQuestion - 1].collaborationAnswer != $scope.previousAnswers[$scope.currentQuestion - 1].collaborationAnswer) ||
                 ($scope.answers[$scope.currentQuestion - 1].answer.singleChoice && !angular.equals($scope.answers[$scope.currentQuestion - 1].answer.singleChoice, $scope.previousAnswers[$scope.currentQuestion - 1].answer.singleChoice)) ||
                 ($scope.answers[$scope.currentQuestion - 1].answer.openQuestion && !angular.equals($scope.answers[$scope.currentQuestion - 1].answer.openQuestion, $scope.previousAnswers[$scope.currentQuestion - 1].answer.openQuestion)) ||
-                ($scope.answers[$scope.currentQuestion - 1].answer.multipleChoice && !angular.equals($scope.answers[$scope.currentQuestion - 1].answer.multipleChoice, $scope.previousAnswers[$scope.currentQuestion - 1].answer.multipleChoice))) {
+                ($scope.answers[$scope.currentQuestion - 1].answer.multipleChoice && !angular.equals($scope.answers[$scope.currentQuestion - 1].answer.multipleChoice, $scope.previousAnswers[$scope.currentQuestion - 1].answer.multipleChoice)) ||
+                ($scope.answers[$scope.currentQuestion - 1].answer.multipleOpenQuestion && !angular.equals($scope.answers[$scope.currentQuestion - 1].answer.multipleOpenQuestion, $scope.previousAnswers[$scope.currentQuestion - 1].answer.multipleOpenQuestion))) {
                 let action = $scope.answersObject._id ? 'update' : 'create';
                 if (nextAction === 'checkAnswer') {
                     if (!$scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
                         $scope.answers[$scope.currentQuestion - 1].attemptedAnswers = [];
                     }
-                    $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.push(angular.copy($scope.answers[$scope.currentQuestion - 1].answer));
+                    if (letter) {
+                        pushLetterIntoAttemptedAnswers(letter);
+                    } else {
+                        $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.push(angular.copy($scope.answers[$scope.currentQuestion - 1].answer));
+                    }
                 }
                 answerService.crud(action, data).then(function(res) {
                     if (action === 'create') {
@@ -588,7 +628,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
                         $scope.currentQuestion++;
                         checkAnswer($scope.currentQuestion);
                     } else if (nextAction === 'checkAnswer') {
-                        getAttemptAnswerFeeback();
+                        getAttemptAnswerFeeback(letter);
                     }
                 });
             } else {
@@ -640,12 +680,10 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         }
     };
 
-    $scope.validateAnswer = function(index) {
-        if (!angular.isNumber(index)) {
-            index = $scope.currentQuestion - 1;
-        }
+    $scope.validateAnswer = function(letter) {
+        let index = $scope.currentQuestion - 1;
 
-        if ($scope.currentQuestionSet.questions[index].hasCollaborationAnswer && isNaN($scope.answers[index].collaborationAnswer)){
+        if (!letter && $scope.currentQuestionSet.questions[index].hasCollaborationAnswer && isNaN($scope.answers[index].collaborationAnswer)){
             return false;
         }
         if ($scope.answers[index] && $scope.answers[index].answer) {
@@ -658,6 +696,17 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
                     if ($scope.answers[index].answer.multipleChoice[key]) {
                         return true;
                     }
+                }
+            } else if ($scope.answers[index].answer.multipleOpenQuestion) {
+                if (letter) {
+                    return $scope.answers[index].answer.multipleOpenQuestion[letter] && $scope.answers[index].answer.multipleOpenQuestion[letter] !== '';
+                } else {
+                    for (let symbol of $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].multipleOpenQuestionSymbol) {
+                        if (!$scope.answers[index].answer.multipleOpenQuestion[symbol] || $scope.answers[index].answer.multipleOpenQuestion[symbol] === '') {
+                            return false;
+                        }
+                    }
+                    return true;
                 }
             }
         }
@@ -739,6 +788,28 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     $scope.disableHints = function() {
         return ($scope.currentHints.selectedHints && $scope.currentHints.selectedHints.length > $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxHintAllowedPerPerson) ||
             ($scope.originalCurrentHints.selectedHints && $scope.originalCurrentHints.selectedHints.length == $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxHintAllowedPerPerson);
+    }
+
+    $scope.showMultipleOpenQuestionButton = function(letter) {
+        let hasSettings = $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].type === 'multipleOpenQuestion' && $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].hasCheckAnswerSettings && !$scope.answersObject.isSubmitted;
+        if (hasSettings) {
+            if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxAttempts[letter] && $scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
+                return $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxAttempts[letter] > $scope.getCurrentMultipleOpenQuestionAttempts(letter);
+            }
+        }
+        return hasSettings;
+    }
+
+    $scope.getCurrentMultipleOpenQuestionAttempts = function(letter) {
+        let count = 0;
+        if ($scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
+            for (let ans of $scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
+                if (ans && ans.multipleOpenQuestion[letter] != null) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     $scope.toggleHints = function(hint) {

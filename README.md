@@ -15,10 +15,11 @@ To create questions, you need to update the json in `data/questions.json` in lin
 `numOfQuestions` is the total number of questions each set has.
 `isHidden` is a boolean value to determine whether we should display it in the page.
 `questions` is an array of questions.
-Each question will have `type` : 'singleChoice' | 'multipleChoice' | 'openQuestion',
-`title`, `text`, `image`, `option`.
+Each question will have `type` : 'singleChoice' | 'multipleChoice' | 'openQuestion' | 'multipleOpenQuestion',
+`title`, `text`, `image`, `option`, `latex`. (For 'multipleOpenQuestion' you also need to define `multipleOpenQuestionSymbol`)
 If the question set is collaborative, each question will also have `maxHintAllowedPerPerson`, `versionA`, `verionsB`, `checkAnswerSettings`, `hint`, and `hintText`.
 `checkAnswerSettings` accepts the following inputs: `methodName`, `methodParams`, and `maxAttempts`.
+(For 'multipleOpenQuestion' you need to define `checkAnswerSettings` by each key in `multipleOpenQuestionSymbol`)
 
 
 Collaborative question set supports online partner searching which when matched in a pair students can chat via messager and select hints to interact with other.
