@@ -6,6 +6,10 @@
         <script src="asset/socket.io.js"></script>
         <link rel="stylesheet" href="asset/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <script type="module">
+            import { LaTeXJSComponent } from "https://cdn.jsdelivr.net/npm/latex.js/dist/latex.mjs"
+            customElements.define("latex-js", LaTeXJSComponent)
+        </script>
         <title>Online Testing</title>
     </head>
 

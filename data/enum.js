@@ -7,7 +7,8 @@ module.exports = Object.freeze({
     answerType : {
       multipleChoice : 1,
       singleChoice : 2,
-      openQuestion : 3
+      openQuestion : 3,
+      multipleOpenQuestion : 4
     },
     schemaType : {
       account : 1,

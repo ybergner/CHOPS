@@ -1,0 +1,50 @@
+{
+    "type" : "multipleOpenQuestion",
+    "title" : "Collaborative Question title 4",
+    "versionA" : {
+        "text" : "Some text of the question 4 version A. (a) (b) (c)",
+        "image" : "600x400.png",
+        "option" : {},
+        "multipleOpenQuestionSymbol" : ["a", "b", "c"],
+        "checkAnswerSettings" : {
+            "a" : {
+                "methodName" : "matchExact",
+                "methodParams" : 3,
+                "maxAttempts" : 1
+            },
+            "b" : {
+                "methodName" : "matchInList",
+                "methodParams" : [1, 2, 3, 4],
+                "maxAttempts" : 2
+            },
+            "c" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [1, 4],
+                "maxAttempts" : 3
+            }
+        }
+    },
+    "versionB" : {
+        "text" : "Some text of the question 4 version B. (a) (b) (c)",
+        "image" : "600x400.png",
+        "option" : {},
+        "multipleOpenQuestionSymbol" : ["a", "b", "c"],
+        "checkAnswerSettings" : {
+            "a" : {
+                "methodName" : "matchExact",
+                "methodParams" : 5,
+                "maxAttempts" : 1
+            },
+            "b" : {
+                "methodName" : "matchInList",
+                "methodParams" : [5, 6, 7, 8],
+                "maxAttempts" : 2
+            },
+            "c" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [5, 8],
+                "maxAttempts" : 3
+            }
+        }
+    }
+}

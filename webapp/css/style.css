@@ -86,3 +86,11 @@ span.page-link {
     color: #adb5bd;
     text-align: right;
 }
+
+.attempt-header {
+    width: 20%;
+}
+
+.answer-header {
+    width: 30%;
+}

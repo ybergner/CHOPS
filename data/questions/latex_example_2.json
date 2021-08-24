@@ -1,0 +1,11 @@
+{
+    "type" : "singleChoice",
+    "title" : "Question title 9",
+    "latex" : "2.tex",
+    "image" : "600x400.png",
+    "option" : {
+        "a" : "First Choise",
+        "b" : "Second Choice",
+        "c" : "Third Choice"
+    }
+}

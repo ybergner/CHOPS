@@ -71,7 +71,8 @@
               <button class="page-link" ng-click="prev()" ng-disabled="currentQuestion <= 1">Previous</button>
             </li>
             <li class="page-item" ng-class="{'disabled' : !validateAnswer()}"
-                ng-if="currentQuestionSet.questions[currentQuestion - 1].hasCheckAnswerSettings && !answersObject.isSubmitted && !(currentQuestionSet.questions[currentQuestion - 1].maxAttempts &&
+                ng-if="currentQuestionSet.questions[currentQuestion - 1].type !== 'multipleOpenQuestion' && currentQuestionSet.questions[currentQuestion - 1].hasCheckAnswerSettings && 
+                !answersObject.isSubmitted && !(currentQuestionSet.questions[currentQuestion - 1].maxAttempts &&
                 answers[currentQuestion - 1].attemptedAnswers && currentQuestionSet.questions[currentQuestion - 1].maxAttempts <= answers[currentQuestion - 1].attemptedAnswers.length)">
               <button class="page-link" ng-click="checkAttempt()" ng-disabled="!validateAnswer()">
                   Check Answer {{!currentQuestionSet.questions[currentQuestion - 1].maxAttempts ? '' : !answers[currentQuestion - 1].attemptedAnswers ? '(' + currentQuestionSet.questions[currentQuestion - 1].maxAttempts + ')' :

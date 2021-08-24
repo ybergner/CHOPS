@@ -13,18 +13,23 @@ const hintsMap = {};
 // for question page
 const questionSetMap = {};
 
-glob('data/questions/*.json', function(err1, files) {
+glob('data/questions/**/*.@(json|tex)', function(err1, files) {
     if (err1) {
         console.log('Someting wrong with glob, cannot read files from folder.');
         console.log(err1);
     }
     let questionMap = {};
     let allPromises = [];
+    let latexMap = {};
     files.forEach(function(file) {
         allPromises.push(fsPromises.readFile(file, 'utf8').then(function(data) {
             if (data) {
-                var obj = JSON.parse(data);
-                questionMap[file.substring(file.lastIndexOf('/') + 1)] = obj;
+                if (file.endsWith('json')) {
+                    let obj = JSON.parse(data);
+                    questionMap[file.substring(file.lastIndexOf('/') + 1)] = obj;
+                } else {
+                    latexMap[file.substring(file.lastIndexOf('/') + 1)] = data
+                }
             } else {
                 console.log('cannot read individual file: ' + file);
             }
@@ -32,11 +37,11 @@ glob('data/questions/*.json', function(err1, files) {
         }));
     });
     Promise.all(allPromises).then(function(values) {
-        setUpMapping(questionMap);
+        setUpMapping(questionMap, latexMap);
     });
 });
 
-var setUpMapping = function(questionMap) {
+var setUpMapping = function(questionMap, latexMap) {
     for (let individualQ of questions.individual) {
         if (!individualQ.isHidden) {
             questionSetList.push({
@@ -61,12 +66,28 @@ var setUpMapping = function(questionMap) {
             for (let index = 0; index < individualQ.questions.length; index++) {
                 if (individualQ.questions[index].checkAnswerSettings) {
                     individualQ.questions[index].hasCheckAnswerSettings = true;
-                    individualQ.questions[index].maxAttempts = individualQ.questions[index].checkAnswerSettings.maxAttempts;
-                    individualQ.questions[index].checkAnswers = function (answer) {
-                        return checkAnswerSettingUtils[individualQ.questions[index].checkAnswerSettings.methodName](answer, individualQ.questions[index].checkAnswerSettings.methodParams);
-                    };
+                    if (individualQ.questions[index].type === 'multipleOpenQuestion') {
+                        individualQ.questions[index].maxAttempts = {};
+                        individualQ.questions[index].checkAnswers = {};
+                        for (let letter in individualQ.questions[index].checkAnswerSettings) {
+                            individualQ.questions[index].maxAttempts[letter] = individualQ.questions[index].checkAnswerSettings[letter].maxAttempts;
+                            individualQ.questions[index].checkAnswers[letter] = function(answer) {
+                                return checkAnswerSettingUtils[individualQ.questions[index].checkAnswerSettings[letter].methodName](answer, individualQ.questions[index].checkAnswerSettings[letter].methodParams);
+                            };
+                        }
+                    } else {
+                        individualQ.questions[index].maxAttempts = individualQ.questions[index].checkAnswerSettings.maxAttempts;
+                        individualQ.questions[index].checkAnswers = function (answer) {
+                            return checkAnswerSettingUtils[individualQ.questions[index].checkAnswerSettings.methodName](answer, individualQ.questions[index].checkAnswerSettings.methodParams);
+                        };
+                    }
                 } else {
                     individualQ.questions[index].hasCheckAnswerSettings = false;
+                }
+                if (individualQ.questions[index].latex && latexMap[individualQ.questions[index].latex]) {
+                    individualQ.questions[index].latex = latexMap[individualQ.questions[index].latex];
+                } else {
+                    delete individualQ.questions[index].latex;
                 }
             }
         }
@@ -101,21 +122,53 @@ var setUpMapping = function(questionMap) {
                 };
                 if (collaborativeQ.questions[index].versionA.checkAnswerSettings) {
                     collaborativeQ.questions[index].versionA.hasCheckAnswerSettings = true;
-                    collaborativeQ.questions[index].versionA.maxAttempts = collaborativeQ.questions[index].versionA.checkAnswerSettings.maxAttempts;
-                    collaborativeQ.questions[index].versionA.checkAnswers = function (answer) {
-                        return checkAnswerSettingUtils[collaborativeQ.questions[index].versionA.checkAnswerSettings.methodName](answer, collaborativeQ.questions[index].versionA.checkAnswerSettings.methodParams);
-                    };
+                    if (collaborativeQ.questions[index].type === 'multipleOpenQuestion') {
+                        collaborativeQ.questions[index].versionA.maxAttempts = {};
+                        collaborativeQ.questions[index].versionA.checkAnswers = {};
+                        for (let letter in collaborativeQ.questions[index].versionA.checkAnswerSettings) {
+                            collaborativeQ.questions[index].versionA.maxAttempts[letter] = collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].maxAttempts;
+                            collaborativeQ.questions[index].versionA.checkAnswers[letter] = function(answer) {
+                                return checkAnswerSettingUtils[collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].methodName](answer, collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].methodParams);
+                            };
+                        }
+                    } else {
+                        collaborativeQ.questions[index].versionA.maxAttempts = collaborativeQ.questions[index].versionA.checkAnswerSettings.maxAttempts;
+                        collaborativeQ.questions[index].versionA.checkAnswers = function (answer) {
+                            return checkAnswerSettingUtils[collaborativeQ.questions[index].versionA.checkAnswerSettings.methodName](answer, collaborativeQ.questions[index].versionA.checkAnswerSettings.methodParams);
+                        };
+                    }
                 } else {
                     collaborativeQ.questions[index].versionA.hasCheckAnswerSettings = false;
                 }
                 if (collaborativeQ.questions[index].versionB.checkAnswerSettings) {
                     collaborativeQ.questions[index].versionB.hasCheckAnswerSettings = true;
-                    collaborativeQ.questions[index].versionB.maxAttempts = collaborativeQ.questions[index].versionB.checkAnswerSettings.maxAttempts;
-                    collaborativeQ.questions[index].versionB.checkAnswers = function (answer) {
-                        return checkAnswerSettingUtils[collaborativeQ.questions[index].versionB.checkAnswerSettings.methodName](answer, collaborativeQ.questions[index].versionB.checkAnswerSettings.methodParams);
-                    };
+                    if (collaborativeQ.questions[index].type === 'multipleOpenQuestion') {
+                        collaborativeQ.questions[index].versionB.maxAttempts = {};
+                        collaborativeQ.questions[index].versionB.checkAnswers = {};
+                        for (let letter in collaborativeQ.questions[index].versionB.checkAnswerSettings) {
+                            collaborativeQ.questions[index].versionB.maxAttempts[letter] = collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].maxAttempts;
+                            collaborativeQ.questions[index].versionB.checkAnswers[letter] = function(answer) {
+                                return checkAnswerSettingUtils[collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].methodName](answer, collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].methodParams);
+                            };
+                        }
+                    } else {
+                        collaborativeQ.questions[index].versionB.maxAttempts = collaborativeQ.questions[index].versionB.checkAnswerSettings.maxAttempts;
+                        collaborativeQ.questions[index].versionB.checkAnswers = function (answer) {
+                            return checkAnswerSettingUtils[collaborativeQ.questions[index].versionB.checkAnswerSettings.methodName](answer, collaborativeQ.questions[index].versionB.checkAnswerSettings.methodParams);
+                        };
+                    }
                 } else {
                     collaborativeQ.questions[index].versionB.hasCheckAnswerSettings = false;
+                }
+                if (collaborativeQ.questions[index].versionA.latex && latexMap[collaborativeQ.questions[index].versionA.latex]) {
+                    collaborativeQ.questions[index].versionA.latex = latexMap[collaborativeQ.questions[index].versionA.latex];
+                } else {
+                    delete collaborativeQ.questions[index].versionA.latex;
+                }
+                if (collaborativeQ.questions[index].versionB.latex && latexMap[collaborativeQ.questions[index].versionB.latex]) {
+                    collaborativeQ.questions[index].versionB.latex = latexMap[collaborativeQ.questions[index].versionB.latex];
+                } else {
+                    delete collaborativeQ.questions[index].versionB.latex;
                 }
             }
         }
@@ -162,7 +215,11 @@ router.getAllAvailableQuestionSetIds = function() {
     return Object.keys(questionSetMap);
 };
 
-router.checkAnswers = function(answerObject, questionSetId, questionId, isA) {
+router.getQuestionType = function(questionSetId, questionId) {
+    return questionSetMap[questionSetId].questions[questionId - 1].type;
+};
+
+router.checkAnswers = function(answerObject, questionSetId, questionId, isA, letter) {
     let answer;
     if (questionSetMap[questionSetId].questions[questionId - 1].type == 'singleChoice') {
         answer = answerObject.singleChoice;
@@ -176,6 +233,15 @@ router.checkAnswers = function(answerObject, questionSetId, questionId, isA) {
         answer.sort();
     } else if (questionSetMap[questionSetId].questions[questionId - 1].type == 'openQuestion') {
         answer = answerObject.openQuestion;
+    } else if (questionSetMap[questionSetId].questions[questionId - 1].type == 'multipleOpenQuestion') {
+        answer = answerObject.multipleOpenQuestion[letter];
+        if (!questionSetMap[questionSetId].isCollaborative) {
+            return questionSetMap[questionSetId].questions[questionId - 1].checkAnswers[letter](answer);
+        } else if (isA) {
+            return questionSetMap[questionSetId].questions[questionId - 1].versionA.checkAnswers[letter](answer);
+        } else {
+            return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers[letter](answer);
+        }
     }
     if (!questionSetMap[questionSetId].isCollaborative) {
         return questionSetMap[questionSetId].questions[questionId - 1].checkAnswers(answer);

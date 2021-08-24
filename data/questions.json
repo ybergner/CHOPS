@@ -7,7 +7,9 @@
             "questions" : [
                 "1.json",
                 "2.json",
-                "3.json"
+                "3.json",
+                "latex_example_1.json",
+                "latex_example_2.json"
             ]
         }
     ],
@@ -19,7 +21,8 @@
             "questions" : [
                 "4.json",
                 "5.json",
-                "6.json"
+                "6.json",
+                "multiple_open_question_ex.json"
             ]
         },
         {

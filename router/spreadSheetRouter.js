@@ -118,6 +118,8 @@ var generateAndSendReportSheet = function(answers, hints, res) {
                         ws.cell(rowNum, columnNumToStart).string(arr.sort().join());
                     } else if (individualAnswers[i].answer.openQuestion) {
                         ws.cell(rowNum, columnNumToStart).string(individualAnswers[i].answer.openQuestion);
+                    } else if (individualAnswers[i].answer.multipleOpenQuestion) {
+                        ws.cell(rowNum, columnNumToStart).string(JSON.stringify(individualAnswers[i].answer.multipleOpenQuestion));
                     }
                     if (individualHints[i] && individualHints[i].selectedHints) {
                         ws.cell(rowNum, columnNumToStart + 1).string(individualHints[i].selectedHints.sort().join());
