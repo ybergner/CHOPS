@@ -475,9 +475,9 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         getAttemptAnswerFeeback();
         if ($scope.currentQuestionSet.questions[questionId - 1].latex) {
             if (fromSession) {
-                setTimeout(() => updateLatex());
+                setTimeout(() => updateLatex(questionId));
             } else {
-                updateLatex();
+                updateLatex(questionId);
             }
         }
         if ($scope.session) {
@@ -500,7 +500,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         }
     };
 
-    function updateLatex() {
+    function updateLatex(questionId) {
         if (!latexComponentContainer) {
             latexComponentContainer = document.getElementById('latex-view');
         }
