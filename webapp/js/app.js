@@ -243,7 +243,7 @@ app.factory('socketService', function() {
                     scope.session = data.session;
                     scope.isA = scope.session.accountAId == scope.account.accountId;
                     angular.extend(scope.currentQuestionSet, data.questionSet);
-                    scope.checkAnswer(scope.currentQuestion);
+                    scope.checkAnswer(scope.currentQuestion, true);
                     scope.$apply();
                 } else {
                     scope.checkIfPreviousGiveUp();
@@ -260,7 +260,7 @@ app.factory('socketService', function() {
                     scope.session = data.session;
                     scope.isA = scope.session.accountAId == scope.account.accountId;
                     angular.extend(scope.currentQuestionSet, data.questionSet);
-                    scope.checkAnswer(scope.currentQuestion);
+                    scope.checkAnswer(scope.currentQuestion, true);
                 }
                 scope.isConnect = true;
                 scope.showMessage = true;
@@ -451,7 +451,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     $scope.currentHints = {};
     $scope.originalCurrentHints = {};
     let latexComponentContainer;
-    var checkAnswer = $scope.checkAnswer =  function(questionId) {
+    var checkAnswer = $scope.checkAnswer =  function(questionId, fromSession) {
         if (!$scope.answers[questionId - 1]) {
             $scope.answers[questionId - 1] = {
                 questionId : questionId,
@@ -474,16 +474,10 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         }
         getAttemptAnswerFeeback();
         if ($scope.currentQuestionSet.questions[questionId - 1].latex) {
-            if (!latexComponentContainer) {
-                latexComponentContainer = document.getElementById('latex-view');
-            }
-            if (latexComponentContainer) {
-                if (latexComponentContainer.firstChild) {
-                    latexComponentContainer.removeChild(latexComponentContainer.firstChild);
-                }
-                let latexComponent = document.createElement('latex-js');
-                latexComponent.textContent = $scope.currentQuestionSet.questions[questionId - 1].latex;
-                latexComponentContainer.appendChild(latexComponent);
+            if (fromSession) {
+                setTimeout(() => updateLatex());
+            } else {
+                updateLatex();
             }
         }
         if ($scope.session) {
@@ -505,6 +499,20 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
             }
         }
     };
+
+    function updateLatex() {
+        if (!latexComponentContainer) {
+            latexComponentContainer = document.getElementById('latex-view');
+        }
+        if (latexComponentContainer) {
+            if (latexComponentContainer.firstChild) {
+                latexComponentContainer.removeChild(latexComponentContainer.firstChild);
+            }
+            let latexComponent = document.createElement('latex-js');
+            latexComponent.textContent = $scope.currentQuestionSet.questions[questionId - 1].latex;
+            latexComponentContainer.appendChild(latexComponent);
+        }
+    }
 
     checkAnswer($scope.currentQuestion);
 
@@ -700,7 +708,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
             } else if ($scope.answers[index].answer.multipleOpenQuestion) {
                 if (letter) {
                     return $scope.answers[index].answer.multipleOpenQuestion[letter] && $scope.answers[index].answer.multipleOpenQuestion[letter] !== '';
-                } else {
+                } else if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].multipleOpenQuestionSymbol) {
                     for (let symbol of $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].multipleOpenQuestionSymbol) {
                         if (!$scope.answers[index].answer.multipleOpenQuestion[symbol] || $scope.answers[index].answer.multipleOpenQuestion[symbol] === '') {
                             return false;
