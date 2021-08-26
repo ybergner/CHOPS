@@ -303,7 +303,15 @@ app.factory('socketService', function() {
             });
             socket.on('give up completed', function(message){
                 console.log('account self set up completed');
-                scope.home(true);
+                let counter = 0;
+                let interval = setInterval(function() {
+                    if (!scope.waitForApiCall || counter > 3) {
+                        clearInterval(interval);
+                        scope.home(true);
+                    } else {
+                        counter++;
+                    }
+                }, 1000);
             });
         }
     };
@@ -793,6 +801,10 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         return $scope.originalCurrentHints.selectedHints && $scope.originalCurrentHints.selectedHints.includes(hint);
     };
 
+    $scope.currentCheckHints = function(hint) {
+        return $scope.currentHints.selectedHints && $scope.currentHints.selectedHints.includes(hint);
+    };
+
     $scope.disableHints = function() {
         return ($scope.currentHints.selectedHints && $scope.currentHints.selectedHints.length > $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxHintAllowedPerPerson) ||
             ($scope.originalCurrentHints.selectedHints && $scope.originalCurrentHints.selectedHints.length == $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxHintAllowedPerPerson);
@@ -840,10 +852,12 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         let waitForSocketGiveUpCompleted = false;
         if (!fromOthers && $scope.socket && !$scope.session.currentGiveUpNumber) {
             waitForSocketGiveUpCompleted = true;
+            $scope.waitForApiCall = true;
             $scope.socket.emit('giveUpSession');
         }
         $q.all(promises).then(function(){
             $('#giveUpModal').modal('hide');
+            $scope.waitForApiCall = false;
             if (!fromOthers && !waitForSocketGiveUpCompleted) {
                 $scope.home();
             }
