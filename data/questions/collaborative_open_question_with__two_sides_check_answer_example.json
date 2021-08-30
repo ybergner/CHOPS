@@ -1,0 +1,24 @@
+{
+    "type" : "openQuestion",
+    "title" : "Collaborative Question title 5",
+    "versionA" : {
+        "text" : "Some text of the question 5 version A",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "matchBothSumLessThan",
+            "methodParams" : 10,
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    },
+    "versionB" : {
+        "text" : "Some text of the question 5 version B",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "matchBothSumLessThan",
+            "methodParams" : 10,
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    }
+}

@@ -46,5 +46,33 @@ utils.matchInRange = function(answer, params) {
     }
 };
 
+utils.matchBothSumLessThan = function(answer, params, otherAnswer) {
+    if (Number(answer) + Number(otherAnswer) < params) {
+        return {
+            feedback: 'You both got it',
+            isCorrected: true
+        }
+    } else {
+        return {
+            feedback: 'Your answer is too big, check with each other and try another value',
+            isCorrected: false
+        }
+    }
+};
+
+utils.matchSingleChoiceExample = function(answer, params, otherAnswer) {
+    if (answer == 'a' && otherAnswer == 'b' || answer == 'b' && otherAnswer == 'a') {
+        return {
+            feedback: 'You both got it right',
+            isCorrected: true
+        }
+    } else {
+        return {
+            feedback: 'Your answer is wrong, check with each other and try another value',
+            isCorrected: false
+        }
+    }
+};
+
 
 module.exports = utils;

@@ -118,8 +118,8 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
                 return $q.reject('No Account Information');
             }
         },
-        checkAnswer : function(questionSetId, questionId, isA, data) {
-            return $http.post('api/checkAnswer', {questionSetId: questionSetId, questionId: questionId, isA: isA, data: data});
+        checkAnswer : function(questionSetId, questionId, isA, data, otherAttempts) {
+            return $http.post('api/checkAnswer', {questionSetId: questionSetId, questionId: questionId, isA: isA, data: data, otherAttempts: otherAttempts});
         }
     };
 }]);
@@ -240,6 +240,7 @@ app.factory('socketService', function() {
                 console.log('account set up completed in socket.');
                 scope.socket = socket;
                 if (data.session) {
+                    scope.otherAttemptAnswers = data.otherAttemptAnswers;
                     scope.session = data.session;
                     scope.isA = scope.session.accountAId == scope.account.accountId;
                     angular.extend(scope.currentQuestionSet, data.questionSet);
@@ -274,6 +275,8 @@ app.factory('socketService', function() {
             });
             socket.on('leave', function(id) {
                 console.log('account id ' + id + ' left');
+                $('#attemptModal').modal('hide');
+                $('#warningOtherCheckModal').modal('hide');
                 scope.waiting = true;
                 scope.isConnect = false;
                 scope.showMessage = false;
@@ -290,8 +293,49 @@ app.factory('socketService', function() {
                 scope.$apply();
                 scope.chatEl.scrollTop = scope.chatEl.scrollHeight;
             });
+            socket.on('unmatched check answer', function(question){
+                console.log('unmatched check answer');
+                setTimeout(function() {
+                    $('#attemptModal').modal('hide');
+                    $('#warningOtherCheckModal').modal('show');
+                }, 500);
+                scope.errorOtherCurrentlyCheckQuestion = question;
+                scope.$apply();
+            });
+            socket.on('check answer', function(data){
+                console.log('getting check answer');
+                scope.errorOtherCurrentlyCheckQuestion = '';
+                let questionArr = data.question.split('-');
+                let letter = questionArr[1];
+                if (!scope.otherAttemptAnswers[scope.currentQuestion - 1]) {
+                    scope.otherAttemptAnswers[scope.currentQuestion - 1] = [];
+                }
+                if (letter) {
+                    let hasAnsObjCreated = false;
+                    for (let ans of scope.otherAttemptAnswers) {
+                        if (ans.multipleOpenQuestion && ans.multipleOpenQuestion[letter] == null) {
+                            ans.multipleOpenQuestion[letter] = data.answer.multipleOpenQuestion[letter];
+                            hasAnsObjCreated = true;
+                            break;
+                        }
+                    }
+                    if (!hasAnsObjCreated) {
+                        let newAns = {multipleOpenQuestion : {}};
+                        newAns.multipleOpenQuestion[letter] = data.answer.multipleOpenQuestion[letter];
+                        scope.otherAttemptAnswers[scope.currentQuestion - 1].push(newAns);
+                    }
+                } else {
+                    scope.otherAttemptAnswers[scope.currentQuestion - 1].push(data.answer);
+                }
+                setTimeout(function() {
+                    $('#attemptModal').modal('hide');
+                }, 500);
+                scope.checkAttempt(letter, true);
+            });
             socket.on('give up leaving', function(id){
                 console.log('account id ' + id + ' give up leaving');
+                $('#attemptModal').modal('hide');
+                $('#warningOtherCheckModal').modal('hide');
                 $('.toast').toast('hide');
                 scope.chatBox.toastMessage = 'Collaborator give up this session, you will be redirect to home page after 3 seconds.';
                 scope.$apply();
@@ -441,6 +485,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     $scope.answersObject = answersObject;
     $scope.answers = $scope.answersObject.answers || [];
     $scope.attemptedAnswerFeedback = [];
+    $scope.otherAttemptAnswers = [];
     $scope.hintsObject = hintsObject;
     if (!$scope.currentQuestionSet) {
         $location.path('/');
@@ -548,20 +593,34 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         }
     };
 
-    $scope.checkAttempt = function(letter) {
-        if ($scope.isTeacher) {
-            if (!$scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
-                $scope.answers[$scope.currentQuestion - 1].attemptedAnswers = [];
-            }
-            if (letter) {
-                pushLetterIntoAttemptedAnswers(letter);
+    $scope.checkAttempt = function(letter, skipTwoSideCheck) {
+        if (skipTwoSideCheck || !$scope.currentQuestionSet.questions[$scope.currentQuestion - 1].hasTwoSideChecks) {
+            if ($scope.isTeacher) {
+                if (!$scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
+                    $scope.answers[$scope.currentQuestion - 1].attemptedAnswers = [];
+                }
+                if (letter) {
+                    pushLetterIntoAttemptedAnswers(letter);
+                } else {
+                    $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.push(angular.copy($scope.answers[$scope.currentQuestion - 1].answer));
+                }
+                getAttemptAnswerFeeback(letter);
             } else {
-                $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.push(angular.copy($scope.answers[$scope.currentQuestion - 1].answer));
+                checkAnswerDiffAndUpdate('checkAnswer', letter);
             }
-            getAttemptAnswerFeeback(letter);
         } else {
-            checkAnswerDiffAndUpdate('checkAnswer', letter);
+            let currentWaitingCheckAttempt = {
+                question: letter ? $scope.currentQuestion + '-' + letter : $scope.currentQuestion + '',
+                answer: $scope.answers[$scope.currentQuestion - 1].answer
+            }
+            $scope.socket.emit('new check attempt', currentWaitingCheckAttempt);
+            $('#attemptModal').modal('show');
         }
+    }
+
+    $scope.cancelAttempts = function() {
+        $scope.socket.emit('clear check attempt', {});
+        $('#attemptModal').modal('hide');
     }
 
     function pushLetterIntoAttemptedAnswers(letter) {
@@ -600,7 +659,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
             return;
         }
         if (!$scope.attemptedAnswerFeedback[$scope.currentQuestion - 1] || $scope.attemptedAnswerFeedback[$scope.currentQuestion - 1].length !== $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.length || letter) {
-            answerService.checkAnswer($scope.currentQuestionSet.questionSetId, $scope.currentQuestion, $scope.isA, $scope.answers[$scope.currentQuestion - 1].attemptedAnswers).then(function(res) {
+            answerService.checkAnswer($scope.currentQuestionSet.questionSetId, $scope.currentQuestion, $scope.isA, $scope.answers[$scope.currentQuestion - 1].attemptedAnswers, $scope.otherAttemptAnswers[$scope.currentQuestion - 1]).then(function(res) {
                 $scope.attemptedAnswerFeedback[$scope.currentQuestion - 1] = res.data.data;
             });
         }

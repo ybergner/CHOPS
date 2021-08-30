@@ -1,0 +1,31 @@
+{
+    "type" : "singleChoice",
+    "title" : "Collaborative Question title 6",
+    "versionA" : {
+        "text" : "Some text of the question 6 version A",
+        "option" : {
+            "a" : "First Choise version A Q6",
+            "b" : "Second Choice version A Q6",
+            "c" : "Third Choice version A Q6"
+        },
+        "checkAnswerSettings" : {
+            "methodName" : "matchSingleChoiceExample",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    },
+    "versionB" : {
+        "text" : "Some text of the question 6 version B",
+        "image" : "600x400.png",
+        "option" : {
+            "a" : "First Choise version B Q6",
+            "b" : "Second Choice version B Q6",
+            "c" : "Third Choice version B Q6"
+        },
+        "checkAnswerSettings" : {
+            "methodName" : "matchSingleChoiceExample",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    }
+}

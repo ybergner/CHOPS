@@ -1,10 +1,11 @@
 'use strict';
 var sessionRouter = require('../router/sessionRouter.js');
 var questionRouter = require('../router/questionRouter.js');
+var Answer = require('../data/answerSchema.js');
 var utils = {};
 
 utils.setUpSocket = function(io) {
-    const accountSessionSocketMap = {}; // { accountA : {session : session, isConnect : true/fasle, socket : socket }}
+    const accountSessionSocketMap = {}; // { accountA : {session : session, isConnect : true/fasle, socket : socket, currentWaitingCheckAttempt : { attempt: {question: question, answer: answer} } }}
     const accountQueue = [];
     var counter = 0;
     io.on('connection', function(socket) {
@@ -19,13 +20,27 @@ utils.setUpSocket = function(io) {
                 accountSessionSocketMap[data.account.accountId].socket = socket;
                 accountSessionSocketMap[data.account.accountId].accountName = data.account.accountName;
                 accountSessionSocketMap[data.account.accountId].questionSetId = data.questionSetId;
+                accountSessionSocketMap[data.account.accountId].currentWaitingCheckAttempt = {};
                 sessionRouter.getSessionById(data.account.accountId, data.questionSetId).then(function(sessions) {
                     if (sessions && sessions.length) {
                         accountSessionSocketMap[data.account.accountId].session = sessions[0] || {};
                         let isA = accountSessionSocketMap[data.account.accountId].session.accountAId === data.account.accountId;
-                        socket.emit('account received', {
-                            session : accountSessionSocketMap[data.account.accountId].session,
-                            questionSet : questionRouter.getQuestionSet(data.questionSetId, isA)
+                        let otherAccountId = isA ? accountSessionSocketMap[data.account.accountId].session.accountBId : accountSessionSocketMap[data.account.accountId].session.accountAId;
+                        Answer.find({accountId: otherAccountId, questionSetId: data.questionSetId, currentGiveUpNumber: null}).lean().exec(function(err, result) {
+                            let otherAttemptAnswers = [];
+                            if (err) {
+                                console.log('Cannot get answer ' + req.params.accountId);
+                            }
+                            if (result && result.length) {
+                                for (let answer of result[0].answers) {
+                                    otherAttemptAnswers.push(answer.attemptedAnswers);
+                                }
+                            }
+                            socket.emit('account received', {
+                                otherAttemptAnswers: otherAttemptAnswers,
+                                session : accountSessionSocketMap[data.account.accountId].session,
+                                questionSet : questionRouter.getQuestionSet(data.questionSetId, isA)
+                            });
                         });
                     } else {
                         accountSessionSocketMap[data.account.accountId].session = {};
@@ -56,6 +71,7 @@ utils.setUpSocket = function(io) {
                         accountSessionSocketMap[matchedAccountId].isConnect = true;
                         accountSessionSocketMap[matchedAccountId].socket._roomName = accountSessionSocketMap[socket._userName].session._id.toString();
                         // make reference the same
+                        accountSessionSocketMap[matchedAccountId].currentWaitingCheckAttempt = accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt;
                         accountSessionSocketMap[matchedAccountId].session = accountSessionSocketMap[socket._userName].session;
                         socket.join(socket._roomName);
                         accountSessionSocketMap[matchedAccountId].socket.join(socket._roomName);
@@ -97,6 +113,7 @@ utils.setUpSocket = function(io) {
                         accountSessionSocketMap[matchedAccountId].socket._roomName = "First Time Room " + counter;
                         accountSessionSocketMap[matchedAccountId].isConnect = true;
                         // make reference the same
+                        accountSessionSocketMap[matchedAccountId].currentWaitingCheckAttempt = accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt;
                         accountSessionSocketMap[matchedAccountId].session = accountSessionSocketMap[socket._userName].session;
                         counter++;
                         socket.join(socket._roomName);
@@ -144,6 +161,7 @@ utils.setUpSocket = function(io) {
             if (index > -1) {
                 accountQueue.splice(index, 1);
             }
+            accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt = undefined;
             delete accountSessionSocketMap[socket._userName];
             if (socket._roomName) {
                 let message = isGiveUp ? 'give up leaving' : 'leave';
@@ -155,6 +173,7 @@ utils.setUpSocket = function(io) {
             if (accountSessionSocketMap[socket._userName] && !accountSessionSocketMap[socket._userName].session.currentGiveUpNumber) {
                 sessionRouter.getSessionCurrentGiveUpNumber(accountSessionSocketMap[socket._userName].session).then(function(num) {
                     accountSessionSocketMap[socket._userName].session.currentGiveUpNumber = num;
+                    accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt = undefined;
                     socket.emit('give up completed', {});
                 });
             }
@@ -168,6 +187,26 @@ utils.setUpSocket = function(io) {
             let message = { accountId : socket._userName, message : data, createdDate : new Date() };
             accountSessionSocketMap[socket._userName].session.messages.push(message);
             io.in(socket._roomName).emit('new message', message);
+        });
+
+        socket.on('clear check attempt', function(data){
+            accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt = undefined;
+        });
+
+        socket.on('new check attempt', function(data) {
+            if (socket._userName == "invalid_socket") {
+                socket.emit('account already has socket', {});
+                return;
+            }
+            if (!accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt) {
+                accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt = data;
+            } else if (accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt.question != data.question) {
+                socket.emit('unmatched check answer', accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt.question);
+            } else {
+                socket.to(socket._roomName).emit('check answer', { question: data.question, answer: data.answer });
+                socket.emit('check answer', { question: data.question, answer: accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt.answer });
+                accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt = undefined;
+            }
         });
 
     });

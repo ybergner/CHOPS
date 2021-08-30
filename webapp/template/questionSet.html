@@ -51,6 +51,42 @@
   </div>
 </div>
 
+<div class="modal fade" id="warningOtherCheckModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="warningOtherCheckModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="warningOtherCheckModalTitle">Warning</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          You cannot check different question's answers at the same time. Your collaborator is currently waiting for your answers in question #{{errorOtherCurrentlyCheckQuestion}}.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="attemptModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="attemptModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="attamptModalTitle">Check Answer</h5>
+      </div>
+      <div class="modal-body">
+          <span class="spinner-border spinner-border-sm"></span>
+          Please wait for your collaborator to enter answer in order to check your answers. You can cancel and re-check again later.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" ng-click="cancelAttempts()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div ng-class="{'question-section' : currentQuestionSet.isCollaborative}">
     <div ng-class="{'container-fluid' : currentQuestionSet.isCollaborative, 'container' : !currentQuestionSet.isCollaborative}">
         <div class="card">
@@ -71,7 +107,7 @@
               <button class="page-link" ng-click="prev()" ng-disabled="currentQuestion <= 1">Previous</button>
             </li>
             <li class="page-item" ng-class="{'disabled' : !validateAnswer()}"
-                ng-if="currentQuestionSet.questions[currentQuestion - 1].type !== 'multipleOpenQuestion' && currentQuestionSet.questions[currentQuestion - 1].hasCheckAnswerSettings && 
+                ng-if="currentQuestionSet.questions[currentQuestion - 1].type !== 'multipleOpenQuestion' && currentQuestionSet.questions[currentQuestion - 1].hasCheckAnswerSettings &&
                 !answersObject.isSubmitted && !(currentQuestionSet.questions[currentQuestion - 1].maxAttempts &&
                 answers[currentQuestion - 1].attemptedAnswers && currentQuestionSet.questions[currentQuestion - 1].maxAttempts <= answers[currentQuestion - 1].attemptedAnswers.length)">
               <button class="page-link" ng-click="checkAttempt()" ng-disabled="!validateAnswer()">
