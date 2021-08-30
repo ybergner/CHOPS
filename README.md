@@ -18,7 +18,8 @@ To create questions, you need to update the json in `data/questions.json` in lin
 Each question will have `type` : 'singleChoice' | 'multipleChoice' | 'openQuestion' | 'multipleOpenQuestion',
 `title`, `text`, `image`, `option`, `latex`. (For 'multipleOpenQuestion' you also need to define `multipleOpenQuestionSymbol`)
 If the question set is collaborative, each question will also have `maxHintAllowedPerPerson`, `versionA`, `verionsB`, `checkAnswerSettings`, `hint`, and `hintText`.
-`checkAnswerSettings` accepts the following inputs: `methodName`, `methodParams`, and `maxAttempts`.
+`checkAnswerSettings` accepts the following inputs: `methodName`, `methodParams`, `maxAttempts`, and `hasTwoSideChecks`. If you specify `hasTwoSideChecks` to true, for best
+practice you should make sure both versionA and versionB settings are identical in order for it to work.
 (For 'multipleOpenQuestion' you need to define `checkAnswerSettings` by each key in `multipleOpenQuestionSymbol`)
 
 

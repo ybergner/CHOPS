@@ -46,20 +46,21 @@ router.get('/answer/:accountId/:questionSetId', function(req, res) {
 // check answers
 router.post('/checkAnswer', function(req, res) {
     if (req.body.data && req.body.data.length) {
-        let feedbacks = [], type = questionRouter.getQuestionType(req.body.questionSetId, req.body.questionId);
+        let feedbacks = [], type = questionRouter.getQuestionType(req.body.questionSetId, req.body.questionId), otherAttemptObject = req.body.otherAttempts ? req.body.otherAttempts : [];
         if (type === 'multipleOpenQuestion') {
-            for (let attempt of req.body.data) {
-                let fb = {};
+            for (let index in req.body.data) {
+                let fb = {}, attempt = req.body.data[index], otherAttempt = otherAttemptObject[index];
                 for (let letter in attempt.multipleOpenQuestion) {
                     if (attempt.multipleOpenQuestion[letter] != null) {
-                        fb[letter] = questionRouter.checkAnswers(attempt, req.body.questionSetId, req.body.questionId, req.body.isA, letter);
+                        fb[letter] = questionRouter.checkAnswers(attempt, req.body.questionSetId, req.body.questionId, req.body.isA, letter, otherAttempt);
                     }
                 }
                 feedbacks.push(fb);
             }
         } else {
-            for (let attempt of req.body.data) {
-                feedbacks.push(questionRouter.checkAnswers(attempt, req.body.questionSetId, req.body.questionId, req.body.isA));
+            for (let index in req.body.data) {
+                let attempt = req.body.data[index], otherAttempt = otherAttemptObject[index];
+                feedbacks.push(questionRouter.checkAnswers(attempt, req.body.questionSetId, req.body.questionId, req.body.isA, null, otherAttempt));
             }
         }
         res.json({success : true, data : feedbacks});

@@ -123,18 +123,21 @@ var setUpMapping = function(questionMap, latexMap) {
                 if (collaborativeQ.questions[index].versionA.checkAnswerSettings) {
                     collaborativeQ.questions[index].versionA.hasCheckAnswerSettings = true;
                     if (collaborativeQ.questions[index].type === 'multipleOpenQuestion') {
+                        collaborativeQ.questions[index].versionA.hasTwoSideChecks = {};
                         collaborativeQ.questions[index].versionA.maxAttempts = {};
                         collaborativeQ.questions[index].versionA.checkAnswers = {};
                         for (let letter in collaborativeQ.questions[index].versionA.checkAnswerSettings) {
+                            collaborativeQ.questions[index].versionA.hasTwoSideChecks[letter] = collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].hasTwoSideChecks;
                             collaborativeQ.questions[index].versionA.maxAttempts[letter] = collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].maxAttempts;
-                            collaborativeQ.questions[index].versionA.checkAnswers[letter] = function(answer) {
-                                return checkAnswerSettingUtils[collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].methodName](answer, collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].methodParams);
+                            collaborativeQ.questions[index].versionA.checkAnswers[letter] = function(answer, otherAnswer) {
+                                return checkAnswerSettingUtils[collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].methodName](answer, collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].methodParams, otherAnswer);
                             };
                         }
                     } else {
+                        collaborativeQ.questions[index].versionA.hasTwoSideChecks = collaborativeQ.questions[index].versionA.checkAnswerSettings.hasTwoSideChecks;
                         collaborativeQ.questions[index].versionA.maxAttempts = collaborativeQ.questions[index].versionA.checkAnswerSettings.maxAttempts;
-                        collaborativeQ.questions[index].versionA.checkAnswers = function (answer) {
-                            return checkAnswerSettingUtils[collaborativeQ.questions[index].versionA.checkAnswerSettings.methodName](answer, collaborativeQ.questions[index].versionA.checkAnswerSettings.methodParams);
+                        collaborativeQ.questions[index].versionA.checkAnswers = function (answer, otherAnswer) {
+                            return checkAnswerSettingUtils[collaborativeQ.questions[index].versionA.checkAnswerSettings.methodName](answer, collaborativeQ.questions[index].versionA.checkAnswerSettings.methodParams, otherAnswer);
                         };
                     }
                 } else {
@@ -143,18 +146,21 @@ var setUpMapping = function(questionMap, latexMap) {
                 if (collaborativeQ.questions[index].versionB.checkAnswerSettings) {
                     collaborativeQ.questions[index].versionB.hasCheckAnswerSettings = true;
                     if (collaborativeQ.questions[index].type === 'multipleOpenQuestion') {
+                        collaborativeQ.questions[index].versionB.hasTwoSideChecks = {};
                         collaborativeQ.questions[index].versionB.maxAttempts = {};
                         collaborativeQ.questions[index].versionB.checkAnswers = {};
                         for (let letter in collaborativeQ.questions[index].versionB.checkAnswerSettings) {
+                            collaborativeQ.questions[index].versionB.hasTwoSideChecks[letter] = collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].hasTwoSideChecks;
                             collaborativeQ.questions[index].versionB.maxAttempts[letter] = collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].maxAttempts;
-                            collaborativeQ.questions[index].versionB.checkAnswers[letter] = function(answer) {
-                                return checkAnswerSettingUtils[collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].methodName](answer, collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].methodParams);
+                            collaborativeQ.questions[index].versionB.checkAnswers[letter] = function(answer, otherAnswer) {
+                                return checkAnswerSettingUtils[collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].methodName](answer, collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].methodParams, otherAnswer);
                             };
                         }
                     } else {
+                        collaborativeQ.questions[index].versionB.hasTwoSideChecks = collaborativeQ.questions[index].versionB.checkAnswerSettings.hasTwoSideChecks;
                         collaborativeQ.questions[index].versionB.maxAttempts = collaborativeQ.questions[index].versionB.checkAnswerSettings.maxAttempts;
-                        collaborativeQ.questions[index].versionB.checkAnswers = function (answer) {
-                            return checkAnswerSettingUtils[collaborativeQ.questions[index].versionB.checkAnswerSettings.methodName](answer, collaborativeQ.questions[index].versionB.checkAnswerSettings.methodParams);
+                        collaborativeQ.questions[index].versionB.checkAnswers = function (answer, otherAnswer) {
+                            return checkAnswerSettingUtils[collaborativeQ.questions[index].versionB.checkAnswerSettings.methodName](answer, collaborativeQ.questions[index].versionB.checkAnswerSettings.methodParams, otherAnswer);
                         };
                     }
                 } else {
@@ -219,10 +225,13 @@ router.getQuestionType = function(questionSetId, questionId) {
     return questionSetMap[questionSetId].questions[questionId - 1].type;
 };
 
-router.checkAnswers = function(answerObject, questionSetId, questionId, isA, letter) {
-    let answer;
+router.checkAnswers = function(answerObject, questionSetId, questionId, isA, letter, otherAnswerObject) {
+    let answer, otherAnswer;
     if (questionSetMap[questionSetId].questions[questionId - 1].type == 'singleChoice') {
         answer = answerObject.singleChoice;
+        if (otherAnswerObject) {
+            otherAnswer = otherAnswerObject.singleChoice;
+        }
     } else if (questionSetMap[questionSetId].questions[questionId - 1].type == 'multipleChoice') {
         answer = [];
         for (const property in answerObject.multipleChoice) {
@@ -231,24 +240,39 @@ router.checkAnswers = function(answerObject, questionSetId, questionId, isA, let
             }
         }
         answer.sort();
+        if (otherAnswerObject) {
+            otherAnswer = [];
+            for (const property in otherAnswerObject.multipleChoice) {
+                if (otherAnswerObject.multipleChoice[property]) {
+                    otherAnswer.push(property);
+                }
+            }
+            otherAnswer.sort();
+        }
     } else if (questionSetMap[questionSetId].questions[questionId - 1].type == 'openQuestion') {
         answer = answerObject.openQuestion;
+        if (otherAnswerObject) {
+            otherAnswer = otherAnswerObject.openQuestion;
+        }
     } else if (questionSetMap[questionSetId].questions[questionId - 1].type == 'multipleOpenQuestion') {
         answer = answerObject.multipleOpenQuestion[letter];
+        if (otherAnswerObject) {
+            otherAnswer = otherAnswerObject.multipleOpenQuestion[letter];
+        }
         if (!questionSetMap[questionSetId].isCollaborative) {
             return questionSetMap[questionSetId].questions[questionId - 1].checkAnswers[letter](answer);
         } else if (isA) {
-            return questionSetMap[questionSetId].questions[questionId - 1].versionA.checkAnswers[letter](answer);
+            return questionSetMap[questionSetId].questions[questionId - 1].versionA.checkAnswers[letter](answer, otherAnswer);
         } else {
-            return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers[letter](answer);
+            return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers[letter](answer, otherAnswer);
         }
     }
     if (!questionSetMap[questionSetId].isCollaborative) {
         return questionSetMap[questionSetId].questions[questionId - 1].checkAnswers(answer);
     } else if (isA) {
-        return questionSetMap[questionSetId].questions[questionId - 1].versionA.checkAnswers(answer);
+        return questionSetMap[questionSetId].questions[questionId - 1].versionA.checkAnswers(answer, otherAnswer);
     } else {
-        return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers(answer);
+        return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers(answer, otherAnswer);
     }
 };
 

@@ -5,11 +5,11 @@
             "name" : "Test Temp",
             "isHidden" : true,
             "questions" : [
-                "1.json",
-                "2.json",
-                "3.json",
-                "latex_example_1.json",
-                "latex_example_2.json"
+                "individual_single_choice_example.json",
+                "individual_multi_choice_example.json",
+                "individual_open_question_example.json",
+                "individual_latex_example_1.json",
+                "individual_latex_example_2.json"
             ]
         }
     ],
@@ -19,10 +19,12 @@
             "name" : "Test Temp",
             "isHidden" : true,
             "questions" : [
-                "4.json",
-                "5.json",
-                "6.json",
-                "multiple_open_question_ex.json"
+                "collaborative_single_choice_example.json",
+                "collaborative_multi_choice_example.json",
+                "collaborative_open_question_with_check_answer_example.json",
+                "collaborative_multi_open_question_with_check_answer_example.json",
+                "collaborative_single_choice_with__two_sides_check_answer_example.json",
+                "collaborative_open_question_with__two_sides_check_answer_example.json"
             ]
         },
         {

@@ -1,0 +1,27 @@
+{
+    "type" : "openQuestion",
+    "title" : "Combination",
+    "maxHintAllowedPerPerson" : 1,
+    "versionA" : {
+        "text" : "Bob uses a code to lock his phone. Select your hint to continue",
+        "image" : "Q3A.jpg",
+        "hint" : {
+            "a" : "Select your hint to continue"
+        },
+        "hintText" : {
+            "a" : "Bob uses a 4-digit code to lock his phone. He cannot remember what the code is, but he remembers that it uses distinct numbers. He decided to try all possible codes. In the worst case, how many different codes would Bob has to try?"
+        },
+        "option" : {}
+    },
+    "versionB" : {
+        "text" : "Bob uses a code to lock his phone. Select your hint to continue",
+        "image" : "Q3B.jfif",
+        "hint" : {
+            "f" : "Sixth Hint version B"
+        },
+        "hintText" : {
+            "f" : "Bob uses a code to lock his phone. He cannot remember what the code is, but he remembers that it contains only odd numbers and no number repeats more than once. He decided to try all possible codes (order matters) that use these five numbers. In the worst case, how many different codes would Bob have to try?"
+        },
+        "option" : {}
+    }
+}
