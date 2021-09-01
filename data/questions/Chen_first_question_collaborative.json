@@ -1,0 +1,30 @@
+{
+    "type" : "singleChoice",
+    "title" : "First Question Professor Chen_Collaborative part",
+    "versionA" : {
+        "latex" : "Professor_Chen_first_question_A_collaborative.tex",
+        "option" : {
+            "a" : "Dart 1",
+            "b" : "Dart 2",
+            "c" : "Dart 3"
+        },
+        "checkAnswerSettings" : {
+            "methodName" : "matchSingleChoiceExample",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    },
+    "versionB" : {
+        "latex" : "Professor_Chen_first_question_B_collaborative.tex",
+        "option" : {
+            "a" : "Spring 1",
+            "b" : "Spring 2",
+            "c" : "Spring 3"
+        },
+        "checkAnswerSettings" : {
+            "methodName" : "matchSingleChoiceExample",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    }
+}

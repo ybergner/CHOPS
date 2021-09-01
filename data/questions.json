@@ -3,7 +3,7 @@
         {
             "questionSetId" : "Temp",
             "name" : "Test Temp",
-            "isHidden" : true,
+            "isHidden" : false,
             "questions" : [
                 "individual_single_choice_example.json",
                 "individual_multi_choice_example.json",
@@ -17,7 +17,7 @@
         {
             "questionSetId" : "Temp_collaborative",
             "name" : "Test Temp",
-            "isHidden" : true,
+            "isHidden" : false,
             "questions" : [
                 "collaborative_single_choice_example.json",
                 "collaborative_multi_choice_example.json",
@@ -60,7 +60,7 @@
         {
             "questionSetId" : "Jiading_1",
             "name" : "嘉定二中-一",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "quartic equation C.json",
                 "draw a chip C.json",
@@ -70,7 +70,7 @@
         {
             "questionSetId" : "Jiading_2",
             "name" : "嘉定二中-二",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "dead battery C.json",
                 "puppy C.json",
@@ -80,7 +80,7 @@
         {
             "questionSetId" : "Jiading_final",
             "name" : "嘉定二中-期末",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "odd_even number C.json",
                 "puppy C.json",
@@ -88,7 +88,7 @@
             ]
         },
         {
-            "questionSetId" : "Example questions with attempts",
+            "questionSetId" : "Example_questions_with_attempts",
             "name" : "Example questions with attempts",
             "isHidden" : false,
             "questions" : [
@@ -98,11 +98,12 @@
             ]
         },
         {
-            "questionSetId" : "Professor Chen's first question",
+            "questionSetId" : "Professor_Chen_first_question",
             "name" : "Professor Chen's first question",
             "isHidden" : false,
             "questions" : [
-                "Chen's first question.json"
+                "Chen_first_question.json",
+                "Chen_first_question_collaborative.json"
             ]
         }
     ]

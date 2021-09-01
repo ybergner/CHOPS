@@ -1,7 +1,7 @@
 <nav class="navbar navbar-light bg-light flex-pull-right">
     <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#giveUpModal"
         ng-if="(!currentQuestionSet.isCollaborative && answersObject.isSubmitted && !answersObject.currentGiveUpNumber) || (currentQuestionSet.isCollaborative && session && !session.currentGiveUpNumber)">
-        Exit
+        Give Up(whole question set)
     </button>
     <button class="btn btn-primary" type="button" ng-click="home()">
         Home
@@ -118,7 +118,7 @@
               <button class="page-link" ng-click="next()" ng-disabled="currentQuestion >= currentQuestionSet.numOfQuestions || !validateAnswer()">Next</button>
             </li>
             <li class="page-item" ng-show="currentQuestion == currentQuestionSet.numOfQuestions && !answersObject.isSubmitted" ng-class="{'disabled' : !validateAnswer()}">
-              <button class="page-link" ng-disabled="!validateAnswer()" data-toggle="modal" data-target="#submitModal">Submit</button>
+              <button class="page-link" ng-disabled="!validateAnswer()" data-toggle="modal" data-target="#submitModal">Submit(the whole question set)</button>
             </li>
           </ul>
         </nav>

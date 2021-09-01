@@ -49,26 +49,26 @@ utils.matchInRange = function(answer, params) {
 utils.matchBothSumLessThan = function(answer, params, otherAnswer) {
     if (Number(answer) + Number(otherAnswer) < params) {
         return {
-            feedback: 'You both got it',
+            feedback: 'You and your partner got it right',
             isCorrected: true
         }
     } else {
         return {
-            feedback: 'Your answer is too big, check with each other and try another value',
+            feedback: 'The combination of your answers is too big, check with each other and try another value',
             isCorrected: false
         }
     }
 };
 
 utils.matchSingleChoiceExample = function(answer, params, otherAnswer) {
-    if (answer == 'a' && otherAnswer == 'b' || answer == 'b' && otherAnswer == 'a') {
+    if (answer == 'b' && otherAnswer == 'b' || answer == 'c' && otherAnswer == 'c') {
         return {
-            feedback: 'You both got it right',
+            feedback: 'You and your partner got it right',
             isCorrected: true
         }
     } else {
         return {
-            feedback: 'Your answer is wrong, check with each other and try another value',
+            feedback: 'The combination of your answers is wrong, check with each other and try another value',
             isCorrected: false
         }
     }

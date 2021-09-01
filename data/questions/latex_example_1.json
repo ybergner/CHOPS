@@ -1,8 +1,7 @@
 {
     "type" : "openQuestion",
     "title" : "Question title 8",
-    "latex" : "1.tex",
+    "latex" : "Professor_Chen_first_question_B.tex",
     "text" : "Some text of the question 8",
-    "image" : "600x400.png",
     "option" : {}
 }

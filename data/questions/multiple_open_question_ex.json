@@ -1,9 +1,10 @@
 {
     "type" : "multipleOpenQuestion",
-    "title" : "Collaborative Question title 4",
+    "title" : "multiple Blanks Example",
     "versionA" : {
         "text" : "Some text of the question 4 version A. (a) (b) (c)",
         "image" : "600x400.png",
+        "latex" : "1.tex",
         "option" : {},
         "multipleOpenQuestionSymbol" : ["a", "b", "c"],
         "checkAnswerSettings" : {
@@ -27,6 +28,7 @@
     "versionB" : {
         "text" : "Some text of the question 4 version B. (a) (b) (c)",
         "image" : "600x400.png",
+        "latex" : "2.tex",
         "option" : {},
         "multipleOpenQuestionSymbol" : ["a", "b", "c"],
         "checkAnswerSettings" : {

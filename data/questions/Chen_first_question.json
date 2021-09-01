@@ -1,0 +1,48 @@
+{
+    "type" : "multipleOpenQuestion",
+    "title" : "First Question Professor Chen",
+    "versionA" : {
+        "latex" : "Professor_Chen_first_question_A.tex",
+        "option" : {},
+        "multipleOpenQuestionSymbol" : ["A", "B", "C"],
+        "checkAnswerSettings" : {
+            "A" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [1, 4],
+                "maxAttempts" : 3
+            },
+            "B" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [1, 4],
+                "maxAttempts" : 3
+            },
+            "C" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [1, 4],
+                "maxAttempts" : 3
+            }
+        }
+    },
+    "versionB" : {
+        "latex" : "Professor_Chen_first_question_B.tex",
+        "option" : {},
+        "multipleOpenQuestionSymbol" : ["A", "B", "C"],
+        "checkAnswerSettings" : {
+            "A" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [1, 4],
+                "maxAttempts" : 3
+            },
+            "B" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [1, 4],
+                "maxAttempts" : 3
+            },
+            "C" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [5, 8],
+                "maxAttempts" : 3
+            }
+        }
+    }
+}
