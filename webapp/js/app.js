@@ -594,7 +594,8 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     };
 
     $scope.checkAttempt = function(letter, skipTwoSideCheck) {
-        if (skipTwoSideCheck || !$scope.currentQuestionSet.questions[$scope.currentQuestion - 1].hasTwoSideChecks) {
+        if (skipTwoSideCheck || !$scope.currentQuestionSet.questions[$scope.currentQuestion - 1].hasTwoSideChecks ||
+            (letter && !$scope.currentQuestionSet.questions[$scope.currentQuestion - 1].hasTwoSideChecks[letter])) {
             if ($scope.isTeacher) {
                 if (!$scope.answers[$scope.currentQuestion - 1].attemptedAnswers) {
                     $scope.answers[$scope.currentQuestion - 1].attemptedAnswers = [];
