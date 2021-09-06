@@ -1,4 +1,5 @@
 'use strict';
+const { evaluate } = require('mathjs');
 var utils = {};
 // all method should return { feedback: string, isCorrected: boolean }, you dont need to pass feedback if you dont want to for corrected answer, defaul will be just showned 'Corrected'
 
@@ -46,8 +47,8 @@ utils.matchInRange = function(answer, params) {
     }
 };
 
-utils.matchBothSumLessThan = function(answer, params, otherAnswer) {
-    if (Number(answer) + Number(otherAnswer) < params) {
+utils.matchBothSumLessThan = function(answerA, params, answerB) {
+    if (Number(answerA) + Number(answerB) < params) {
         return {
             feedback: 'You both got it',
             isCorrected: true
@@ -60,8 +61,8 @@ utils.matchBothSumLessThan = function(answer, params, otherAnswer) {
     }
 };
 
-utils.matchSingleChoiceExample = function(answer, params, otherAnswer) {
-    if (answer == 'a' && otherAnswer == 'b' || answer == 'b' && otherAnswer == 'a') {
+utils.matchSingleChoiceExample = function(answerA, params, answerB) {
+    if (answerA == 'a' && answerB == 'b' || answerA == 'b' && answerB == 'a') {
         return {
             feedback: 'You both got it right',
             isCorrected: true
@@ -74,5 +75,20 @@ utils.matchSingleChoiceExample = function(answer, params, otherAnswer) {
     }
 };
 
+utils.checkTwoVariableFormula = function(answerA, formula, answerB) {
+    let a = Number(answerA), b = Number(answerB), expression = formula.split('=');
+    let updateFormula = `(${expression[0]}) - (${expression[1]})`;
+    if (evaluate(updateFormula, {a : a, b: b}) === 0) {
+        return {
+            feedback: 'The answers are corrected based on formula',
+            isCorrected: true
+        }
+    } else {
+        return {
+            feedback: 'The answers are wrong based on formula',
+            isCorrected: false
+        }
+    }
+};
 
 module.exports = utils;

@@ -1,0 +1,24 @@
+{
+    "type" : "openQuestion",
+    "title" : "Collaborative Question title 6",
+    "versionA" : {
+        "text" : "a/7+b^3=10 version A",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "checkTwoVariableFormula",
+            "methodParams" : "a/7+b^3=10",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    },
+    "versionB" : {
+        "text" : "a/7+b^3=10 version B",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "checkTwoVariableFormula",
+            "methodParams" : "a/7+b^3=10",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    }
+}
