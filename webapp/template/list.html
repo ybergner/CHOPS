@@ -2,6 +2,9 @@
     <button ng-if="isTeacher" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#createAccount" aria-expanded="false" aria-controls="createAccount">
         Create Account
     </button>
+    <button ng-if="isTeacher" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#validateFormula" aria-expanded="false" aria-controls="validateFormula">
+        Validate Formula
+    </button>
     <button ng-if="isTeacher" class="btn btn-primary" type="button" ng-click="downloadReport()">
         Download Report
     </button>
@@ -45,6 +48,52 @@
                   </div>
                   <button class="btn btn-primary pull-right" ng-click="createAccount()">Submit</button>
                 </form>
+            </div>
+        </div>
+        <div class="collapse card" id="validateFormula">
+            <div class="card-header">
+                <h4>Validate Formula</h4>
+            </div>
+            <div class="card-body">
+                <form>
+                  <div class="form-group">
+                    <label for="formula">Formula</label>
+                    <input type="text" class="form-control" id="formula" ng-model="validateFormulaInfo.formula">
+                  </div>
+                  <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="a">Variable a</label>
+                        <input type="text" class="form-control" id="a" ng-model="validateFormulaInfo.a">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="b">Variable b</label>
+                        <input type="text" class="form-control" id="b" ng-model="validateFormulaInfo.b">
+                      </div>
+                  </div>
+                  <button class="btn btn-primary pull-right" ng-click="validateFormula()" ng-disabled="!isValiateFormulaValid()">Submit</button>
+                </form>
+                <div class="mt-1">
+                    <table class="table table-bordered" ng-if="validateFormulaHistory.length">
+                        <thead>
+                            <tr>
+                                <th class="formula-header">Formula</th>
+                                <th class="a-header">a</th>
+                                <th class="b-header">b</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="value in validateFormulaHistory"
+                                ng-class="{'table-success': value.isCorrected, 'table-danger': !value.isCorrected}">
+                                <td>{{ value.formula }}</td>
+                                <td>{{ value.a }}</td>
+                                <td>{{ value.b }}</td>
+                                <td ng-if="!value.isError">{{ value.isCorrected ? 'Corrected' : 'Wrong' }}</td>
+                                <td ng-if="value.isError">Error</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="row">

@@ -120,6 +120,9 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
         },
         checkAnswer : function(questionSetId, questionId, isA, data, otherAttempts) {
             return $http.post('api/checkAnswer', {questionSetId: questionSetId, questionId: questionId, isA: isA, data: data, otherAttempts: otherAttempts});
+        },
+        validateFormula: function(formula, a, b) {
+            return $http.post('api/validateFormula', {formula: formula, a: a, b: b});
         }
     };
 }]);
@@ -412,6 +415,27 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
                 });
             }
         };
+        $scope.validateFormulaInfo = {};
+        $scope.validateFormulaHistory = [];
+        $scope.validateFormula = function() {
+            answerService.validateFormula($scope.validateFormulaInfo.formula, $scope.validateFormulaInfo.a, $scope.validateFormulaInfo.b).then(function(res) {
+                $scope.validateFormulaHistory.push({formula: $scope.validateFormulaInfo.formula, a: $scope.validateFormulaInfo.a, b: $scope.validateFormulaInfo.b, isCorrected: res.data.data});
+            }, function(err) {
+                $scope.validateFormulaHistory.push({formula: $scope.validateFormulaInfo.formula, a: $scope.validateFormulaInfo.a, b: $scope.validateFormulaInfo.b, isError: true});
+            });
+        }
+        $scope.isValiateFormulaValid = function() {
+            if ($scope.validateFormulaInfo.formula && $scope.validateFormulaInfo.a && $scope.validateFormulaInfo.b) {
+                if (!Number.isFinite(Number($scope.validateFormulaInfo.a)) || !Number.isFinite(Number($scope.validateFormulaInfo.b))) {
+                    return false;
+                }
+                if (!$scope.validateFormulaInfo.formula.includes('=') && !$scope.validateFormulaInfo.formula.includes('a') && !$scope.validateFormulaInfo.formula.includes('b')) {
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }
         $scope.allStudents = [];
         refreshStudentList();
         $scope.editAccount = function(student) {

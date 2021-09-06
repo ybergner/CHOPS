@@ -6,6 +6,7 @@ var Action = require('../data/actionSchema.js');
 var Enum = require('../data/enum.js');
 var utils = require('../data/utils.js');
 var questionRouter = require('./questionRouter.js');
+const { checkTwoVariableFormula } = require('../data/checkAnswerSettingUtils.js');
 
 // get answers by student id
 router.get('/answer/:accountId', function(req, res) {
@@ -184,6 +185,15 @@ router.post('/action', function(req, res) {
         });
     } else {
         res.status(404).send('Only student can save action');
+    }
+});
+
+// get answers by student id
+router.post('/validateFormula', function(req, res) {
+    if (req.body.formula && req.body.a && req.body.b) {
+        res.json({success : true, data : checkTwoVariableFormula(req.body.a, req.body.formula, req.body.b).isCorrected});
+    } else {
+        res.status(403).send('Getting empty data');
     }
 });
 
