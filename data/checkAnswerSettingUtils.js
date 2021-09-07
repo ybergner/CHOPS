@@ -76,19 +76,81 @@ utils.matchSingleChoiceExample = function(answerA, params, answerB) {
 };
 
 utils.checkTwoVariableFormula = function(answerA, formula, answerB) {
-    let a = Number(answerA), b = Number(answerB), expression = formula.split('=');
-    let updateFormula = `(${expression[0]}) - (${expression[1]})`;
-    if (evaluate(updateFormula, {a : a, b: b}) === 0) {
-        return {
-            feedback: 'The answers are corrected based on formula',
-            isCorrected: true
-        }
-    } else {
-        return {
-            feedback: 'The answers are wrong based on formula',
-            isCorrected: false
-        }
-    }
+	if (formula.includes('<=')){
+		let a = Number(answerA), b = Number(answerB), expression = formula.split('<=');
+    	let updateFormula = `(${expression[0]}) - (${expression[1]})`;
+    	if (evaluate(updateFormula, {a : a, b: b}) <= 0) {
+        	return {
+            	feedback: 'The answers are corrected based on formula',
+            	isCorrected: true
+        	}
+    	} else {
+        	return {
+            	feedback: 'The answers are wrong based on formula',
+            	isCorrected: false
+        	}
+		}
+	}
+	else if (formula.includes('>=')){
+		let a = Number(answerA), b = Number(answerB), expression = formula.split('>=');
+    	let updateFormula = `(${expression[0]}) - (${expression[1]})`;
+    	if (evaluate(updateFormula, {a : a, b: b}) >= 0) {
+        	return {
+            	feedback: 'The answers are corrected based on formula',
+            	isCorrected: true
+        	}
+    	} else {
+        	return {
+            	feedback: 'The answers are wrong based on formula',
+            	isCorrected: false
+        	}
+		}
+	}
+	else if (formula.includes('>')){
+		let a = Number(answerA), b = Number(answerB), expression = formula.split('>');
+    	let updateFormula = `(${expression[0]}) - (${expression[1]})`;
+    	if (evaluate(updateFormula, {a : a, b: b}) > 0) {
+        	return {
+            	feedback: 'The answers are corrected based on formula',
+            	isCorrected: true
+        	}
+    	} else {
+        	return {
+            	feedback: 'The answers are wrong based on formula',
+            	isCorrected: false
+        	}
+		}
+	}
+	else if (formula.includes('<')){
+		let a = Number(answerA), b = Number(answerB), expression = formula.split('<');
+    	let updateFormula = `(${expression[0]}) - (${expression[1]})`;
+    	if (evaluate(updateFormula, {a : a, b: b}) < 0) {
+        	return {
+            	feedback: 'The answers are corrected based on formula',
+            	isCorrected: true
+        	}
+    	} else {
+        	return {
+            	feedback: 'The answers are wrong based on formula',
+            	isCorrected: false
+        	}
+		}
+	}
+	else if (formula.includes('=')){
+		let a = Number(answerA), b = Number(answerB), expression = formula.split('=');
+    	let updateFormula = `(${expression[0]}) - (${expression[1]})`;
+    	if (evaluate(updateFormula, {a : a, b: b}) === 0) {
+        	return {
+            	feedback: 'The answers are corrected based on formula',
+            	isCorrected: true
+        	}
+    	} else {
+        	return {
+            	feedback: 'The answers are wrong based on formula',
+            	isCorrected: false
+        	}
+		}
+	}
 };
 
 module.exports = utils;
