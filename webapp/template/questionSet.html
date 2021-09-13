@@ -137,7 +137,7 @@
             <button type="button" class="btn btn-block btn-dark" disabled>Collaborator: {{isA ? session.accountBName : session.accountAName}}</button>
             <div class="message-box" id="message-box">
                 <div ng-repeat="msg in session.messages | orderBy : createdDate" class="single-message shadow px-2 py-1 mb-3 rounded clear"
-                    ng-class="{'text-primary bg-light pull-left' : msg.accountId != account.accountId, 'text-light bg-primary pull-right' : msg.accountId == account.accountId}">
+                    ng-class="{'text-primary bg-light pull-left' : msg.accountId != 'Admin' && msg.accountId != account.accountId, 'text-light bg-primary pull-right' : msg.accountId == account.accountId}">
                     <div>
                         <span>{{ msg.message }}</span>
                         <span class="message-time">{{ msg.createdDate | date : 'shortTime' }}</span>
