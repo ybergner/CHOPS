@@ -191,6 +191,8 @@ utils.setUpSocket = function(io) {
 
         socket.on('clear check attempt', function(data){
             accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt = undefined;
+            let message = { accountId : 'Admin', message : 'Your collaborator canceled the check answer attempt', createdDate : new Date() };
+            socket.to(socket._roomName).emit('new message', message);
         });
 
         socket.on('new check attempt', function(data) {
@@ -200,6 +202,8 @@ utils.setUpSocket = function(io) {
             }
             if (!accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt) {
                 accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt = data;
+                let message = { accountId : 'Admin', message : 'Your collaborator requested to check answer at question #' + data.question, createdDate : new Date() };
+                socket.to(socket._roomName).emit('new message', message);
             } else if (accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt.question != data.question) {
                 socket.emit('unmatched check answer', accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt.question);
             } else {
