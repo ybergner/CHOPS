@@ -315,7 +315,7 @@ app.factory('socketService', function() {
                 }
                 if (letter) {
                     let hasAnsObjCreated = false;
-                    for (let ans of scope.otherAttemptAnswers) {
+                    for (let ans of scope.otherAttemptAnswers[scope.currentQuestion - 1]) {
                         if (ans.multipleOpenQuestion && ans.multipleOpenQuestion[letter] == null) {
                             ans.multipleOpenQuestion[letter] = data.answer.multipleOpenQuestion[letter];
                             hasAnsObjCreated = true;

@@ -10,12 +10,13 @@
             "a" : {
                 "methodName" : "matchExact",
                 "methodParams" : 3,
-                "maxAttempts" : 1
+                "maxAttempts" : 2
             },
             "b" : {
-                "methodName" : "matchInList",
-                "methodParams" : [1, 2, 3, 4],
-                "maxAttempts" : 2
+                "methodName" : "matchBothSumLessThan",
+                "methodParams" : 10,
+                "maxAttempts" : 2,
+                "hasTwoSideChecks": true
             },
             "c" : {
                 "methodName" : "matchInRange",
@@ -33,12 +34,13 @@
             "a" : {
                 "methodName" : "matchExact",
                 "methodParams" : 5,
-                "maxAttempts" : 1
+                "maxAttempts" : 2
             },
             "b" : {
-                "methodName" : "matchInList",
-                "methodParams" : [5, 6, 7, 8],
-                "maxAttempts" : 2
+                "methodName" : "matchBothSumLessThan",
+                "methodParams" : 10,
+                "maxAttempts" : 2,
+                "hasTwoSideChecks": true
             },
             "c" : {
                 "methodName" : "matchInRange",
