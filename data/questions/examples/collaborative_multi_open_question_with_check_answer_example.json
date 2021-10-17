@@ -1,43 +1,52 @@
 {
-    "type" : "singleChoice",
-    "title" : "Right Triangle",
-    "maxHintAllowedPerPerson" : 1,
+    "type" : "multipleOpenQuestion",
+    "title" : "Collaborative Question title 4",
     "versionA" : {
-        "text" : "You will collaborate with your partner to solve the area of this triangle. The only thing you know is A=3, each of you can request one hint:",
-        "image" : "Rtriangle.svg",
-        "hint" : {
-            "a" : "B",
-            "b" : "C",
-            "c" : "Angle y"
-        },
-        "hintText" : {
-            "a" : "4",
-            "b" : "5",
-            "c" : "53 degree"
-        },
-        "option" : {
-            "a" : "area = 5",
-            "b" : "area = 6",
-            "c" : "area = 7"
+        "text" : "Some text of the question 4 version A. (a) (b) (c)",
+        "image" : "600x400.png",
+        "option" : {},
+        "multipleOpenQuestionSymbol" : ["a", "b", "c"],
+        "checkAnswerSettings" : {
+            "a" : {
+                "methodName" : "matchExact",
+                "methodParams" : 3,
+                "maxAttempts" : 2
+            },
+            "b" : {
+                "methodName" : "matchBothSumLessThan",
+                "methodParams" : 10,
+                "maxAttempts" : 2,
+                "hasTwoSideChecks": true
+            },
+            "c" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [1, 4],
+                "maxAttempts" : 3
+            }
         }
     },
     "versionB" : {
-        "text" : "You will collaborate with your partner to solve the area of this triangle. The only thing you know is A=3, each of you can request one hint:",
-        "image" : "Rtriangle.svg",
-        "hint" : {
-            "d" : "B",
-            "e" : "C",
-            "f" : "Angle y"
-        },
-        "hintText" : {
-            "d" : "4",
-            "e" : "5",
-            "f" : "53 degree"
-        },
-        "option" : {
-            "a" : "area = 5",
-            "b" : "area = 6",
-            "c" : "area = 7"
+        "text" : "Some text of the question 4 version B. (a) (b) (c)",
+        "image" : "600x400.png",
+        "option" : {},
+        "multipleOpenQuestionSymbol" : ["a", "b", "c"],
+        "checkAnswerSettings" : {
+            "a" : {
+                "methodName" : "matchExact",
+                "methodParams" : 5,
+                "maxAttempts" : 2
+            },
+            "b" : {
+                "methodName" : "matchBothSumLessThan",
+                "methodParams" : 10,
+                "maxAttempts" : 2,
+                "hasTwoSideChecks": true
+            },
+            "c" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [5, 8],
+                "maxAttempts" : 3
+            }
         }
     }
 }
