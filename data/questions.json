@@ -106,6 +106,15 @@
                 "Chen_first_question.json",
                 "Chen_first_question_collaborative.json"
             ]
+        },
+        {
+            "questionSetId" : "Professor_Chen_second_question",
+            "name" : "Professor Chen's second question",
+            "isHidden" : false,
+            "questions" : [
+                "Chen_second_question.json",
+                "Chen_second_question_collaborative.json"
+            ]
         }
     ]
 }

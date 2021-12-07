@@ -1,0 +1,26 @@
+{
+    "type" : "openQuestion",
+    "title" : "Second Question Professor Chen_Collaborative part",
+    "versionA" : {
+        "latex" : "Professor_Chen_second_question_A_collaborative.tex",
+        "image" : "Chen's second_A.png",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "checkTwoVariableFormula",
+            "methodParams" : "a+b=50;10.85<a;a<12.54;b>37.30;b<39.29",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    },
+    "versionB" : {
+        "latex" : "Professor_Chen_second_question_B_collaborative.tex",
+        "image" : "Chen's second_B.png",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "checkTwoVariableFormula",
+            "methodParams" : "a+b=50;10.85<a;a<12.54;b>37.30;b<39.29",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    }
+}
