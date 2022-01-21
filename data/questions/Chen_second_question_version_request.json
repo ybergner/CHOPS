@@ -1,0 +1,53 @@
+{
+    "type" : "openQuestion",
+    "title" : "Second Question Professor Chen Version Request",
+    "maxHintAllowedPerPerson" : 2,
+    "versionA" : {
+        "latex" : "Professor_Chen_second_question_A_version_request.tex",
+        "image" : "Chen's second_B.png",
+        "hint" : {
+            "a" : "weight of top secret new material agent 99 stolen",
+            "b" : "height from the bridge to the water surface",
+            "c" : "maximum speed the boat could taken",
+            "d" : "weight of the friendly agent on the boat",
+            "e" : "weight of Agent 99"
+        },
+        "hintText" : {
+            "a" : "Agent 99 has stolen a total of 50.0 kg of highly valuable top secret new material",
+            "b" : "water surface is 100.0 m below the bridge",
+            "c" : "if speed exceeds 6.0m/s, then agent risk sinking the boat!",
+            "d" : "The friendly agent weights 60.0 kg",
+            "e" : "Agent 99 weighs 75.0 kg"
+        },
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [39.15, 39.29],
+                "maxAttempts" : 3
+        }
+    },
+    "versionB" : {
+        "latex" : "Professor_Chen_second_question_B_version_request.tex",
+        "image" : "Chen's second_B.png",
+        "hint" : {
+            "a" : "weight of top secret new material agent 99 stolen",
+            "b" : "height from the bridge to the water surface",
+            "c" : "maximum speed the boat could taken",
+            "d" : "weight of the friendly agent on the boat",
+            "e" : "weight of Agent 99"
+        },
+        "hintText" : {
+            "a" : "Agent 99 has stolen a total of 50.0 kg of highly valuable top secret new material",
+            "b" : "water surface is 100.0 m below the bridge",
+            "c" : "if speed exceeds 6.0m/s, then agent risk sinking the boat!",
+            "d" : "The friendly agent weights 60.0 kg",
+            "e" : "Agent 99 weighs 75.0 kg"
+        },
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [39.15, 39.29],
+                "maxAttempts" : 3
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "type" : "openQuestion",
+    "title" : "Second Question Professor Chen Version Jigsaw",
+    "versionA" : {
+        "latex" : "Professor_Chen_second_question_A_version_jigsaw.tex",
+        "image" : "Chen's second_B.png",
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [39.15, 39.29],
+                "maxAttempts" : 3
+        }
+    },
+    "versionB" : {
+        "latex" : "Professor_Chen_second_question_B_version_jigsaw.tex",
+        "image" : "Chen's second_B.png",
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [39.15, 39.29],
+                "maxAttempts" : 3
+        }
+    }
+}

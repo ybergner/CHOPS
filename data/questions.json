@@ -113,7 +113,9 @@
             "isHidden" : false,
             "questions" : [
                 "Chen_second_question.json",
-                "Chen_second_question_collaborative.json"
+                "Chen_second_question_collaborative.json",
+                "Chen_second_question_version_jigsaw.json",
+                "Chen_second_question_version_request.json"
             ]
         }
     ]
