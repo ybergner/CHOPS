@@ -18,6 +18,30 @@ async function validateTeacher(data) {
 
 router.validateTeacher = validateTeacher;
 
+router.post('/createStudent', function(req, res){
+    Account.findOne({accountId : req.body.accountId}).lean().exec(function(err, result) {
+        if (err) {
+            console.log('Cannot find Student');
+            res.status(401).send('Cannot find Student');
+        } else {
+            if (result) {
+                res.status(401).send('Student Already Exists');
+            } else {
+                req.body.accountType = Enum.accountType.student;
+                req.body.accountName = req.body.accountId;
+                Account.create(req.body, function(err, student) {
+                  if (err) {
+                      console.log('Cannot create student');
+                      res.status(401).send("Cannot create student");
+                  } else {
+                      res.json({success : true, data : utils.convertToFrontEndObject(student, Enum.schemaType.account)});
+                  }
+                });
+            }
+        }
+    });
+});
+
 router.post('/validatePassword', function(req, res){
     Account.findOne({accountId : req.body.accountId, password : req.body.password}).lean().exec(function(err, result) {
         if (err) {
