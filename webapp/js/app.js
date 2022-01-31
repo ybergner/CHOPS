@@ -223,6 +223,16 @@ app.factory('accountService', ['$http', '$q', 'enums', function($http, $q, enums
             } else {
                 return $q.reject('No Permissions');
             }
+        },
+        createStudent: function(data) {
+            return $http.post('api/createStudent', {
+                accountId : data.accountId,
+                password : data.password
+            }).then(function(res) {
+                let account = res.data.data;
+                localStorage.setItem('accountInfo', JSON.stringify({account: account, lastUpdatedDate: new Date()}));
+                return account;
+            });
         }
     };
 }]);
@@ -370,8 +380,24 @@ app.controller('loginController', ['$scope', 'accountService', '$location', func
         // redirect
         $location.path('/');
     }
+    $scope.createStudent = function() {
+        if ($scope.accountId && $scope.password) {
+            $scope.error = null;
+            accountService.createStudent({
+                accountId : $scope.accountId,
+                password : $scope.password
+            }).then(function(account) {
+                $scope.account = account;
+                // redirect
+                $location.path('/');
+            }, function(error) {
+                $scope.error = error.data;
+            });
+        }
+    }
     $scope.submit = function() {
         if ($scope.accountId && $scope.password) {
+            $scope.error = null;
             accountService.loginAccount({
                 accountId : $scope.accountId,
                 password : $scope.password
@@ -380,7 +406,7 @@ app.controller('loginController', ['$scope', 'accountService', '$location', func
                 // redirect
                 $location.path('/');
             }, function(error) {
-                $scope.accountId = null;
+                $scope.error = error.data;
                 $scope.password = null;
             });
         }
