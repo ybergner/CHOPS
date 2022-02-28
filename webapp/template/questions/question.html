@@ -32,6 +32,9 @@
                 </div>
             </div>
             <div class="pull-right">
+                <button type="button" class="btn btn-outline-primary" ng-click="reselectHints()" ng-if="showReselectHints">
+                    Re-select Hints
+                </button>
                 <button type="button" class="btn btn-outline-primary" ng-click="selectHints()" ng-disabled="disableHints()">Get Hints</button>
             </div>
         </div>
@@ -40,7 +43,7 @@
         <div class="card-body">
             <h5 class="card-title">Your collaboration Answer</h5>
             <div class="form-group">
-                <input class="form-control" type="number" ng-disabled="answersObject.isSubmitted" ng-model="answers[currentQuestion - 1].collaborationAnswer">
+                <input class="form-control text-box" type="number" ng-disabled="answersObject.isSubmitted" ng-model="answers[currentQuestion - 1].collaborationAnswer">
             </div>
         </div>
     </div>
@@ -65,18 +68,17 @@
         </div>
     </div>
     <div ng-if="currentQuestionSet.questions[currentQuestion - 1].type === 'openQuestion'">
-        <textarea class="form-control" name="openQuestion" id="openQuestion" placeholder="Enter your answers here." rows="5"
+        <input type="text" class="form-control text-box" name="openQuestion" id="openQuestion" placeholder="Enter your answers here."
             ng-model="answers[currentQuestion - 1].answer.openQuestion"
-            ng-disabled="answersObject.isSubmitted">
-        </textarea>
+            ng-disabled="answersObject.isSubmitted" />
     </div>
     <div ng-if="currentQuestionSet.questions[currentQuestion - 1].type === 'multipleOpenQuestion'">
         <div ng-repeat="letter in currentQuestionSet.questions[currentQuestion - 1].multipleOpenQuestionSymbol" class="form-row my-2">
-            <div class="input-group col-sm-9">
+            <div class="input-group col-sm-3">
                 <div class="input-group-prepend">
                     <div class="input-group-text">{{letter}}</div>
                 </div>
-                <input type="text" class="form-control" name="{{'multipleOpenQuestion_' + letter}}" id="{{'multipleOpenQuestion_' + letter}}"
+                <input type="text" class="form-control text-box" name="{{'multipleOpenQuestion_' + letter}}" id="{{'multipleOpenQuestion_' + letter}}"
                     ng-model="answers[currentQuestion - 1].answer.multipleOpenQuestion[letter]"
                     ng-disabled="answersObject.isSubmitted" />
             </div>

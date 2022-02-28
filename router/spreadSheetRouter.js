@@ -121,8 +121,8 @@ var generateAndSendReportSheet = function(answers, hints, res) {
                     } else if (individualAnswers[i].answer.multipleOpenQuestion) {
                         ws.cell(rowNum, columnNumToStart).string(JSON.stringify(individualAnswers[i].answer.multipleOpenQuestion));
                     }
-                    if (individualHints[i] && individualHints[i].selectedHints) {
-                        ws.cell(rowNum, columnNumToStart + 1).string(individualHints[i].selectedHints.sort().join());
+                    if (individualHints[i] && individualHints[i].selectedHints && individualHints[i].selectedHints.length) {
+                        ws.cell(rowNum, columnNumToStart + 1).string(individualHints[i].selectedHints[individualHints[i].selectedHints.length - 1].sort().join());
                     }
                 }
                 firstRun = false;
