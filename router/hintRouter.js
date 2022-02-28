@@ -40,8 +40,10 @@ router.get('/hint/:accountId/:questionSetId', function(req, res) {
                     for (let individualHint of res.hints) {
                         let hintsText = questionRouter.getHint(res.questionSetId, individualHint.questionId, res.isA);
                         let selectedHintsText = {};
-                        for (let key of individualHint.selectedHints) {
-                            selectedHintsText[key] = hintsText[key];
+                        if (individualHint.selectedHints.length) {
+                            for (let key of individualHint.selectedHints[individualHint.selectedHints.length - 1]) {
+                                selectedHintsText[key] = hintsText[key];
+                            }
                         }
                         hintText.push({
                             questionId : individualHint.questionId,
@@ -64,7 +66,12 @@ router.post('/hint', function(req, res) {
             newHint.lastUpdatedDate = new Date();
             newHint.questionSetId = req.body.questionSetId;
             newHint.isA = req.body.isA;
-            newHint.hints = [req.body.data];
+            newHint.hints = [];
+            let individualH = {
+                questionId : req.body.data.questionId,
+                selectedHints : [req.body.data.selectedHints]
+            };
+            newHint.hints.push(individualH);
             if (req.body.data.selectedHints && req.body.data.selectedHints.length) {
                 let hintsText = questionRouter.getHint(req.body.questionSetId, req.body.data.questionId, req.body.isA);
                 let selectedHintsText = {};
@@ -95,15 +102,16 @@ router.post('/hint', function(req, res) {
                     } else {
                         let validHints = [];
                         let dbIndividualHint;
+                        let isReselect = req.body.isReselect;
                         for (let hint of result.hints) {
                             if (hint.questionId == req.body.data.questionId) {
                                 dbIndividualHint = hint;
                                 break;
                             }
                         }
-                        if (dbIndividualHint) {
+                        if (dbIndividualHint && !isReselect) {
                             for (let hint of req.body.data.selectedHints) {
-                                if (!dbIndividualHint.selectedHints.includes(hint)) {
+                                if (!dbIndividualHint.selectedHints[dbIndividualHint.selectedHints.length - 1].includes(hint)) {
                                     validHints.push(hint);
                                 }
                             }
@@ -121,10 +129,12 @@ router.post('/hint', function(req, res) {
                                 hintText : selectedHintsText
                             };
                             if (!dbIndividualHint) {
-                                dbIndividualHint = {questionId: req.body.data.questionId, selectedHints: req.body.data.selectedHints};
+                                dbIndividualHint = {questionId: req.body.data.questionId, selectedHints: [req.body.data.selectedHints]};
                                 result.hints.push(dbIndividualHint);
+                            } else if (isReselect) {
+                                dbIndividualHint.selectedHints.push(req.body.data.selectedHints);
                             } else {
-                                dbIndividualHint.selectedHints = req.body.data.selectedHints;
+                                dbIndividualHint.selectedHints[dbIndividualHint.selectedHints.length - 1] = req.body.data.selectedHints;
                             }
                             result.lastUpdatedDate = new Date();
                             result.save(function(saveErr) {

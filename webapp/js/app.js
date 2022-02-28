@@ -158,10 +158,10 @@ app.factory('hintService', ['$http', '$q', 'accountService', function($http, $q,
                 return $q.reject('No Account Information');
             }
         },
-        crud : function(operation, data, questionSetId, isA, hintId) {
+        crud : function(operation, data, questionSetId, isA, hintId, isReselect) {
             var account = accountService.getCurrentAccount();
             if (account) {
-                return $http.post('api/hint', {account: account, operation: operation, data: data, questionSetId: questionSetId, isA : isA, hintId: hintId});
+                return $http.post('api/hint', {account: account, operation: operation, data: data, questionSetId: questionSetId, isA : isA, hintId: hintId, isReselect: isReselect});
             } else {
                 return $q.reject('No Account Information');
             }
@@ -600,6 +600,10 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
                     break;
                 }
             }
+            if ($scope.isReselect) {
+                $scope.isReselect = false;
+            }
+            $scope.showReselectHints = false;
         }
     };
 
@@ -658,6 +662,9 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
                 getAttemptAnswerFeeback(letter);
             } else {
                 checkAnswerDiffAndUpdate('checkAnswer', letter);
+            }
+            if (!letter && !$scope.currentQuestionSet.questions[$scope.currentQuestion - 1].hasTwoSideChecks && $scope.currentHints.selectedHints.length) {
+                $scope.showReselectHints = true;
             }
         } else {
             let currentWaitingCheckAttempt = {
@@ -880,7 +887,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
             if (submitHints.length &&
                 submitHints.length + $scope.originalCurrentHints.selectedHints.length <= $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxHintAllowedPerPerson) {
                 let operation = $scope.hintsObject.allSelectedHints._id ? 'update' : 'create';
-                hintService.crud(operation, $scope.currentHints, $scope.currentQuestionSet.questionSetId, $scope.isA, $scope.hintsObject.allSelectedHints._id).then(function(res) {
+                hintService.crud(operation, $scope.currentHints, $scope.currentQuestionSet.questionSetId, $scope.isA, $scope.hintsObject.allSelectedHints._id, $scope.isReselect).then(function(res) {
                     for (let individualHint of res.data.data.hints) {
                         if (individualHint.questionId == $scope.currentHints.questionId) {
                             $scope.currentHints.createdDate = individualHint.createdDate;
@@ -902,9 +909,22 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
                             return;
                         }
                     }
+                    if ($scope.isReselect) {
+                        $scope.isReselect = false;
+                    }
                 });
             }
         }
+    };
+
+    $scope.reselectHints = function() {
+        $scope.showReselectHints = false;
+        $scope.isReselect = true;
+        $scope.originalCurrentHints = angular.copy($scope.originalCurrentHints);
+        $scope.currentHints = angular.copy($scope.currentHints);
+        $scope.originalCurrentHints.selectedHints = [];
+        $scope.currentHints.selectedHints = [];
+        $scope.currentHintsText = {};
     };
 
     $scope.checkHints = function(hint) {

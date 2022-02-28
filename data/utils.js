@@ -57,7 +57,17 @@ var convertHint = function(dbObject) {
         res.lastUpdatedDate = dbObject.lastUpdatedDate;
         res.questionSetId = dbObject.questionSetId;
         res.isA = dbObject.isA;
-        res.hints = dbObject.hints;
+        res.hints = [];
+        for (let individualHint of dbObject.hints) {
+            let newHint = {};
+            newHint.questionId = individualHint.questionId;
+            newHint.createdDate = individualHint.createdDate;
+            newHint.selectedHints = [];
+            if (individualHint.selectedHints.length) {
+                newHint.selectedHints = individualHint.selectedHints[individualHint.selectedHints.length - 1];
+            }
+            res.hints.push(newHint);
+        }
         res.currentGiveUpNumber = dbObject.currentGiveUpNumber;
         return res;
     }

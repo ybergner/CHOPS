@@ -1,10 +1,10 @@
 <nav class="navbar navbar-light bg-light flex-pull-right">
-    <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#giveUpModal"
-        ng-if="(!currentQuestionSet.isCollaborative && answersObject.isSubmitted && !answersObject.currentGiveUpNumber) || (currentQuestionSet.isCollaborative && session && !session.currentGiveUpNumber)">
-        Exit
-    </button>
     <button class="btn btn-primary" type="button" ng-click="home()">
         Home
+    </button>
+    <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#giveUpModal"
+        ng-if="(!currentQuestionSet.isCollaborative && answersObject.isSubmitted && !answersObject.currentGiveUpNumber) || (currentQuestionSet.isCollaborative && session && !session.currentGiveUpNumber)">
+        Abort
     </button>
     <button class="btn btn-light" type="button" ng-click="logout()">
         Logout
@@ -21,7 +21,7 @@
         </button>
       </div>
       <div class="modal-body">
-          Exiting current answers / collaboration will remove your previous saved answers, hints, and messages.
+          Aborting current answers / collaboration will remove your previous saved answers, hints, and messages. Please only confirm to abort if you cannot continue. (For example: your partner is disconnected or doesn't respond)
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" ng-click="giveUp()">Confirm</button>

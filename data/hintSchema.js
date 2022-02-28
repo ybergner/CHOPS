@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var individualHintSchema = new Schema({
     questionId: { type : Number, required : true },
-    selectedHints: { type : [String] },
+    selectedHints: { type : [[String]] },
     createdDate : { type : Date, default : Date.now }
 }, { _id : false });
 
