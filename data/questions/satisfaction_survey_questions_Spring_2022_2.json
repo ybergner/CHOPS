@@ -1,6 +1,6 @@
 {
     "type" : "singleChoice",
-    "title" : "Satisfaction Survey Question 2",
+    "title" : "Satisfaction_Survey_Question_2",
     "versionA" : {
         "latex" : "Satisfaction Survey Questions 2.tex",
         "option" : {
@@ -12,7 +12,7 @@
         }
     },
     "versionB" : {
-        "latex" : "Satisfaction Survey Question 2.tex",
+        "latex" : "Satisfaction_Survey_Question_2.tex",
         "option" : {
             "a" : "Strongly agree",
             "b" : "Agree",

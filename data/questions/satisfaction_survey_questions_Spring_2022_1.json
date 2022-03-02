@@ -3,7 +3,7 @@
     "title" : "Satisfaction Survey Question 1",
     "versionA" : {
         "text" : "Congratulation. You have finished the problem set. Please answer three satisfaction survey question.",
-        "latex" : "Satisfaction Survey Questions 1.tex",
+        "latex" : "Satisfaction_Survey_Questions_1.tex",
         "option" : {
             "a" : "Very satisfied",
             "b" : "Satisfied",
@@ -14,7 +14,7 @@
     },
     "versionB" : {
         "text" : "Congratulation. You have finished the problem set. Please answer three satisfaction survey question.",
-        "latex" : "Satisfaction Survey Question 1.tex",
+        "latex" : "Satisfaction_Survey_Question_1.tex",
         "option" : {
             "a" : "Very satisfied",
             "b" : "Satisfied",

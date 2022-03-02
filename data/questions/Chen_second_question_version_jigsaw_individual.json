@@ -9,7 +9,7 @@
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
                 "methodParams" : [37.30, 37.40],
-                "maxAttempts" : 3
+                "maxAttempts" : 2
         }
     },
     "versionB" : {
@@ -20,7 +20,7 @@
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
                 "methodParams" : [37.30, 37.40],
-                "maxAttempts" : 3
+                "maxAttempts" : 2
         }
     }
 }

@@ -2,7 +2,7 @@
     "type" : "singleChoice",
     "title" : "Introductory",
     "versionA" : {
-        "latex" : "Introductory_page_version_1.tex",
+        "latex" : "Introductory_Page.tex",
         "option" : {
             "positive" : "Great! I like collaborative problem solving!",
             "negative" : "Collaboration isn't my favorite, but I will play along."
@@ -10,7 +10,7 @@
         }
     },
     "versionB" : {
-        "latex" : "Introductory_page_version_1.tex",
+        "latex" : "Introductory_Page.tex",
         "option" : {
             "positive" : "Great! I like collaborative problem solving!",
             "negative" : "Collaboration isn't my favorite, but I will play along."

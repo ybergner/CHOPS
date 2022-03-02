@@ -108,23 +108,16 @@
             ]
         },
         {
-            "questionSetId" : "Professor_Chen_second_question",
-            "name" : "Professor Chen's second question",
-            "isHidden" : true,
-            "questions" : [
-                "Chen_second_question.json",
-                "Chen_second_question_collaborative.json",
-                "Chen_second_question_version_jigsaw.json",
-                "Chen_second_question_version_request.json"
-            ]
-        },
-        {
             "questionSetId" : "Spring_2022_version_demo",
             "name" : "UCF_physics_demo",
             "isHidden" : false,
             "questions" : [
                 "Introductory_page_Spring_2022_version_1.json",
+                "Chen_second_question.json",
+                "Chen_second_question_collaborative.json",
                 "Chen_second_question_version_jigsaw.json",
+                "Chen_second_question_version_jigsaw_individual.json",
+                "Chen_second_question_version_request.json",
                 "satisfaction_survey_questions_Spring_2022_1.json",
                 "satisfaction_survey_questions_Spring_2022_2.json",
                 "satisfaction_survey_questions_Spring_2022_3.json",
@@ -179,7 +172,7 @@
                 "Introductory_page_Spring_2022_version_1.json",
                 "Chen_second_question_version_jigsaw.json",
                 "Chen_second_question_version_jigsaw_individual.json",
-                "satisfaction_survey_questions_Spring_2022_1.json",
+                "satisfaction_survey_questions_Spring_2022.json",
                 "satisfaction_open_question_Spring_2022.json"
             ]
         }
