@@ -1,0 +1,26 @@
+{
+    "type" : "singleChoice",
+    "title" : "Satisfaction Survey Question",
+    "versionA" : {
+        "text" : "Congratulation. You have finished the problem set. Please answer three satisfaction survey question.",
+        "latex" : "Satisfaction Survey Questions.tex",
+        "option" : {
+            "a" : "Very satisfied",
+            "b" : "Satisfied",
+            "c" : "Neither satisfied nor dissatisfied",
+            "d" : "Dissatisfied",
+            "e" : "Very dissatisfied"
+        }
+    },
+    "versionB" : {
+        "text" : "Congratulation. You have finished the problem set. Please answer three satisfaction survey question.",
+        "latex" : "Satisfaction Survey Question.tex",
+        "option" : {
+            "a" : "Very satisfied",
+            "b" : "Satisfied",
+            "c" : "Neither satisfied nor dissatisfied",
+            "d" : "Dissatisfied",
+            "e" : "Very dissatisfied"
+        }
+    }
+}

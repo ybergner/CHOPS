@@ -1,0 +1,12 @@
+{
+    "type" : "openQuestion",
+    "title" : "Satisfaction Open Question",
+    "versionA" : {
+        "text" : "If you have anything to say about the system or the questions, please write down. This is the end of the problem set, when you are ready, press submit and close the webpage.",
+        "option" : {}
+    },
+    "versionB" : {
+        "text" : "If you have anything to say about the system or the questions, please write down. This is the end of the problem set, when you are ready, press submit and close the webpage.",
+        "option" : {}
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "type" : "singleChoice",
+    "title" : "Satisfaction Survey Question 3",
+    "versionA" : {
+        "latex" : "Satisfaction Survey Questions 3.tex",
+        "option" : {
+            "a" : "Strongly agree",
+            "b" : "Agree",
+            "c" : "Neither agree nor disagree",
+            "d" : "Disagree",
+            "e" : "Strongly disagree"
+        }
+    },
+    "versionB" : {
+        "latex" : "Satisfaction Survey Question 3.tex",
+        "option" : {
+            "a" : "Strongly agree",
+            "b" : "Agree",
+            "c" : "Neither agree nor disagree",
+            "d" : "Disagree",
+            "e" : "Strongly disagree"
+        }
+    }
+}

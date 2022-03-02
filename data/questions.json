@@ -3,7 +3,7 @@
         {
             "questionSetId" : "Temp",
             "name" : "Test Temp",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "individual_single_choice_example.json",
                 "individual_multi_choice_example.json",
@@ -17,7 +17,7 @@
         {
             "questionSetId" : "Temp_collaborative",
             "name" : "Test Temp",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "collaborative_formula_with_two_sides_check_answer_example.json",
                 "collaborative_single_choice_example.json",
@@ -91,7 +91,7 @@
         {
             "questionSetId" : "Example_questions_with_attempts",
             "name" : "Example questions with attempts",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "Example-single multiple choice with attempts.json",
                 "Example-free response with attempts-list.json",
@@ -101,7 +101,7 @@
         {
             "questionSetId" : "Professor_Chen_first_question",
             "name" : "Professor Chen's first question",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "Chen_first_question.json",
                 "Chen_first_question_collaborative.json"
@@ -110,12 +110,77 @@
         {
             "questionSetId" : "Professor_Chen_second_question",
             "name" : "Professor Chen's second question",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "Chen_second_question.json",
                 "Chen_second_question_collaborative.json",
                 "Chen_second_question_version_jigsaw.json",
                 "Chen_second_question_version_request.json"
+            ]
+        },
+        {
+            "questionSetId" : "Spring_2022_version_demo",
+            "name" : "UCF_physics_demo",
+            "isHidden" : false,
+            "questions" : [
+                "Introductory_page_Spring_2022_version_1.json",
+                "Chen_second_question_version_jigsaw.json",
+                "satisfaction_survey_questions_Spring_2022_1.json",
+                "satisfaction_survey_questions_Spring_2022_2.json",
+                "satisfaction_survey_questions_Spring_2022_3.json",
+                "satisfaction_open_question_Spring_2022.json"
+            ]
+        },
+        {
+            "questionSetId" : "Spring_2022_version_A",
+            "name" : "UCF_physics_A",
+            "isHidden" : false,
+            "questions" : [
+                "Introductory_page_Spring_2022_version_1.json",
+                "Chen_second_question.json",
+                "Chen_second_question_collaborative.json",
+                "satisfaction_survey_questions_Spring_2022_1.json",
+                "satisfaction_survey_questions_Spring_2022_2.json",
+                "satisfaction_survey_questions_Spring_2022_3.json",
+                "satisfaction_open_question_Spring_2022.json"
+            ]
+        },
+        {
+            "questionSetId" : "Spring_2022_version_B",
+            "name" : "UCF_physics_B",
+            "isHidden" : false,
+            "questions" : [
+                "Introductory_page_Spring_2022_version_1.json",
+                "Chen_second_question_version_jigsaw.json",
+                "satisfaction_survey_questions_Spring_2022_1.json",
+                "satisfaction_survey_questions_Spring_2022_2.json",
+                "satisfaction_survey_questions_Spring_2022_3.json",
+                "satisfaction_open_question_Spring_2022.json"
+            ]
+        },
+        {
+            "questionSetId" : "Spring_2022_version_C",
+            "name" : "UCF_physics_C",
+            "isHidden" : false,
+            "questions" : [
+                "Introductory_page_Spring_2022_version_1.json",
+                "Chen_second_question_version_request.json",
+                "satisfaction_survey_questions_Spring_2022_1.json",
+                "satisfaction_survey_questions_Spring_2022_2.json",
+                "satisfaction_survey_questions_Spring_2022_3.json",
+                "satisfaction_open_question_Spring_2022.json"
+            ]
+        },
+        {
+            "questionSetId" : "Spring_2022_version_D",
+            "name" : "UCF_physics_D",
+            "isHidden" : false,
+            "questions" : [
+                "Introductory_page_Spring_2022_version_1.json",
+                "Chen_second_question_version_jigsaw.json",
+                "Chen_second_question_version_jigsaw_individual.json",
+                "satisfaction_survey_questions_Spring_2022_1.json",
+                "satisfaction_open_question_Spring_2022.json"
             ]
         }
     ]

@@ -1,0 +1,26 @@
+{
+    "type" : "openQuestion",
+    "title" : "Jigsaw_Individual part",
+    "versionA" : {
+        "text" : "This question is an individual question, and you are supposed to work alone, please do not communicate with your partner and work by yourself. The following information is exactly the same as previous question, you need to solve for the minimum amount of weight instead of maximum.",
+        "latex" : "Professor_Chen_second_question_A_version_jigsaw_individual.tex",
+        "image" : "Chen's second_B.png",
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [37.30, 37.40],
+                "maxAttempts" : 3
+        }
+    },
+    "versionB" : {
+        "text" : "This question is an individual question, and you are supposed to work alone, please do not communicate with your partner and work by yourself. The following information is exactly the same as previous question, you need to solve for the minimum amount of weight instead of maximum.",
+        "latex" : "Professor_Chen_second_question_B_version_jigsaw_individual.tex",
+        "image" : "Chen's second_B.png",
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [37.30, 37.40],
+                "maxAttempts" : 3
+        }
+    }
+}

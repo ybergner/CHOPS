@@ -8,7 +8,7 @@
         "checkAnswerSettings" : {
             "methodName" : "checkTwoVariableFormula",
             "methodParams" : "a+b=50;10.85<a;a<12.54;b>37.30;b<39.29",
-            "maxAttempts" : 3,
+            "maxAttempts" : 2,
             "hasTwoSideChecks": true
         }
     },
@@ -19,7 +19,7 @@
         "checkAnswerSettings" : {
             "methodName" : "checkTwoVariableFormula",
             "methodParams" : "a+b=50;10.85<a;a<12.54;b>37.30;b<39.29",
-            "maxAttempts" : 3,
+            "maxAttempts" : 2,
             "hasTwoSideChecks": true
         }
     }
