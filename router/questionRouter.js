@@ -53,7 +53,7 @@ var setUpMapping = function(questionMap, latexMap) {
             let questions = [];
             individualQ.questions.forEach(function(fileName) {
                 if (questionMap[fileName]) {
-                    questions.push(questionMap[fileName]);
+                    questions.push(_.cloneDeep(questionMap[fileName]));
                 } else {
                     console.log('something wrong with questions.json macthing questions in question set ' + individualQ.questionSetId);
                     process.exit(1);
@@ -104,7 +104,7 @@ var setUpMapping = function(questionMap, latexMap) {
             let questions = [];
             collaborativeQ.questions.forEach(function(fileName) {
                 if (questionMap[fileName]) {
-                    questions.push(questionMap[fileName]);
+                    questions.push(_.cloneDeep(questionMap[fileName]));
                 } else {
                     console.log('something wrong with questions.json macthing questions in question set ' + collaborativeQ.questionSetId);
                     process.exit(1);
