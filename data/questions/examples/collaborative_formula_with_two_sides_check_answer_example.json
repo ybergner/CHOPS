@@ -8,7 +8,8 @@
             "methodName" : "checkTwoVariableFormula",
             "methodParams" : "a/7+b^3=10",
             "maxAttempts" : 3,
-            "hasTwoSideChecks": true
+            "hasTwoSideChecks": true,
+            "solutionImgPath": "solution_1.png"
         }
     },
     "versionB" : {

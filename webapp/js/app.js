@@ -553,6 +553,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     $scope.previousAnswers = angular.copy($scope.answers);
     $scope.currentHints = {};
     $scope.originalCurrentHints = {};
+    $scope.solutionImgPath = [];
     let latexComponentContainer;
     var checkAnswer = $scope.checkAnswer =  function(questionId, fromSession) {
         if (!$scope.answers[questionId - 1]) {
@@ -571,6 +572,17 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
                 $scope.answers[questionId - 1].answer.multipleOpenQuestion = {};
                 $scope.previousAnswers[questionId - 1].answer.multipleOpenQuestion = {};
             }
+        } else if (!$scope.answers[questionId - 1].answer) {
+            $scope.answers[questionId - 1].answer = {};
+            $scope.previousAnswers[questionId - 1].answer = {};
+            if ($scope.currentQuestionSet.questions[questionId - 1].type === 'multipleChoice') {
+                $scope.answers[questionId - 1].answer.multipleChoice = {};
+                $scope.previousAnswers[questionId - 1].answer.multipleChoice = {};
+            } else if ($scope.currentQuestionSet.questions[questionId - 1].type === 'multipleOpenQuestion') {
+                $scope.answers[questionId - 1].answer.multipleOpenQuestion = {};
+                $scope.previousAnswers[questionId - 1].answer.multipleOpenQuestion = {};
+            }
+
         }
         if ($scope.answers[questionId - 1].collaborationAnswer && !isNaN($scope.answers[questionId - 1].collaborationAnswer)) {
             $scope.answers[questionId - 1].collaborationAnswer = Number($scope.answers[questionId - 1].collaborationAnswer);
@@ -960,7 +972,34 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
             }
         }
         return count;
-    }
+    };
+
+    $scope.showSolution = function() {
+        if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].solutionImgPath && !$scope.solutionImgPath[$scope.currentQuestion - 1]) {
+            if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].type === 'multipleOpenQuestion') {
+                let allAtLeastOneAttempt = $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].multipleOpenQuestionSymbol.every(function(letter) {
+                    return $scope.getCurrentMultipleOpenQuestionAttempts(letter) > 0;
+                });
+                if (allAtLeastOneAttempt) {
+                    return $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].multipleOpenQuestionSymbol.some(function(letter) {
+                        return $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxAttempts[letter] <= $scope.getCurrentMultipleOpenQuestionAttempts(letter);
+                    });
+                }
+                return false;
+            } else {
+                return $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxAttempts &&
+                $scope.answers[$scope.currentQuestion - 1].attemptedAnswers &&
+                $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxAttempts <= $scope.answers[$scope.currentQuestion - 1].attemptedAnswers.length;
+            }
+        }
+        return false;
+    };
+
+    $scope.showSolutionImg = function() {
+        if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].solutionImgPath) {
+            $scope.solutionImgPath[$scope.currentQuestion - 1] = $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].solutionImgPath;
+        }
+    };
 
     $scope.toggleHints = function(hint) {
         let index = $scope.currentHints.selectedHints.indexOf(hint);

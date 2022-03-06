@@ -35,6 +35,7 @@
                 <button type="button" class="btn btn-outline-primary" ng-click="reselectHints()" ng-if="showReselectHints">
                     Re-select Hints
                 </button>
+                <span ng-show="disableHints()">Too Many/Maximum hints chosen</span>
                 <button type="button" class="btn btn-outline-primary" ng-click="selectHints()" ng-disabled="disableHints()">Get Hints</button>
             </div>
         </div>
@@ -133,6 +134,11 @@
                 </tbody>
             </table>
         </div>
+    </div>
+    <div ng-if="solutionImgPath[currentQuestion - 1]">
+        <img
+            ng-src="{{'template/questions/asset/solutions/' + solutionImgPath[currentQuestion - 1]}}"
+            class="card-img-top" alt="solution image">
     </div>
 </div>
 

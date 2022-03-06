@@ -66,14 +66,17 @@ var setUpMapping = function(questionMap, latexMap) {
             for (let index = 0; index < individualQ.questions.length; index++) {
                 if (individualQ.questions[index].checkAnswerSettings) {
                     individualQ.questions[index].hasCheckAnswerSettings = true;
+                    individualQ.questions[index].solutionImgPath = individualQ.questions[index].checkAnswerSettings.solutionImgPath;
                     if (individualQ.questions[index].type === 'multipleOpenQuestion') {
                         individualQ.questions[index].maxAttempts = {};
                         individualQ.questions[index].checkAnswers = {};
                         for (let letter in individualQ.questions[index].checkAnswerSettings) {
-                            individualQ.questions[index].maxAttempts[letter] = individualQ.questions[index].checkAnswerSettings[letter].maxAttempts;
-                            individualQ.questions[index].checkAnswers[letter] = function(answer) {
-                                return checkAnswerSettingUtils[individualQ.questions[index].checkAnswerSettings[letter].methodName](answer, individualQ.questions[index].checkAnswerSettings[letter].methodParams);
-                            };
+                            if (letter !== 'solutionImgPath') {
+                                individualQ.questions[index].maxAttempts[letter] = individualQ.questions[index].checkAnswerSettings[letter].maxAttempts;
+                                individualQ.questions[index].checkAnswers[letter] = function(answer) {
+                                    return checkAnswerSettingUtils[individualQ.questions[index].checkAnswerSettings[letter].methodName](answer, individualQ.questions[index].checkAnswerSettings[letter].methodParams);
+                                };
+                            }
                         }
                     } else {
                         individualQ.questions[index].maxAttempts = individualQ.questions[index].checkAnswerSettings.maxAttempts;
@@ -122,16 +125,19 @@ var setUpMapping = function(questionMap, latexMap) {
                 };
                 if (collaborativeQ.questions[index].versionA.checkAnswerSettings) {
                     collaborativeQ.questions[index].versionA.hasCheckAnswerSettings = true;
+                    collaborativeQ.questions[index].versionA.solutionImgPath = collaborativeQ.questions[index].versionA.checkAnswerSettings.solutionImgPath;
                     if (collaborativeQ.questions[index].type === 'multipleOpenQuestion') {
                         collaborativeQ.questions[index].versionA.hasTwoSideChecks = {};
                         collaborativeQ.questions[index].versionA.maxAttempts = {};
                         collaborativeQ.questions[index].versionA.checkAnswers = {};
                         for (let letter in collaborativeQ.questions[index].versionA.checkAnswerSettings) {
-                            collaborativeQ.questions[index].versionA.hasTwoSideChecks[letter] = collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].hasTwoSideChecks;
-                            collaborativeQ.questions[index].versionA.maxAttempts[letter] = collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].maxAttempts;
-                            collaborativeQ.questions[index].versionA.checkAnswers[letter] = function(answer, otherAnswer) {
-                                return checkAnswerSettingUtils[collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].methodName](answer, collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].methodParams, otherAnswer);
-                            };
+                            if (letter !== 'solutionImgPath') {
+                                collaborativeQ.questions[index].versionA.hasTwoSideChecks[letter] = collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].hasTwoSideChecks;
+                                collaborativeQ.questions[index].versionA.maxAttempts[letter] = collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].maxAttempts;
+                                collaborativeQ.questions[index].versionA.checkAnswers[letter] = function(answer, otherAnswer) {
+                                    return checkAnswerSettingUtils[collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].methodName](answer, collaborativeQ.questions[index].versionA.checkAnswerSettings[letter].methodParams, otherAnswer);
+                                };
+                            }
                         }
                     } else {
                         collaborativeQ.questions[index].versionA.hasTwoSideChecks = collaborativeQ.questions[index].versionA.checkAnswerSettings.hasTwoSideChecks;
@@ -145,16 +151,19 @@ var setUpMapping = function(questionMap, latexMap) {
                 }
                 if (collaborativeQ.questions[index].versionB.checkAnswerSettings) {
                     collaborativeQ.questions[index].versionB.hasCheckAnswerSettings = true;
+                    collaborativeQ.questions[index].versionB.solutionImgPath = collaborativeQ.questions[index].versionB.checkAnswerSettings.solutionImgPath;
                     if (collaborativeQ.questions[index].type === 'multipleOpenQuestion') {
                         collaborativeQ.questions[index].versionB.hasTwoSideChecks = {};
                         collaborativeQ.questions[index].versionB.maxAttempts = {};
                         collaborativeQ.questions[index].versionB.checkAnswers = {};
                         for (let letter in collaborativeQ.questions[index].versionB.checkAnswerSettings) {
-                            collaborativeQ.questions[index].versionB.hasTwoSideChecks[letter] = collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].hasTwoSideChecks;
-                            collaborativeQ.questions[index].versionB.maxAttempts[letter] = collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].maxAttempts;
-                            collaborativeQ.questions[index].versionB.checkAnswers[letter] = function(answer, otherAnswer) {
-                                return checkAnswerSettingUtils[collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].methodName](answer, collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].methodParams, otherAnswer);
-                            };
+                            if (letter !== 'solutionImgPath') {
+                                collaborativeQ.questions[index].versionB.hasTwoSideChecks[letter] = collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].hasTwoSideChecks;
+                                collaborativeQ.questions[index].versionB.maxAttempts[letter] = collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].maxAttempts;
+                                collaborativeQ.questions[index].versionB.checkAnswers[letter] = function(answer, otherAnswer) {
+                                    return checkAnswerSettingUtils[collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].methodName](answer, collaborativeQ.questions[index].versionB.checkAnswerSettings[letter].methodParams, otherAnswer);
+                                };
+                            }
                         }
                     } else {
                         collaborativeQ.questions[index].versionB.hasTwoSideChecks = collaborativeQ.questions[index].versionB.checkAnswerSettings.hasTwoSideChecks;
