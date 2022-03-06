@@ -22,7 +22,8 @@
                 "methodName" : "matchInRange",
                 "methodParams" : [1, 4],
                 "maxAttempts" : 3
-            }
+            },
+            "solutionImgPath": "solution_1.png"
         }
     },
     "versionB" : {
@@ -46,7 +47,8 @@
                 "methodName" : "matchInRange",
                 "methodParams" : [5, 8],
                 "maxAttempts" : 3
-            }
+            },
+            "solutionImgPath": "solution_1.png"
         }
     }
 }

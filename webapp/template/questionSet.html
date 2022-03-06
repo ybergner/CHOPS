@@ -114,6 +114,9 @@
                   Check Answer {{!currentQuestionSet.questions[currentQuestion - 1].maxAttempts ? '' : !answers[currentQuestion - 1].attemptedAnswers ? '(' + currentQuestionSet.questions[currentQuestion - 1].maxAttempts + ')' :
                 '(' + (currentQuestionSet.questions[currentQuestion - 1].maxAttempts - answers[currentQuestion - 1].attemptedAnswers.length) + ')'}}</button>
             </li>
+            <li class="page-item" ng-if="showSolution()">
+              <button class="page-link" ng-click="showSolutionImg()">Show Solution</button>
+            </li>
             <li class="page-item" ng-hide="currentQuestion >= currentQuestionSet.numOfQuestions" ng-class="{'disabled' : !validateAnswer()}">
               <button class="page-link" ng-click="next()" ng-disabled="currentQuestion >= currentQuestionSet.numOfQuestions || !validateAnswer()">Next</button>
             </li>
