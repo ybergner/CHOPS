@@ -7,8 +7,9 @@
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [39.15, 39.29],
-                "maxAttempts" : 3
+                "methodParams" : [39.30, 39.40],
+                "maxAttempts" : 3,
+                "solutionImgPath": "Agent99_max.png"
         }
     },
     "versionB" : {
@@ -17,8 +18,9 @@
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [39.15, 39.29],
-                "maxAttempts" : 3
+                "methodParams" : [39.30, 39.40],
+                "maxAttempts" : 3,
+                "solutionImgPath": "Agent99_max.png"
         }
     }
 }
