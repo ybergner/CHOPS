@@ -2,11 +2,11 @@
     "type" : "openQuestion",
     "title" : "Satisfaction Open Question",
     "versionA" : {
-        "text" : "If you have anything to say about the system or the questions, please write down. This is the end of the problem set, when you are ready, press submit and close the webpage.",
+        "text" : "If you have final thoughts about the system, please share them here. Otherwise type “nope” in the field below. When you are ready, press “Submit” . You will be returned to the home page, and you may then close the browser window. Thank you for helping us develop CHOPS!",
         "option" : {}
     },
     "versionB" : {
-        "text" : "If you have anything to say about the system or the questions, please write down. This is the end of the problem set, when you are ready, press submit and close the webpage.",
+        "text" : "If you have final thoughts about the system, please share them here. Otherwise type “nope” in the field below. When you are ready, press “Submit” . You will be returned to the home page, and you may then close the browser window. Thank you for helping us develop CHOPS!",
         "option" : {}
     }
 }

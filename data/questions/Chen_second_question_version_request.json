@@ -1,6 +1,6 @@
 {
     "type" : "openQuestion",
-    "title" : "Second Question Professor Chen Version Request",
+    "title" : "Part 1 of 1",
     "maxHintAllowedPerPerson" : 2,
     "versionA" : {
         "latex" : "Professor_Chen_second_question_A_version_request.tex",

@@ -1,8 +1,9 @@
 {
     "type" : "singleChoice",
-    "title" : "Introductory",
+    "title" : "Collaborating in CHOPS",
     "versionA" : {
         "latex" : "Introductory_Page.tex",
+        "text:" : "Please select one choice from below and then click NEXT in the lower right.",
         "option" : {
             "positive" : "Great! I like collaborative problem solving!",
             "negative" : "Collaboration isn't my favorite, but I will play along."
@@ -11,6 +12,7 @@
     },
     "versionB" : {
         "latex" : "Introductory_Page.tex",
+        "text:" : "Please select one choice from below and then click NEXT in the lower right.",
         "option" : {
             "positive" : "Great! I like collaborative problem solving!",
             "negative" : "Collaboration isn't my favorite, but I will play along."

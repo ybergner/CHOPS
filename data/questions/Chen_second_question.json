@@ -1,18 +1,18 @@
 {
     "type" : "multipleOpenQuestion",
-    "title" : "Second Question Professor Chen",
+    "title" : "Part 1 of 2",
     "versionA" : {
         "latex" : "Professor_Chen_second_question_A.tex",
         "image" : "Chen's second_A.png",
         "option" : {},
-        "multipleOpenQuestionSymbol" : ["Min", "Max"],
+        "multipleOpenQuestionSymbol" : ["Minimum amount of weight", "Maximum amount of weight"],
         "checkAnswerSettings" : {
-            "Min" : {
+            "Minimum amount of weight" : {
                 "methodName" : "matchInRange",
                 "methodParams" : [10.85, 10.94],
                 "maxAttempts" : 3
             },
-            "Max" : {
+            "Maximum amount of weight" : {
                 "methodName" : "matchInRange",
                 "methodParams" : [12.45, 12.54],
                 "maxAttempts" : 3
@@ -24,14 +24,14 @@
         "latex" : "Professor_Chen_second_question_B.tex",
         "image" : "Chen's second_B.png",
         "option" : {},
-        "multipleOpenQuestionSymbol" : ["Min", "Max"],
+        "multipleOpenQuestionSymbol" : ["Minimum amount of weight", "Maximum amount of weight"],
         "checkAnswerSettings" : {
-            "Min" : {
+            "Minimum amount of weight" : {
                 "methodName" : "matchInRange",
                 "methodParams" : [37.40, 37.50],
                 "maxAttempts" : 3
             },
-            "Max" : {
+            "Maximum amount of weight" : {
                 "methodName" : "matchInRange",
                 "methodParams" : [39.30, 39.40],
                 "maxAttempts" : 3

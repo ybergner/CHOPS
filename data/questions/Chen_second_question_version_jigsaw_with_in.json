@@ -1,9 +1,10 @@
 {
     "type" : "openQuestion",
-    "title" : "Part 1 of 1",
+    "title" : "Part 1 of 2",
     "versionA" : {
         "latex" : "Professor_Chen_second_question_A_version_jigsaw.tex",
         "image" : "Chen's second_B.png",
+        "text" :"On the next page, you will be given a similar problem to solve by yourself.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
@@ -15,6 +16,7 @@
     "versionB" : {
         "latex" : "Professor_Chen_second_question_B_version_jigsaw.tex",
         "image" : "Chen's second_B.png",
+        "text" :"On the next page, you will be given a similar problem to solve by yourself.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
