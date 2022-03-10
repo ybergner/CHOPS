@@ -4,7 +4,7 @@
     </button>
     <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#giveUpModal"
         ng-if="(!currentQuestionSet.isCollaborative && answersObject.isSubmitted && !answersObject.currentGiveUpNumber) || (currentQuestionSet.isCollaborative && session && !session.currentGiveUpNumber)">
-        Abort
+        Terminate
     </button>
     <button class="btn btn-light" type="button" ng-click="logout()">
         Logout
@@ -21,7 +21,7 @@
         </button>
       </div>
       <div class="modal-body">
-          Aborting current answers / collaboration will remove your previous saved answers, hints, and messages. Please only confirm to abort if you cannot continue. (For example: your partner is disconnected or doesn't respond)
+          Terminating current answers / collaboration will remove your previous saved answers, hints, and messages. Please only confirm to terminate if you cannot continue. (For example: your partner is disconnected or doesn't respond)
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" ng-click="giveUp()">Confirm</button>
@@ -91,7 +91,7 @@
     <div ng-class="{'container-fluid' : currentQuestionSet.isCollaborative, 'container' : !currentQuestionSet.isCollaborative}">
         <div class="card">
             <div class="card-header">
-                <h4>{{'Question #' + currentQuestion}}</h4>
+                <h4>{{'Step #' + currentQuestion}}</h4>
             </div>
             <div class="card-body">
                 <form name="questionForm">
