@@ -2,9 +2,8 @@
     "type" : "openQuestion",
     "title" : "Part 1 of 2",
     "versionA" : {
-        "latex" : "Professor_Chen_second_question_A_version_jigsaw.tex",
+        "text" : "Agent 99 , highly skilled spy working for a secret agency, has inﬁltrated en­emy ter­ri­tory and have stolen a to­tal of 50.0 kg of highly valu­able top se­cret new ma­te­r­ial. She need to pass those ma­te­ri­als to friendly agents with­out be­ing no­ticed by en­e­mies, so she de­vised a ge­nius plan. \n \n Agent 99 will dis­guise herself as bungee jumper from a bridge. She will se­cretly tie those ma­te­ri­als to her body so that the bungee cord, which you can think of as a spring, will stretch long enough to let her reach the wa­ter sur­face 100.0 m be­low, where friendly agents on a dis­guised ﬁshing kayak will catch her and take the weights from her. \n \n Of course, Agent 99 needs to be heavy enough so that she reach the boat, but if she car­ries too much of the ma­te­r­ial upon hit­ting the boat and hits the boat too fast, then she risk sink­ing the boat! \n \n Agent 99 weights 63.0 kg, and the bungee cord she will be us­ing has a spring con­stant of 35.0 N/​m, and relaxed length of 25.0 me­ters \n \n What is the max­i­mum amount of weight (in kg) the agent can carry so that she does not crash the boat upon landing? Retain two decimal places for your answer. \n \n You may not have all the information you need to solve the problem, but your partner may have it! An important part of the task is to determine what information you need. Talk to your partner and compare notes through chat, you may also have information that your partner doesn’t! \n \n On the next page, you will be given a similar problem to solve by yourself.",
         "image" : "Chen's second_B.png",
-        "text" :"On the next page, you will be given a similar problem to solve by yourself.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
@@ -14,9 +13,8 @@
         }
     },
     "versionB" : {
-        "latex" : "Professor_Chen_second_question_B_version_jigsaw.tex",
+        "text" : "Agent 99 , highly skilled spy working for a secret agency, has inﬁltrated en­emy ter­ri­tory and have stolen a to­tal of 50.0 kg of highly valu­able top se­cret new ma­te­r­ial. She need to pass those ma­te­ri­als to friendly agents with­out be­ing no­ticed by en­e­mies, so she de­vised a ge­nius plan. \n \n Agent 99 will dis­guise herself as bungee jumper from a bridge. She will se­cretly tie those ma­te­ri­als to her body so that the bungee cord, which you can think of as a spring, will stretch long enough to let her reach the wa­ter sur­face 100.0 m be­low, where friendly agents on a dis­guised ﬁshing kayak will catch her and take the weights from her. \n \n Of course, Agent 99 needs to be heavy enough so that she reach the boat, but if she car­ries too much of the ma­te­r­ial upon hit­ting the boat and hits the boat too fast, then she risk sink­ing the boat! \n \n Agent 99 weights 63.0 kg, and the bungee cord she will be us­ing has a spring con­stant of 35.0 N/​m, and relaxed length of 25.0 me­ters \n \n What is the max­i­mum amount of weight (in kg) the agent can carry so that she does not crash the boat upon landing? Retain two decimal places for your answer. \n \n You may not have all the information you need to solve the problem, but your partner may have it! An important part of the task is to determine what information you need. Talk to your partner and compare notes through chat, you may also have information that your partner doesn’t! \n \n On the next page, you will be given a similar problem to solve by yourself.",
         "image" : "Chen's second_B.png",
-        "text" :"On the next page, you will be given a similar problem to solve by yourself.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",

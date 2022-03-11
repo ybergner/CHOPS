@@ -85,13 +85,13 @@ utils.checkTwoVariableFormula = function(answerA, formula, answerB) {
         }
         if (!evaluate(exp, {a : a, b: b})) {
             return {
-                feedback: 'The answers are wrong based on formula',
+                feedback: 'Sorry. Those answers taken together do not satisfy the problem constraints.',
                 isCorrected: false
             }
         }
     }
     return {
-        feedback: 'The answers are corrected based on formula',
+        feedback: 'Good work! These values satisfy the constraints.',
         isCorrected: true
     }
 };

@@ -2,7 +2,7 @@
     "type" : "singleChoice",
     "title" : "Satisfaction_Survey_Question_2",
     "versionA" : {
-        "latex" : "Satisfaction Survey Questions 2.tex",
+        "text" : "This system makes it easy for me to solve the problem.",
         "option" : {
             "a" : "Strongly agree",
             "b" : "Agree",
@@ -12,7 +12,7 @@
         }
     },
     "versionB" : {
-        "latex" : "Satisfaction_Survey_Question_2.tex",
+        "text" : "This system makes it easy for me to solve the problem.",
         "option" : {
             "a" : "Strongly agree",
             "b" : "Agree",

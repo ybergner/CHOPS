@@ -2,8 +2,7 @@
     "type" : "singleChoice",
     "title" : "Satisfaction Survey Question 1",
     "versionA" : {
-        "text" : "Congratulation. You have finished the problem set. Please answer three satisfaction survey question.",
-        "latex" : "Satisfaction_Survey_Questions_1.tex",
+        "text" : "Congratulation. You have finished the problem set. Please answer three satisfaction survey question. \n \n How would you rate your experience solving problem using this system?",
         "option" : {
             "a" : "Very satisfied",
             "b" : "Satisfied",
@@ -13,8 +12,7 @@
         }
     },
     "versionB" : {
-        "text" : "Congratulation. You have finished the problem set. Please answer three satisfaction survey question.",
-        "latex" : "Satisfaction_Survey_Question_1.tex",
+        "text" : "Congratulation. You have finished the problem set. Please answer three satisfaction survey question. \n \n How would you rate your experience solving problem using this system?",
         "option" : {
             "a" : "Very satisfied",
             "b" : "Satisfied",

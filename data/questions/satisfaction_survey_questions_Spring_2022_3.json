@@ -2,7 +2,7 @@
     "type" : "singleChoice",
     "title" : "Satisfaction Survey Question 3",
     "versionA" : {
-        "latex" : "Satisfaction Survey Questions 3.tex",
+        "text": "I would like to use this system regularly in your class.",
         "option" : {
             "a" : "Strongly agree",
             "b" : "Agree",
@@ -12,7 +12,7 @@
         }
     },
     "versionB" : {
-        "latex" : "Satisfaction Survey Question 3.tex",
+        "text": "I would like to use this system regularly in your class.",
         "option" : {
             "a" : "Strongly agree",
             "b" : "Agree",

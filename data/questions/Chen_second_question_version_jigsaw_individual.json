@@ -2,7 +2,7 @@
     "type" : "openQuestion",
     "title" : "Part 2 of 2",
     "versionA" : {
-        "latex" : "Professor_Chen_second_question_A_version_jigsaw_individual.tex",
+        "text" : "Now please work in­di­vid­u­ally in an­swer­ing the fol­low­ing ques­tion. Do not dis­cuss the so­lu­tion with your part­ner. The in­for­ma­tion is ex­actly as be­fore, but you are asked to solve for the min­i­mum amount of weight in­stead of max­i­mum. \n \n Agent 99 , highly skilled spy working for a secret agency, has inﬁltrated en­emy ter­ri­tory and have stolen a to­tal of 50.0 kg of highly valu­able top se­cret new ma­te­r­ial. She need to pass those ma­te­ri­als to friendly agents with­out be­ing no­ticed by en­e­mies, so she de­vised a ge­nius plan. \n \n Agent 99 will dis­guise herself as bungee jumper from a bridge. She will se­cretly tie those ma­te­ri­als to her body so that the bungee cord, which you can think of as a spring, will stretch long enough to let her reach the wa­ter sur­face 100.0 m be­low, where friendly agents on a dis­guised ﬁshing kayak will catch her and take the weights from her. \n \n Of course, Agent 99 needs to be heavy enough so that she reach the boat, but if she car­ries too much of the ma­te­r­ial upon hit­ting the boat and hits the boat too fast, then she risk sink­ing the boat! \n \n Agent 99 weights 63.0 kg, and the bungee cord she will be us­ing has a spring con­stant of 35.0 N/​m, and relaxed length of 25.0 me­ters \n \n What is the min­i­mum amount of weight (in kg) that the agent can carry so that she reaches the boat with zero velocity? Retain two decimal places for your answer.",
         "image" : "Chen's second_B.png",
         "option" : {},
         "checkAnswerSettings" : {
@@ -13,7 +13,7 @@
         }
     },
     "versionB" : {
-        "latex" : "Professor_Chen_second_question_B_version_jigsaw_individual.tex",
+        "text" : "Now please work in­di­vid­u­ally in an­swer­ing the fol­low­ing ques­tion. Do not dis­cuss the so­lu­tion with your part­ner. The in­for­ma­tion is ex­actly as be­fore, but you are asked to solve for the min­i­mum amount of weight in­stead of max­i­mum. \n \n Agent 99 , highly skilled spy working for a secret agency, has inﬁltrated en­emy ter­ri­tory and have stolen a to­tal of 50.0 kg of highly valu­able top se­cret new ma­te­r­ial. She need to pass those ma­te­ri­als to friendly agents with­out be­ing no­ticed by en­e­mies, so she de­vised a ge­nius plan. \n \n Agent 99 will dis­guise herself as bungee jumper from a bridge. She will se­cretly tie those ma­te­ri­als to her body so that the bungee cord, which you can think of as a spring, will stretch long enough to let her reach the wa­ter sur­face 100.0 m be­low, where friendly agents on a dis­guised ﬁshing kayak will catch her and take the weights from her. \n \n Of course, Agent 99 needs to be heavy enough so that she reach the boat, but if she car­ries too much of the ma­te­r­ial upon hit­ting the boat and hits the boat too fast, then she risk sink­ing the boat! \n \n Agent 99 weights 63.0 kg, and the bungee cord she will be us­ing has a spring con­stant of 35.0 N/​m, and relaxed length of 25.0 me­ters \n \n What is the min­i­mum amount of weight (in kg) that the agent can carry so that she reaches the boat with zero velocity? Retain two decimal places for your answer.",
         "image" : "Chen's second_B.png",
         "option" : {},
         "checkAnswerSettings" : {
