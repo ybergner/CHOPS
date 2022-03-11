@@ -14,6 +14,10 @@
     float: left;
 }
 
+.paragraph-text {
+    white-space: pre-line;
+}
+
 .pull-right {
     float: right;
 }
