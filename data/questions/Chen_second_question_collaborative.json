@@ -7,7 +7,7 @@
         "option" : {},
         "checkAnswerSettings" : {
             "methodName" : "checkTwoVariableFormula",
-            "methodParams" : "a+b=50;10.80<a;a<12.60;b>37.20;b<39.50",
+            "methodParams" : "a+b=50;10.80<b;b<12.60;a>37.20;a<39.50",
             "maxAttempts" : 2,
             "hasTwoSideChecks": true,
             "solutionImgPath": "Agent_collaborative.png"
@@ -19,7 +19,7 @@
         "option" : {},
         "checkAnswerSettings" : {
             "methodName" : "checkTwoVariableFormula",
-            "methodParams" : "a+b=50;10.80<a;a<12.60;b>37.20;b<39.50",
+            "methodParams" : "a+b=50;10.80<b;b<12.60;a>37.20;a<39.50",
             "maxAttempts" : 2,
             "hasTwoSideChecks": true,
             "solutionImgPath": "Agent_collaborative.png"

@@ -33,7 +33,7 @@
             },
             "Maximum weight" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [12.40, 12.70],
+                "methodParams" : [12.20, 12.80],
                 "maxAttempts" : 3
             },
             "solutionImgPath": "Agent86.png"
