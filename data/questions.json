@@ -110,7 +110,7 @@
         {
             "questionSetId" : "Spring_2022_version_demo",
             "name" : "UCF_physics_demo",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "Introductory_page_Spring_2022_version_1.json",
                 "Chen_second_question.json",
@@ -142,7 +142,7 @@
         {
             "questionSetId" : "Spring_2022_version_B",
             "name" : "UCF_physics_Tuesday_sessions",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "Introductory_page_Spring_2022_version_1.json",
                 "Chen_second_question_version_jigsaw.json",
@@ -155,7 +155,7 @@
         {
             "questionSetId" : "Spring_2022_version_C",
             "name" : "UCF_physics_Wednesday_sessions",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "Introductory_page_Spring_2022_version_1.json",
                 "Chen_second_question_version_request.json",
@@ -168,7 +168,7 @@
         {
             "questionSetId" : "Spring_2022_version_D",
             "name" : "UCF_physics_Thursday_sessions",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "Introductory_page_Spring_2022_version_1.json",
                 "Chen_second_question_version_jigsaw_with_in.json",

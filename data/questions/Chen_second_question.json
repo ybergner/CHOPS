@@ -2,41 +2,41 @@
     "type" : "multipleOpenQuestion",
     "title" : "Part 1 of 2",
     "versionA" : {
-        "text" : "Agent 86 and Agent 99, both highly skilled spies working for a secret agency, have inﬁltrated enemy territory and have stolen a total of 50.0 kg of highly valuable top secret new material. They need to pass those materials to friendly agents without being noticed by enemies, so they devised a genius plan. \n \n Both of them will disguise as bunjee jumpers jumping together from a bridge. They will secretly tie those materials to their bodies so that the bunjee cord, which you can think of as an ideal spring, will stretch long enough to let them reach the water surface 100.0 m below the bridge, where friendly agents on a disguised ﬁshing kayak will catch them and take the materials from them. \n \n Of course, each of them needs to be heavy enough so that they reach the boat, but if they carry too much of the material and their speed exceeds 6.0 m/s upon crashing into the boat, then they risk sinking the boat! \n \n Agent 99 weights 63.0 kg, and the bungee cord she will be using has a spring constant of 35.0 N/m, and a relaxed length of 25.0 meters. \n \n What is the minimum amount of weight (in kg) that the agent can carry so that she reaches the boat with zero velocity? Retain two decimal places for your answer. \n \n What is the maximum amount of weight (in kg) the agent can carry so that she does not crash the boat upon landing? Retain two decimal places for your answer. \n \n After you’ve used up all your attempts for either blanks and have already tried both blanks at least once, you will be shown the correct solu­tion.",
-        "image" : "Chen's second_A.png",
-        "option" : {},
-        "multipleOpenQuestionSymbol" : ["Minimum weight", "Maximum weight"],
-        "checkAnswerSettings" : {
-            "Minimum weight" : {
-                "methodName" : "matchInRange",
-                "methodParams" : [10.85, 10.94],
-                "maxAttempts" : 3
-            },
-            "Maximum weight" : {
-                "methodName" : "matchInRange",
-                "methodParams" : [12.45, 12.54],
-                "maxAttempts" : 3
-            },
-            "solutionImgPath": "Agent99.png"
-        }
-    },
-    "versionB" : {
-        "text" : "Agent 86 and Agent 99, both highly skilled spies working for a secret agency, have inﬁltrated enemy territory and have stolen a total of 50.0 kg of highly valuable top secret new material. They need to pass those materials to friendly agents without being noticed by enemies, so they devised a genius plan. \n \n Both of them will disguise as bunjee jumpers jumping together from a bridge. They will secretly tie those materials to their bodies so that the bunjee cord, which you can think of as an ideal spring, will stretch long enough to let them reach the water surface 100.0 m below the bridge, where friendly agents on a disguised ﬁshing kayak will catch them and take the materials from them. \n \n Of course, each of them needs to be heavy enough so that they reach the boat, but if they carry too much of the material and their speed exceeds 6.0 m/s upon crashing into the boat, then they risk sinking the boat! \n \n Agent 86 weights 75.0 kg, and the bungee cord he will be using has a spring constant of 27.0 N/m, and length of 21.0 meters. \n \n What is the minimum amount of weight (in kg) that the agent can carry so that she reaches the boat with zero velocity? Retain two decimal places for your answer. \n \n What is the maximum amount of weight (in kg) the agent can carry so that she does not crash the boat upon landing? Retain two decimal places for your answer. \n \n After you’ve used up all your attempts for either blanks and have already tried both blanks at least once, you will be shown the correct solu­tion.",
+        "text" : "Agent 86 and Agent 99, both highly skilled spies working for a secret agency, have inﬁltrated enemy territory and have stolen a total of 50.0 kg of highly valuable top secret new material. They need to pass those materials to friendly agents without being noticed by enemies, so they devised a genius plan. \n \n Both of them will disguise as bunjee jumpers jumping together from a bridge. They will secretly tie those materials to their bodies so that the bunjee cord, which you can think of as an ideal spring, will stretch long enough to let them reach the water surface 100.0 m below the bridge, where friendly agents on a disguised ﬁshing kayak will catch them and take the materials from them. \n \n Of course, each of them needs to be heavy enough so that they reach the boat, but if they carry too much of the material and their speed exceeds 6.0 m/s upon crashing into the boat, then they risk sinking the boat! \n \n Agent 99 weights 63.0 kg, and the bungee cord she will be using has a spring constant of 35.0 N/m, and a relaxed length of 25.0 meters. \n \n What is the minimum amount of weight (in kg) that the agent can carry so that she reaches the boat with zero velocity? Retain two decimal places for your answer. \n \n What is the maximum amount of weight (in kg) the agent can carry so that she does not crash the boat upon landing? Retain two decimal places for your answer. (use g=9.8) \n \n After you’ve used up all your attempts for either blanks and have already tried both blanks at least once, you will be shown the correct solu­tion.",
         "image" : "Chen's second_B.png",
         "option" : {},
         "multipleOpenQuestionSymbol" : ["Minimum weight", "Maximum weight"],
         "checkAnswerSettings" : {
             "Minimum weight" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [37.40, 37.50],
+                "methodParams" : [37.20, 37.60],
                 "maxAttempts" : 3
             },
             "Maximum weight" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [39.30, 39.40],
+                "methodParams" : [39.20, 39.50],
                 "maxAttempts" : 3
             },
             "solutionImgPath": "Agent99.png"
+        }
+    },
+    "versionB" : {
+        "text" : "Agent 86 and Agent 99, both highly skilled spies working for a secret agency, have inﬁltrated enemy territory and have stolen a total of 50.0 kg of highly valuable top secret new material. They need to pass those materials to friendly agents without being noticed by enemies, so they devised a genius plan. \n \n Both of them will disguise as bunjee jumpers jumping together from a bridge. They will secretly tie those materials to their bodies so that the bunjee cord, which you can think of as an ideal spring, will stretch long enough to let them reach the water surface 100.0 m below the bridge, where friendly agents on a disguised ﬁshing kayak will catch them and take the materials from them. \n \n Of course, each of them needs to be heavy enough so that they reach the boat, but if they carry too much of the material and their speed exceeds 6.0 m/s upon crashing into the boat, then they risk sinking the boat! \n \n Agent 86 weights 75.0 kg, and the bungee cord he will be using has a spring constant of 27.0 N/m, and length of 21.0 meters. \n \n What is the minimum amount of weight (in kg) that the agent can carry so that she reaches the boat with zero velocity? Retain two decimal places for your answer. \n \n What is the maximum amount of weight (in kg) the agent can carry so that she does not crash the boat upon landing? Retain two decimal places for your answer. (use g=9.8) \n \n After you’ve used up all your attempts for either blanks and have already tried both blanks at least once, you will be shown the correct solu­tion.",
+        "image" : "Chen's second_A.png",
+        "option" : {},
+        "multipleOpenQuestionSymbol" : ["Minimum weight", "Maximum weight"],
+        "checkAnswerSettings" : {
+            "Minimum weight" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [10.80, 11.10],
+                "maxAttempts" : 3
+            },
+            "Maximum weight" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [12.40, 12.70],
+                "maxAttempts" : 3
+            },
+            "solutionImgPath": "Agent86.png"
         }
     }
 }
