@@ -273,7 +273,11 @@ router.checkAnswers = function(answerObject, questionSetId, questionId, isA, let
         } else if (isA) {
             return questionSetMap[questionSetId].questions[questionId - 1].versionA.checkAnswers[letter](answer, otherAnswer);
         } else {
-            return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers[letter](otherAnswer, answer);
+            if (questionSetMap[questionSetId].questions[questionId - 1].versionB.hasTwoSideChecks[letter]) {
+                return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers[letter](otherAnswer, answer);
+            } else {
+                return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers[letter](answer);
+            }
         }
     }
     if (!questionSetMap[questionSetId].isCollaborative) {
@@ -281,7 +285,11 @@ router.checkAnswers = function(answerObject, questionSetId, questionId, isA, let
     } else if (isA) {
         return questionSetMap[questionSetId].questions[questionId - 1].versionA.checkAnswers(answer, otherAnswer);
     } else {
-        return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers(otherAnswer, answer);
+        if (questionSetMap[questionSetId].questions[questionId - 1].versionB.hasTwoSideChecks) {
+            return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers(otherAnswer, answer);
+        } else {
+            return questionSetMap[questionSetId].questions[questionId - 1].versionB.checkAnswers(answer);
+        }
     }
 };
 
