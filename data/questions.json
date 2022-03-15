@@ -128,7 +128,7 @@
         {
             "questionSetId" : "Spring_2022_version_A",
             "name" : "UCF_physics_Monday_sessions",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "Introductory_page_Spring_2022_version_1.json",
                 "Chen_second_question.json",
@@ -142,7 +142,7 @@
         {
             "questionSetId" : "Spring_2022_version_B",
             "name" : "UCF_physics_Tuesday_sessions",
-            "isHidden" : true,
+            "isHidden" : false,
             "questions" : [
                 "Introductory_page_Spring_2022_version_1.json",
                 "Chen_second_question_version_jigsaw.json",
