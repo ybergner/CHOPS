@@ -106,9 +106,9 @@ var generateAndSendReportSheet = function(answers, hints, res) {
                         ws.cell(1, columnNumToStart).string('Question ' + (i + 1)).style(headerStyle);
                         ws.cell(1, columnNumToStart + 1).string('Hint ' + (i + 1)).style(headerStyle);
                     }
-                    if (individualAnswers[i].answer.singleChoice) {
+                    if (individualAnswers[i] && individualAnswers[i].answer && individualAnswers[i].answer.singleChoice) {
                         ws.cell(rowNum, columnNumToStart).string(individualAnswers[i].answer.singleChoice);
-                    } else if (individualAnswers[i].answer.multipleChoice) {
+                    } else if (individualAnswers[i] && individualAnswers[i].answer && individualAnswers[i].answer.multipleChoice) {
                         let arr = [];
                         for (let key in individualAnswers[i].answer.multipleChoice) {
                             if (individualAnswers[i].answer.multipleChoice[key]) {
@@ -116,9 +116,9 @@ var generateAndSendReportSheet = function(answers, hints, res) {
                             }
                         }
                         ws.cell(rowNum, columnNumToStart).string(arr.sort().join());
-                    } else if (individualAnswers[i].answer.openQuestion) {
+                    } else if (individualAnswers[i] && individualAnswers[i].answer && individualAnswers[i].answer.openQuestion) {
                         ws.cell(rowNum, columnNumToStart).string(individualAnswers[i].answer.openQuestion);
-                    } else if (individualAnswers[i].answer.multipleOpenQuestion) {
+                    } else if (individualAnswers[i] && individualAnswers[i].answer && individualAnswers[i].answer.multipleOpenQuestion) {
                         ws.cell(rowNum, columnNumToStart).string(JSON.stringify(individualAnswers[i].answer.multipleOpenQuestion));
                     }
                     if (individualHints[i] && individualHints[i].selectedHints && individualHints[i].selectedHints.length) {
