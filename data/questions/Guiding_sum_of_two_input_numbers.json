@@ -1,0 +1,24 @@
+{
+    "type" : "openQuestion",
+    "title" : "Guiding question two",
+    "versionA" : {
+        "text" : "In this question, you and your partner will each input a number. Discuss with your partner so that the sum of the two numbers are 24.",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "checkTwoVariableFormula",
+            "methodParams" : "a+b=24",
+            "maxAttempts" : 2,
+            "hasTwoSideChecks": true
+        }
+    },
+    "versionB" : {
+        "text" : "In this question, you and your partner will each input a number. Discuss with your partner so that the sum of the two numbers are 24.",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "checkTwoVariableFormula",
+            "methodParams" : "a+b=24",
+            "maxAttempts" : 2,
+            "hasTwoSideChecks": true
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "type" : "singleChoice",
+    "title" : "Guiding question 3",
+    "versionA" : {
+        "text" : "You and your partner are going to have dinner together. The restaurant only provides two main courses( fish or steak) and two desserts (cheesecake or mango pudding) tonight. Choose your order so that you and your partner together will order all courses and desserts.",
+        "option" : {
+            "a" : "Fish and cheesecake",
+            "b" : "Steak and cheesecake",
+            "c" : "Fish and mango pudding",
+            "d" : "Steak and mango pudding"
+        },
+        "checkAnswerSettings" : {
+            "methodName" : "matchSingleChoice1",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    },
+    "versionB" : {
+        "text" : "You and your partner are going to have dinner together. The restaurant only provides two main courses( fish or steak) and two desserts (cheesecake or mango pudding) tonight. Choose your order so that you and your partner together will order all courses and desserts.",
+        "option" : {
+            "a" : "Fish and cheesecake",
+            "b" : "Steak and cheesecake",
+            "c" : "Fish and mango pudding",
+            "d" : "Steak and mango pudding"
+        },
+        "checkAnswerSettings" : {
+            "methodName" : "matchSingleChoice1",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    }
+}

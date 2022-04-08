@@ -1,0 +1,22 @@
+{
+    "type" : "openQuestion",
+    "title" : "Guiding question 1",
+    "versionA" : {
+        "text" : "In this question, you and your partner will be assigned a number, enter the sum of the two numbers. Your assigned number is 7.",
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [10.9,11.1],
+                "maxAttempts" : 2
+        }
+    },
+    "versionB" : {
+        "text" : "In this question, you and your partner will be assigned a number, enter the sum of the two numbers. Your assigned number is 4.",
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [10.9,11.1],
+                "maxAttempts" : 2
+        }
+    }
+}

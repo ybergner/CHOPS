@@ -75,6 +75,20 @@ utils.matchSingleChoiceExample = function(answerA, params, answerB) {
     }
 };
 
+utils.matchSingleChoice1 = function(answerA, params, answerB) {
+    if (answerA == 'a' && answerB == 'd' || answerA == 'b' && answerB == 'c' || answerA == 'd' && answerB == 'a' || answerA == 'c' && answerB == 'b') {
+        return {
+            feedback: 'You and your partner got it right',
+            isCorrected: true
+        }
+    } else {
+        return {
+            feedback: 'The combination of your answers is wrong, check with each other and try another value',
+            isCorrected: false
+        }
+    }
+};
+
 utils.checkTwoVariableFormula = function(answerA, formula, answerB) {
     let a = Number(answerA), b = Number(answerB), expression = formula.replace(' ', '').split(';');
     let pattern = /[!=><]=/;
