@@ -7,7 +7,7 @@
         "checkAnswerSettings" : {
             "methodName" : "checkTwoVariableFormula",
             "methodParams" : "a+b=27",
-            "maxAttempts" : 2,
+            "maxAttempts" : 3,
             "hasTwoSideChecks": true
         }
     },
@@ -17,7 +17,7 @@
         "checkAnswerSettings" : {
             "methodName" : "checkTwoVariableFormula",
             "methodParams" : "a+b=27",
-            "maxAttempts" : 2,
+            "maxAttempts" : 3,
             "hasTwoSideChecks": true
         }
     }
