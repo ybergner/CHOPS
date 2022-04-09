@@ -3,6 +3,52 @@ const { evaluate } = require('mathjs');
 var utils = {};
 // all method should return { feedback: string, isCorrected: boolean }, you dont need to pass feedback if you dont want to for corrected answer, defaul will be just showned 'Corrected'
 
+utils.guiding3 = function(answerA, params, answerB) {
+    if (answerA == 'a' && answerB == 'd' || answerA == 'b' && answerB == 'c' || answerA == 'd' && answerB == 'a' || answerA == 'c' && answerB == 'b') {
+        return {
+            feedback: 'Great! You were able to communicate with your partner and select choices that sample all the dishes.',
+            isCorrected: true
+        }
+    } else {
+        return {
+            feedback: 'Hmm, that’s not quite right. You and your partner selected choices that do not sample all of the dishes. You may try again.',
+            isCorrected: false
+        }
+    }
+};
+
+utils.guiding1 = function(answer, params) {
+    if (answer >= params[0] && answer <= params[1]) {
+        return {
+            feedback: 'Great! You were able to communicate with your partner and arrive at the correct sum.',
+            isCorrected: true
+        };
+    } else {
+        return {
+            feedback: 'Hmm, that’s not quite right. You can’t answer the question unless you communicate with your partner and find out the number that they have been assigned. You may try again.',
+            isCorrected: false
+        };
+    }
+};
+
+utils.guiding4 = function(answer, params) {
+    if (answer >= params[0] && answer <= params[1]) {
+        return {
+            feedback: 'Great! You were able to negotiate a strategy with your partner and use the strategy effectively to come up with the correct answer. Hopefully you noticed that there were several different ways that you could have solved the problem.',
+            isCorrected: true
+        };
+    } else {
+        return {
+            feedback: 'Hmm, that’s not quite right. Either you didn’t get the information that you needed, or you made a mistake in your area calculation. You may try again.',
+            isCorrected: false
+        };
+    }
+};
+
+
+
+
+
 utils.matchExact = function(answer, params) {
     if (answer == params) {
         return {
@@ -63,20 +109,6 @@ utils.matchBothSumLessThan = function(answerA, params, answerB) {
 
 utils.matchSingleChoiceExample = function(answerA, params, answerB) {
     if (answerA == 'b' && answerB == 'b' || answerA == 'c' && answerB == 'c') {
-        return {
-            feedback: 'You and your partner got it right',
-            isCorrected: true
-        }
-    } else {
-        return {
-            feedback: 'The combination of your answers is wrong, check with each other and try another value',
-            isCorrected: false
-        }
-    }
-};
-
-utils.matchSingleChoice1 = function(answerA, params, answerB) {
-    if (answerA == 'a' && answerB == 'd' || answerA == 'b' && answerB == 'c' || answerA == 'd' && answerB == 'a' || answerA == 'c' && answerB == 'b') {
         return {
             feedback: 'You and your partner got it right',
             isCorrected: true

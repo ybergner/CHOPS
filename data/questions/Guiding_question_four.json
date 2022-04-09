@@ -1,32 +1,57 @@
 {
-    "type" : "singleChoice",
-    "title" : "Guiding question 3",
+    "type" : "openQuestion",
+    "title" : "Guiding question 4",
+    "maxHintAllowedPerPerson" : 1,
     "versionA" : {
         "text" : "In this question type, you and your partner should coordinate your selections. You each get to select one from a fixed set of choices. Your selections, together, will achieve a goal or help you to achieve a goal. \n \n In this scenario, you must each select a dinner combination (main course plus dessert) from a menu. The goal is that, between the two of you, you will have tried all of the dishes. \n (The answer will be evaluated only after both of you have made your individual order. You may see a brief delay if you order before your partner.) \n",
-        "option" : {
-            "a" : "Fish and cheesecake",
-            "b" : "Steak and cheesecake",
-            "c" : "Fish and mango pudding",
-            "d" : "Steak and mango pudding"
+        "image" : "A-rectangle-ABCD.jpg",
+        "hint" : {
+            "a" : "length of AB",
+            "b" : "length of AC",
+            "c" : "length of AD",
+            "d" : "length of BC",
+            "e" : "length of BD",
+            "f" : "length of CD"
         },
+        "hintText" : {
+            "a" : "AB=3",
+            "b" : "AC=4",
+            "c" : "AD=5",
+            "d" : "BC=4",
+            "e" : "BD=5",
+            "f" : "CD=3"
+        },
+        "option" : {},
         "checkAnswerSettings" : {
-            "methodName" : "guiding3",
-            "maxAttempts" : 3,
-            "hasTwoSideChecks": true
+                "methodName" : "guiding4",
+                "methodParams" : [12, 12],
+                "maxAttempts" : 3
         }
     },
     "versionB" : {
         "text" : "In this question type, you and your partner should coordinate your selections. You each get to select one from a fixed set of choices. Your selections, together, will achieve a goal or help you to achieve a goal. \n \n In this scenario, you must each select a dinner combination (main course plus dessert) from a menu. The goal is that, between the two of you, you will have tried all of the dishes. \n (The answer will be evaluated only after both of you have made your individual order. You may see a brief delay if you order before your partner.) \n",
-        "option" : {
-            "a" : "Fish and cheesecake",
-            "b" : "Steak and cheesecake",
-            "c" : "Fish and mango pudding",
-            "d" : "Steak and mango pudding"
+        "image" : "A-rectangle-ABCD.jpg",
+        "hint" : {
+            "a" : "length of AB",
+            "b" : "length of AC",
+            "c" : "length of AD",
+            "d" : "length of BC",
+            "e" : "length of BD",
+            "f" : "length of CD"
         },
+        "hintText" : {
+            "a" : "AB=3",
+            "b" : "AC=4",
+            "c" : "AD=5",
+            "d" : "BC=4",
+            "e" : "BD=5",
+            "f" : "CD=3"
+        },
+        "option" : {},
         "checkAnswerSettings" : {
-            "methodName" : "guiding3",
-            "maxAttempts" : 3,
-            "hasTwoSideChecks": true
+                "methodName" : "guiding4",
+                "methodParams" : [12, 12],
+                "maxAttempts" : 3
         }
     }
 }

@@ -2,21 +2,21 @@
     "type" : "openQuestion",
     "title" : "Guiding question 1",
     "versionA" : {
-        "text" : "In this question, you and your partner will be assigned a number, enter the sum of the two numbers. Your assigned number is 7.",
+        "text" : "In this question type, you and your partner may have complementary information that is needed in order to solve a problem. Here is a simple example. \n \n You and your partner have each been assigned a number. Your objective is to enter the sum of the two numbers in the field below. Your assigned number is 7.",
         "option" : {},
         "checkAnswerSettings" : {
-                "methodName" : "matchInRange",
+                "methodName" : "guiding1",
                 "methodParams" : [10.9,11.1],
-                "maxAttempts" : 2
+                "maxAttempts" : 3
         }
     },
     "versionB" : {
-        "text" : "In this question, you and your partner will be assigned a number, enter the sum of the two numbers. Your assigned number is 4.",
+        "text" : "In this question type, you and your partner may have complementary information that is needed in order to solve a problem. Here is a simple example. \n \n You and your partner have each been assigned a number. Your objective is to enter the sum of the two numbers in the field below. Your assigned number is 4.",
         "option" : {},
         "checkAnswerSettings" : {
-                "methodName" : "matchInRange",
+                "methodName" : "guiding1",
                 "methodParams" : [10.9,11.1],
-                "maxAttempts" : 2
+                "maxAttempts" : 3
         }
     }
 }
