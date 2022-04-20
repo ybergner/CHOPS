@@ -3,7 +3,7 @@
     "title" : "Guiding question 4",
     "maxHintAllowedPerPerson" : 1,
     "versionA" : {
-        "text" : "In this question type, you and your partner should coordinate your selections. You each get to select one from a fixed set of choices. Your selections, together, will achieve a goal or help you to achieve a goal. \n \n In this scenario, you must each select a dinner combination (main course plus dessert) from a menu. The goal is that, between the two of you, you will have tried all of the dishes. \n (The answer will be evaluated only after both of you have made your individual order. You may see a brief delay if you order before your partner.) \n",
+        "text" : "In this question type, you and your partner again coordinate your selections, but then you must also use feedback to formulate a final answer. \n \n In this scenario, you must calculate the area of the rectangle ABCD. The information you need to answer this question can be requested, but each of you can only request one value. \n \n Request your information (select one):\n",
         "image" : "A-rectangle-ABCD.jpg",
         "hint" : {
             "a" : "length of AB",
@@ -29,7 +29,7 @@
         }
     },
     "versionB" : {
-        "text" : "In this question type, you and your partner should coordinate your selections. You each get to select one from a fixed set of choices. Your selections, together, will achieve a goal or help you to achieve a goal. \n \n In this scenario, you must each select a dinner combination (main course plus dessert) from a menu. The goal is that, between the two of you, you will have tried all of the dishes. \n (The answer will be evaluated only after both of you have made your individual order. You may see a brief delay if you order before your partner.) \n",
+        "text" : "In this question type, you and your partner again coordinate your selections, but then you must also use feedback to formulate a final answer. \n \n In this scenario, you must calculate the area of the rectangle ABCD. The information you need to answer this question can be requested, but each of you can only request one value. \n \n Request your information (select one): \n",
         "image" : "A-rectangle-ABCD.jpg",
         "hint" : {
             "a" : "length of AB",

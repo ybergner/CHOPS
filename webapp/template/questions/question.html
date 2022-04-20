@@ -9,7 +9,7 @@
 
     <div ng-if="currentQuestionSet.questions[currentQuestion - 1].hint" class="card">
         <div class="card-body">
-            <h5 class="card-title">Hints</h5>
+            <h5 class="card-title">Selections</h5>
             <div ng-repeat="(key, value) in currentQuestionSet.questions[currentQuestion - 1].hint track by key">
                 <div class="form-check" ng-if="currentQuestionSet.questions[currentQuestion - 1].maxHintAllowedPerPerson > 1">
                   <input class="form-check-input" type="checkbox" id="{{'hint-check' + key}}"
@@ -33,9 +33,9 @@
             </div>
             <div class="pull-right">
                 <button type="button" class="btn btn-outline-primary" ng-click="reselectHints()" ng-if="showReselectHints">
-                    Re-select Hints
+                    Re-select Information
                 </button>
-                <span ng-show="disableHints()">Too Many/Maximum hints chosen</span>
+                <span ng-show="disableHints()">Too Many/Maximum information chosen</span>
                 <button type="button" class="btn btn-outline-primary" ng-click="selectHints()" ng-disabled="disableHints()">Get Hints</button>
             </div>
         </div>
@@ -145,6 +145,6 @@
 <div ng-if="currentQuestionSet.isCollaborative && !session">
     <div>Wel­come to CHOPS, a platform for online collaborative problem solving. You have been asked to use this experimental system, which is in development by education researchers. Hopefully it will be a smooth ride, but If you find any bugs or glitches, we apologize.</div>
     <br />
-    <div>Today you will work on solving one physics ques­tion with a class­mate. The pairing will happen online, automatically and randomly. You may even be paired with a student from another recitation section. After you’re done working on the problem together, we will ask you three very short sur­vey ques­tions to help us im­prove the sys­tem.
+    <div>Today you will work on solving one physics ques­tion with a class­mate. The pairing will happen online, automatically and randomly. After you’re done working on the problem together, we will ask you three very short sur­vey ques­tions to help us im­prove the sys­tem.
 Pairing will happen when you click on the “Find Collaborator” button on the left. You will then be able to chat with your partner using text messages and provide answers to the physics problem.</div>
 </div>
