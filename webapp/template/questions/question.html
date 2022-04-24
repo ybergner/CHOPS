@@ -35,14 +35,9 @@
                 <button type="button" class="btn btn-outline-primary" ng-click="reselectHints()" ng-if="showReselectHints">
                     Re-select Information
                 </button>
-<<<<<<< HEAD
-                <span ng-show="disableHints()">Too Many/Maximum information chosen</span>
-                <button type="button" class="btn btn-outline-primary" ng-click="selectHints()" ng-disabled="disableHints()">Get Information</button>
-=======
                 <span ng-show="currentHints.selectedHints && currentHints.selectedHints.length > currentQuestionSet.questions[currentQuestion - 1].maxHintAllowedPerPerson">Too Many selections</span>
                 <span ng-show="currentHints.selectedHints && currentHints.selectedHints.length && currentHints.selectedHints.length < currentQuestionSet.questions[currentQuestion - 1].maxHintAllowedPerPerson">{{currentQuestionSet.questions[currentQuestion - 1].maxHintAllowedPerPerson - currentHints.selectedHints.length}} available selection(s) remaining</span>
-                <button type="button" class="btn btn-outline-primary" ng-click="selectHints()" ng-disabled="disableHints()">Get Hints</button>
->>>>>>> 7ee5018d7ccac739b609790c444c9b0944b1060f
+                <button type="button" class="btn btn-outline-primary" ng-click="selectHints()" ng-disabled="disableHints()">Get Information</button>
             </div>
         </div>
     </div>
