@@ -22,6 +22,10 @@
     float: right;
 }
 
+.action-table .selection-header {
+    width: 15px
+}
+
 .clear {
     clear: both;
 }
@@ -40,6 +44,18 @@
 
 span.page-link {
     cursor: pointer;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.sortorder:after {
+  content: '\25b2';   // BLACK UP-POINTING TRIANGLE
+}
+
+.sortorder.reverse:after {
+  content: '\25bc';   // BLACK DOWN-POINTING TRIANGLE
 }
 
 .form-check, textarea.form-control {

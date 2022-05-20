@@ -150,6 +150,54 @@ router.post('/giveUpAnswer', function(req, res) {
 
 });
 
+router.post('/action/list', function(req, res) {
+    if (req.body.account && req.body.account.accountType == Enum.accountType.teacher) {
+        Action.find({}).lean().then(function(actions) {
+            let response = [];
+            if (actions) {
+                for (let action of actions) {
+                    response.push({
+                        id: action._id,
+                        accountId: action.accountId,
+                        accountName: action.accountName,
+                        questionSetId: action.questionSetId,
+                        count: action.actionItems.length
+                    });
+                }
+            }
+            res.json({success: true, data: response});
+        });
+    } else {
+        res.status(403).send('Forbidden');
+    }
+});
+
+router.post('/action/details', function(req, res) {
+    if (req.body.account && req.body.account.accountType == Enum.accountType.teacher) {
+        Action.find({ '_id': {$in : req.body.data} }).lean().then(function(actions) {
+            let response = [];
+            if (actions) {
+                for (let action of actions) {
+                    for (let item of action.actionItems) {
+                        response.push({
+                            accountId: action.accountId,
+                            accountName: action.accountName,
+                            questionSetId: action.questionSetId,
+                            questionId: item.questionId,
+                            action: item.action,
+                            answer: item.answer,
+                            createdDate: item.createdDate
+                        });
+                    }
+                }
+            }
+            res.json({success: true, data: response});
+        });
+    } else {
+        res.status(403).send('Forbidden');
+    }
+});
+
 // add/update new action
 router.post('/action', function(req, res) {
     if (req.body.account && req.body.account.accountType == Enum.accountType.student) {
@@ -158,6 +206,7 @@ router.post('/action', function(req, res) {
                 // create new action
                 let action = {
                     accountId : req.body.account.accountId,
+                    accountName : req.body.account.accountName,
                     questionSetId : req.body.questionSetId,
                     actionItems : []
                 };
@@ -172,6 +221,9 @@ router.post('/action', function(req, res) {
                 });
             } else {
                 // update existing action
+                if (!result.accountName) {
+                    result.accountName = req.body.account.accountName;
+                }
                 result.actionItems.push(req.body.data);
                 result.save(function(saveErr) {
                     if (saveErr) {

@@ -79,6 +79,7 @@ var convertAction = function(dbObject) {
         let res = {};
         res._id = dbObject._id;
         res.accountId = dbObject.accountId;
+        res.accountName = dbObject.accountName;
         res.questionSetId = dbObject.questionSetId;
         res.actionItems = dbObject.actionItems;
         return res;
