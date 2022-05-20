@@ -1,0 +1,70 @@
+<nav class="navbar navbar-light bg-light flex-pull-right">
+    <button class="btn btn-primary" type="button" ng-click="home()">
+        Home
+    </button>
+    <button class="btn btn-primary" type="button" ng-click="backToList()" ng-if="!isList">
+        Back To List
+    </button>
+    <button class="btn btn-light" type="button" ng-click="logout()">
+        Logout
+    </button>
+</nav>
+
+<div id="list">
+    <div class="container action-table">
+        <div class="row">
+            <div>
+                <h4>{{isList ? 'Actions' : 'Action Items'}}</h4>
+                <span>
+                    <button class="btn btn-primary" type="button" ng-click="goToItemPage()" ng-if="isList" ng-show="selectedItems.length" ng-disabled="!selectedItems.length">
+                        {{'Check ' + selectedItems.length + ' actions details'}}
+                    </button>
+                </span>
+            </div>
+            <table class="table table-bordered table-hover mt-2">
+              <thead>
+                <tr>
+                  <th scope="col" class="selection-header" ng-if="isList"></th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('accountId')">
+                      <span>Account</span>
+                      <span class="sortorder" ng-show="sortBy === 'accountId'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('questionSetId')">
+                      <span>Question Set</span>
+                      <span class="sortorder" ng-show="sortBy === 'questionSetId'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('count')" ng-if="isList">
+                      <span>Count</span>
+                      <span class="sortorder" ng-show="sortBy === 'count'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('questionId')" ng-if="!isList">
+                      <span>Question #</span>
+                      <span class="sortorder" ng-show="sortBy === 'questionId'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('action')" ng-if="!isList">
+                      <span>Action</span>
+                      <span class="sortorder" ng-show="sortBy === 'action'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                  <th scope="col" ng-if="!isList">Details</th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('createdDate')" ng-if="!isList">
+                      <span>Date</span>
+                      <span class="sortorder" ng-show="sortBy === 'createdDate'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr ng-repeat="item in items | orderBy:sortBy:reverse">
+                      <th ng-if="isList"><input type="checkbox" class="clickable" id="checkbox-{{$index}}" ng-model="item.selected" ng-click="toggle(item)"></th>
+                      <td>{{item.accountName ? item.accountName + ' (' + item.accountId  + ')' : item.accountId }}</td>
+                      <td>{{item.questionSetId}}</td>
+                      <td ng-if="isList">{{item.count}}</td>
+                      <td ng-if="!isList">{{item.questionId}}</td>
+                      <td ng-if="!isList">{{item.action}}</td>
+                      <td ng-if="!isList">{{displayDetails(item)}}</td>
+                      <td ng-if="!isList">{{item.createdDate | date:'MM/dd/yyyy @ h:mma'}}</td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>

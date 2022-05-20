@@ -11,6 +11,7 @@ var actionItemSchema = new Schema({
 
 var actionSchema = new Schema({
     accountId : { type : String, required : true },
+    accountName : { type: String },
     questionSetId : { type : String, trim : true },
     actionItems : { type : [actionItemSchema] }
 });

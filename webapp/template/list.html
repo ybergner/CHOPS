@@ -1,4 +1,7 @@
 <nav class="navbar navbar-light bg-light flex-pull-right">
+    <button ng-if="isTeacher" class="btn btn-primary" type="button" ng-click="checkActions()">
+        Check Actions
+    </button>
     <button ng-if="isTeacher" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#createAccount" aria-expanded="false" aria-controls="createAccount">
         Create Account
     </button>

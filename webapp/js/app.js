@@ -35,6 +35,14 @@ app.config(function($routeProvider){
                 },
             }
         }).
+        when('/action', {
+            templateUrl: '../template/action/list.html',
+            controller: 'actionItemsController'
+        }).
+        when('/action/items', {
+            templateUrl: '../template/action/list.html',
+            controller: 'actionItemsController'
+        }).
         otherwise({
             redirectTo: '/'
         });
@@ -108,6 +116,22 @@ app.factory('answerService', ['$http', '$q', 'accountService', function($http, $
                 return $http.post('api/action', {account: account, data: actionItem, questionSetId: questionSetId});
             } else {
                 return $q.reject('No Account Information');
+            }
+        },
+        getActionList: function() {
+            var account = accountService.getCurrentAccount();
+            if (account) {
+                return $http.post('api/action/list', {account: account});
+            } else {
+                return $q.reject('No Account Information');
+            }
+        },
+        getActionItems: function(objectIds) {
+            var account = accountService.getCurrentAccount();
+            if (account && objectIds) {
+                return $http.post('api/action/details', {account: account, data: objectIds});
+            } else {
+                return $q.reject('No Account or Ids Information');
             }
         },
         downloadReport : function() {
@@ -266,6 +290,7 @@ app.factory('socketService', function() {
             socket.on('account in queue', function() {
                 console.log('account waiting in queue');
                 scope.waiting = true;
+
                 scope.$apply();
             });
             socket.on('account matched', function(data) {
@@ -493,6 +518,10 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
                 URL.revokeObjectURL(link.href);
             });
         };
+
+        $scope.checkActions = function() {
+            $location.path('/action');
+        };
     }
     $scope.questionSetList = [];
     $scope.answerQuestionMap = {};
@@ -529,6 +558,101 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
     };
 }]);
 
+app.controller('actionItemsController', ['$scope', '$routeParams', 'accountService', '$location', 'enums', 'answerService', function($scope, $routeParams, accountService, $location, enums, answerService) {
+    $scope.account = accountService.getCurrentAccount();
+    $scope.isList = !$location.path().includes('items');
+    let objectIds = $routeParams.objectIds ? $routeParams.objectIds.split(',') : [];
+    if (!$scope.account) {
+        // redirect
+        $location.path('/login').search('objectIds', null);
+    } else if ($scope.account.accountType !== enums.accountType.teacher) {
+        $location.path('/').search('objectIds', null);
+    } else if (!$scope.isList && !objectIds.length) {
+        $location.path('/action').search('objectIds', null);
+    }
+    $scope.logout = function() {
+        accountService.logoutAccount();
+        $location.path('/login').search('objectIds', null);
+    };
+    $scope.home = function() {
+        $location.path('/').search('objectIds', null);
+    };
+    $scope.backToList = function() {
+        $location.path('/action').search('objectIds', null);
+    }
+    $scope.items = [];
+    $scope.selectedItems = [];
+    $scope.toggle = function(item) {
+        let index = $scope.selectedItems.indexOf(item.id);
+        if (index !== -1) {
+            $scope.selectedItems.splice(index, 1);
+        } else {
+            $scope.selectedItems.push(item.id);
+        }
+    };
+    $scope.goToItemPage = function() {
+        $location.path('/action/items').search('objectIds', $scope.selectedItems.join(','));
+    }
+    $scope.sortBy = $scope.isList ? 'questionSetId' : 'createdDate';
+    $scope.reverse = false;
+    $scope.toggleSorting = function(field) {
+        if ($scope.sortBy === field) {
+            $scope.reverse = !$scope.reverse;
+        } else {
+            $scope.sortBy = field;
+            $scope.reverse = false;
+        }
+    };
+    function constructAnswerMessage(answer) {
+        if (answer.openQuestion) {
+            return "Open Question: " + answer.openQuestion
+        } else if (answer.singleChoice) {
+            return "Single Choice: " + answer.singleChoice;
+        } else if (answer.multipleChoice) {
+            return "Multiple Choice: " + Object.keys(answer.multipleChoice).join(', ');
+        } else if (answer.multipleOpenQuestion) {
+            let output = '';
+            for (let key in answer.multipleOpenQuestion) {
+                output += key + ': ' + answer.multipleOpenQuestion[key] + ', ';
+            }
+            return "Multiple Open Question: " + output.slice(0, -2);
+        } else {
+            return answer;
+        }
+    }
+    $scope.displayDetails = function(action) {
+        let message = action.answer;
+        switch (action.action) {
+            case 'send message':
+                message = "Message: " + action.answer.message;
+                break;
+            case 'check answer':
+            case 'next':
+            case 'prev':
+            case 'submit':
+                message = constructAnswerMessage(action.answer);
+                break;
+            case 'selected hints':
+                message = "Hints: " + action.answer.join(', ');
+                break;
+            default:
+                break;
+        }
+        return message;
+    };
+
+    if ($scope.isList) {
+        answerService.getActionList().then(function(res) {
+            $scope.items = res.data.data;
+        });
+    } else {
+        answerService.getActionItems(objectIds).then(function(res) {
+            $scope.items = res.data.data;
+        });
+    }
+
+}]);
+
 app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject', 'hintsObject', 'accountService', 'answerService', 'hintService', '$location', '$q', 'enums', 'socketService', function($scope, questionSet, answersObject, hintsObject, accountService, answerService, hintService, $location, $q, enums, socketService) {
     $scope.account = $scope.account || accountService.getCurrentAccount();
     $scope.currentQuestionSet = questionSet;
@@ -546,6 +670,18 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
             $scope.socket.disconnect();
         }
         $location.path('/login');
+    };
+
+    $scope.$on('$destroy', function() {
+        window.onbeforeunload = undefined;
+    });
+
+    $scope.$on('$locationChangeStart', function(event, next, current) {
+        createActionItem('leave', $scope.currentQuestion);
+    });
+
+    window.onbeforeunload = function (event) {
+        createActionItem('leave', $scope.currentQuestion);
     };
 
     $scope.currentQuestion = 1;
@@ -637,7 +773,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
 
     $scope.next = function() {
         if ($scope.currentQuestion < $scope.currentQuestionSet.numOfQuestions) {
-            createActionItem('next', $scope.currentQuestion);
+            createActionItem('next', $scope.currentQuestion, $scope.answers[$scope.currentQuestion - 1].answer);
             if ($scope.isTeacher || $scope.answersObject.isSubmitted) {
                 $scope.currentQuestion++;
                 checkAnswer($scope.currentQuestion);
@@ -649,7 +785,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
 
     $scope.prev = function() {
         if($scope.currentQuestion > 1) {
-            createActionItem('prev', $scope.currentQuestion);
+            createActionItem('prev', $scope.currentQuestion, $scope.answers[$scope.currentQuestion - 1].answer);
             if ($scope.isTeacher || $scope.answersObject.isSubmitted) {
                 $scope.currentQuestion--;
                 checkAnswer($scope.currentQuestion);
@@ -774,6 +910,13 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
                         checkAnswer($scope.currentQuestion);
                     } else if (nextAction === 'checkAnswer') {
                         getAttemptAnswerFeeback(letter);
+                        if (!letter) {
+                            createActionItem('check answer', $scope.currentQuestion, $scope.answers[$scope.currentQuestion - 1].answer);
+                        } else {
+                            let item = {multipleOpenQuestion : {}};
+                            item.multipleOpenQuestion[letter] = $scope.answers[$scope.currentQuestion - 1].answer.multipleOpenQuestion[letter]
+                            createActionItem('check answer', $scope.currentQuestion, item);
+                        }
                     }
                 });
             } else {
@@ -788,12 +931,12 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         }
     }
 
-    function createActionItem(action, questionId) {
+    function createActionItem(action, questionId, item) {
         if (!$scope.isTeacher && !$scope.answersObject.isSubmitted) {
             let actionItem = {
                 questionId: questionId,
                 action: action,
-                answer : $scope.answers[questionId - 1].answer,
+                answer : item,
                 createdDate : new Date()
             };
             answerService.createActionItem($scope.currentQuestionSet.questionSetId, actionItem).then();
@@ -884,6 +1027,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     $scope.sendMessage = function() {
         if ($scope.socket && $scope.chatBox.message && $scope.chatBox.message !== '') {
             $scope.socket.emit('new message', $scope.chatBox.message);
+            createActionItem('send message', $scope.currentQuestion, { message : $scope.chatBox.message });
             $scope.chatBox.message = '';
         }
     };
@@ -900,6 +1044,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
                 submitHints.length + $scope.originalCurrentHints.selectedHints.length <= $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].maxHintAllowedPerPerson) {
                 let operation = $scope.hintsObject.allSelectedHints._id ? 'update' : 'create';
                 hintService.crud(operation, $scope.currentHints, $scope.currentQuestionSet.questionSetId, $scope.isA, $scope.hintsObject.allSelectedHints._id, $scope.isReselect).then(function(res) {
+                    createActionItem('selected hints', $scope.currentQuestion, submitHints);
                     for (let individualHint of res.data.data.hints) {
                         if (individualHint.questionId == $scope.currentHints.questionId) {
                             $scope.currentHints.createdDate = individualHint.createdDate;
@@ -937,6 +1082,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         $scope.originalCurrentHints.selectedHints = [];
         $scope.currentHints.selectedHints = [];
         $scope.currentHintsText = {};
+        createActionItem('reselected hints', $scope.currentQuestion);
     };
 
     $scope.checkHints = function(hint) {
@@ -998,6 +1144,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     $scope.showSolutionImg = function() {
         if ($scope.currentQuestionSet.questions[$scope.currentQuestion - 1].solutionImgPath) {
             $scope.solutionImgPath[$scope.currentQuestion - 1] = $scope.currentQuestionSet.questions[$scope.currentQuestion - 1].solutionImgPath;
+            createActionItem('show solutions', $scope.currentQuestion);
         }
     };
 
@@ -1027,6 +1174,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         $q.all(promises).then(function(){
             $('#giveUpModal').modal('hide');
             $scope.waitForApiCall = false;
+            createActionItem('abort', $scope.currentQuestion);
             if (!fromOthers && !waitForSocketGiveUpCompleted) {
                 $scope.home();
             }
@@ -1034,7 +1182,7 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
     };
 
     $scope.submit = function() {
-        createActionItem('submit', $scope.currentQuestion);
+        createActionItem('submit', $scope.currentQuestion, $scope.answers[$scope.currentQuestion - 1].answer);
         let data = {
             _id : $scope.answersObject._id,
             answers : $scope.answers,
