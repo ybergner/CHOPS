@@ -161,7 +161,8 @@ router.post('/action/list', function(req, res) {
                         accountId: action.accountId,
                         accountName: action.accountName,
                         questionSetId: action.questionSetId,
-                        count: action.actionItems.length
+                        count: action.actionItems.length,
+                        createdDate: action.actionItems[action.actionItems.length - 1].createdDate
                     });
                 }
             }

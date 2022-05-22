@@ -46,7 +46,7 @@
                       <span class="sortorder" ng-show="sortBy === 'action'" ng-class="{reverse: reverse}"></span>
                   </th>
                   <th scope="col" ng-if="!isList">Details</th>
-                  <th scope="col" class="clickable" ng-click="toggleSorting('createdDate')" ng-if="!isList">
+                  <th scope="col" class="clickable" ng-click="toggleSorting('createdDate')">
                       <span>Date</span>
                       <span class="sortorder" ng-show="sortBy === 'createdDate'" ng-class="{reverse: reverse}"></span>
                   </th>
@@ -61,7 +61,7 @@
                       <td ng-if="!isList">{{item.questionId}}</td>
                       <td ng-if="!isList">{{item.action}}</td>
                       <td ng-if="!isList">{{displayDetails(item)}}</td>
-                      <td ng-if="!isList">{{item.createdDate | date:'MM/dd/yyyy @ h:mma'}}</td>
+                      <td>{{item.createdDate | date:'MM/dd/yyyy @ h:mm:ssa'}}</td>
                   </tr>
               </tbody>
             </table>
