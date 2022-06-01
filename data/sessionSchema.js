@@ -15,6 +15,7 @@ var sessionSchema = new Schema({
     accountBName : { type : String, trim : true },
     questionSetId : { type : String, trim : true },
     messages : { type : [messageSchema] },
+    createdDate: { type: Date },
     lastUpdatedDate : { type : Date },
     currentGiveUpNumber : { type : Number }
 });

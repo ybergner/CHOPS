@@ -162,7 +162,15 @@ app.factory('sessionService', ['$http', '$q', 'accountService', function($http, 
             } else {
                 return $q.reject('No Account Information');
             }
-        }
+        },
+        getSessionList: function() {
+            var account = accountService.getCurrentAccount();
+            if (account) {
+                return $http.post('api/session/list', {account: account});
+            } else {
+                return $q.reject('No Account Information');
+            }
+        },
     };
 }]);
 
@@ -558,7 +566,7 @@ app.controller('listController', ['$scope', 'accountService', '$location', 'enum
     };
 }]);
 
-app.controller('actionItemsController', ['$scope', '$routeParams', 'accountService', '$location', 'enums', 'answerService', function($scope, $routeParams, accountService, $location, enums, answerService) {
+app.controller('actionItemsController', ['$scope', '$routeParams', 'accountService', '$location', 'enums', 'answerService', 'sessionService', function($scope, $routeParams, accountService, $location, enums, answerService, sessionService) {
     $scope.account = accountService.getCurrentAccount();
     $scope.isList = !$location.path().includes('items');
     let objectIds = $routeParams.objectIds ? $routeParams.objectIds.split(',') : [];
@@ -580,6 +588,8 @@ app.controller('actionItemsController', ['$scope', '$routeParams', 'accountServi
     $scope.backToList = function() {
         $location.path('/action').search('objectIds', null);
     }
+    $scope.showSessionView = $scope.isList ? true : false;
+    $scope.enableSessionView = $scope.isList ? true : false;
     $scope.items = [];
     $scope.selectedItems = [];
     $scope.toggle = function(item) {
@@ -592,7 +602,25 @@ app.controller('actionItemsController', ['$scope', '$routeParams', 'accountServi
     };
     $scope.goToItemPage = function() {
         $location.path('/action/items').search('objectIds', $scope.selectedItems.join(','));
-    }
+    };
+    $scope.goToSessionItemPage = function(session) {
+        $location.path('/action/items').search('objectIds', session.actionIds.join(','));
+    };
+    $scope.switchView = function() {
+        $scope.showSessionView = !$scope.showSessionView;
+        if ($scope.isList) {
+            $scope.items = $scope.showSessionView ? $scope.sessionList : $scope.actionList;
+            $scope.selectedItems = [];
+            $scope.actionList.forEach(function(item) {
+                item.selected = false;
+            });
+
+        } else {
+            if ($scope.sortBy !== 'createdDate') {
+                $scope.sortBy = 'createdDate';
+            }
+        }
+    };
     $scope.sortBy = $scope.isList ? 'questionSetId' : 'createdDate';
     $scope.reverse = false;
     $scope.toggleSorting = function(field) {
@@ -604,21 +632,22 @@ app.controller('actionItemsController', ['$scope', '$routeParams', 'accountServi
         }
     };
     function constructAnswerMessage(answer) {
-        if (answer.openQuestion) {
-            return "Open Question: " + answer.openQuestion
-        } else if (answer.singleChoice) {
-            return "Single Choice: " + answer.singleChoice;
-        } else if (answer.multipleChoice) {
-            return "Multiple Choice: " + Object.keys(answer.multipleChoice).join(', ');
-        } else if (answer.multipleOpenQuestion) {
-            let output = '';
-            for (let key in answer.multipleOpenQuestion) {
-                output += key + ': ' + answer.multipleOpenQuestion[key] + ', ';
+        if (answer) {
+            if (answer.openQuestion) {
+                return "Open Question: " + answer.openQuestion
+            } else if (answer.singleChoice) {
+                return "Single Choice: " + answer.singleChoice;
+            } else if (answer.multipleChoice) {
+                return "Multiple Choice: " + Object.keys(answer.multipleChoice).join(', ');
+            } else if (answer.multipleOpenQuestion) {
+                let output = '';
+                for (let key in answer.multipleOpenQuestion) {
+                    output += key + ': ' + answer.multipleOpenQuestion[key] + ', ';
+                }
+                return "Multiple Open Question: " + output.slice(0, -2);
             }
-            return "Multiple Open Question: " + output.slice(0, -2);
-        } else {
-            return answer;
         }
+        return answer;
     }
     $scope.displayDetails = function(action) {
         let message = action.answer;
@@ -641,13 +670,37 @@ app.controller('actionItemsController', ['$scope', '$routeParams', 'accountServi
         return message;
     };
 
+    $scope.displaySessionViewDetails = function(action) {
+        let message = $scope.displayDetails(action) || 'N/A';
+        return `Question: ${action.questionId}\n Action: ${action.action}\n ${message}`;
+    }
+
     if ($scope.isList) {
-        answerService.getActionList().then(function(res) {
-            $scope.items = res.data.data;
+        Promise.all([answerService.getActionList(), sessionService.getSessionList()]).then(function(res) {
+            $scope.actionList = res[0].data.data;
+            $scope.sessionList = res[1].data.data;
+            $scope.items = $scope.sessionList;
+            $scope.$apply();
         });
     } else {
         answerService.getActionItems(objectIds).then(function(res) {
             $scope.items = res.data.data;
+            if (objectIds.length === 2) {
+                $scope.accountAId = $scope.items[0].accountId;
+                $scope.accountAName = $scope.items[0].accountName;
+                let accountB = $scope.items.find(function(i) {
+                    return i.accountId !== $scope.accountAId;
+                });
+                if (accountB && accountB.questionSetId === $scope.items[0].questionSetId) {
+                    $scope.accountBId = accountB.accountId;
+                    $scope.accountBName = accountB.accountName;
+                    $scope.showSessionView = true;
+                    $scope.enableSessionView = true;
+                } else {
+                    $scope.showSessionView = false;
+                    $scope.enableSessionView = false;
+                }
+            }
         });
     }
 

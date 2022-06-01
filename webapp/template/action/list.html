@@ -12,9 +12,13 @@
 
 <div id="list">
     <div class="container action-table">
-        <div class="row">
+        <div class="row" ng-if="!showSessionView">
             <div>
                 <h4>{{isList ? 'Actions' : 'Action Items'}}</h4>
+                <div class="custom-control custom-switch mb-2" ng-if="enableSessionView">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1" ng-model="showSessionView" ng-click="switchView()">
+                    <label class="custom-control-label" for="customSwitch1">Toggle session view</label>
+                </div>
                 <span>
                     <button class="btn btn-primary" type="button" ng-click="goToItemPage()" ng-if="isList" ng-show="selectedItems.length" ng-disabled="!selectedItems.length">
                         {{'Check ' + selectedItems.length + ' actions details'}}
@@ -62,6 +66,60 @@
                       <td ng-if="!isList">{{item.action}}</td>
                       <td ng-if="!isList">{{displayDetails(item)}}</td>
                       <td>{{item.createdDate | date:'MM/dd/yyyy @ h:mm:ssa'}}</td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+        <div class="row" ng-if="showSessionView">
+            <div>
+                <h4>{{isList ? 'Sessions' : 'Action Items'}}</h4>
+                <div class="custom-control custom-switch mb-2" ng-if="enableSessionView">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1" ng-model="showSessionView" ng-click="switchView()">
+                    <label class="custom-control-label" for="customSwitch1">Toggle session view</label>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover mt-2">
+              <thead>
+                <tr>
+                  <th scope="col" class="selection-header" ng-if="isList"></th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('accountAId')" ng-if="isList">
+                      <span>Account A</span>
+                      <span class="sortorder" ng-show="sortBy === 'accountAId'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('accountBId')" ng-if="isList">
+                      <span>Account B</span>
+                      <span class="sortorder" ng-show="sortBy === 'accountBId'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('questionSetId')" ng-if="isList">
+                      <span>Question Set</span>
+                      <span class="sortorder" ng-show="sortBy === 'questionSetId'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('createdDate')">
+                      <span>Date</span>
+                      <span class="sortorder" ng-show="sortBy === 'createdDate'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                  <th scope="col" class="clickable" ng-click="toggleSorting('isGiveUp')" ng-if="isList">
+                      <span>Aborted</span>
+                      <span class="sortorder" ng-show="sortBy === 'isGiveUp'" ng-class="{reverse: reverse}"></span>
+                  </th>
+                  <th scope="col" ng-if="!isList">{{accountAName ? accountAName + ' (' + accountAId + ')' : accountAId}} actions</th>
+                  <th scope="col" ng-if="!isList">{{accountAName ? accountAName + ' (' + accountAId + ')' : accountAId}} messages</th>
+                  <th scope="col" ng-if="!isList">{{accountBName ? accountBName + ' (' + accountBId + ')' : accountBId}} actions</th>
+                  <th scope="col" ng-if="!isList">{{accountBName ? accountBName + ' (' + accountBId + ')' : accountBId}} messages</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr ng-repeat="item in items | orderBy:sortBy:reverse">
+                      <th ng-if="isList"><button class="btn btn-primary" type="button" ng-click="goToSessionItemPage(item)">Details</button></th>
+                      <td ng-if="isList">{{item.accountAName ? item.accountAName + ' (' + item.accountAId  + ')' : item.accountAId }}</td>
+                      <td ng-if="isList">{{item.accountBName ? item.accountBName + ' (' + item.accountBId  + ')' : item.accountBId }}</td>
+                      <td ng-if="isList">{{item.questionSetId}}</td>
+                      <td>{{item.createdDate | date:'MM/dd/yyyy @ h:mm:ssa'}}</td>
+                      <td ng-if="isList">{{item.isGiveUp ? 'Yes' : 'No'}}</td>
+                      <td ng-if="!isList" class="pre-line">{{item.accountId === accountAId && item.action !== 'send message' ? displaySessionViewDetails(item) : ''}}</td>
+                      <td ng-if="!isList">{{item.accountId === accountAId && item.action === 'send message' ? item.answer.message : ''}}</td>
+                      <td ng-if="!isList" class="pre-line">{{item.accountId === accountBId && item.action !== 'send message' ? displaySessionViewDetails(item) : ''}}</td>
+                      <td ng-if="!isList">{{item.accountId === accountBId && item.action === 'send message' ? item.answer.message : ''}}</td>
                   </tr>
               </tbody>
             </table>
