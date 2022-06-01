@@ -108,7 +108,8 @@ utils.setUpSocket = function(io) {
                             accountBId : matchedAccountId,
                             accountBName : accountSessionSocketMap[matchedAccountId].accountName,
                             questionSetId : accountSessionSocketMap[socket._userName].questionSetId,
-                            messages : []
+                            messages : [],
+                            createdDate : new Date()
                         };
                         accountSessionSocketMap[matchedAccountId].socket._roomName = "First Time Room " + counter;
                         accountSessionSocketMap[matchedAccountId].isConnect = true;

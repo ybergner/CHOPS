@@ -6,6 +6,10 @@
     margin-bottom: 15px;
 }
 
+.pre-line {
+    white-space: pre-line;
+}
+
 .error {
     color: red;
 }

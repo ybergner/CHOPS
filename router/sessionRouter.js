@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var Session = require('../data/sessionSchema.js');
+var Action = require('../data/actionSchema.js');
 var Enum = require('../data/enum.js');
 var utils = require('../data/utils.js');
 var questionRouter = require('./questionRouter.js');
@@ -22,6 +23,40 @@ router.get('/session/:accountId', function(req, res) {
             }
         }
     });
+});
+
+router.post('/session/list', function(req, res) {
+    if (req.body.account && req.body.account.accountType == Enum.accountType.teacher) {
+        Session.find({}).lean().then(function(sessions) {
+            let response = [], promise = [];
+            if (sessions) {
+                for (let session of sessions) {
+                    response.push({
+                        accountAId: session.accountAId,
+                        accountAName: session.accountAName,
+                        accountBId: session.accountBId,
+                        accountBName: session.accountBName,
+                        questionSetId: session.questionSetId,
+                        createdDate: session.createdDate || session.lastUpdatedDate,
+                        isGiveUp: !!session.currentGiveUpNumber
+                    });
+                    promise.push(Action.find({accountId: {$in: [session.accountAId, session.accountBId] }, questionSetId: session.questionSetId}, '_id').lean());
+                }
+            }
+            Promise.all(promise).then(function(actionIdList) {
+                actionIdList.forEach(function(item, i) {
+                    let actionIds = item.map(function(d) {
+                        return d._id;
+                    });
+                    response[i].actionIds = actionIds;
+                });
+            }).finally(function() {
+                res.json({success: true, data: response});
+            });
+        });
+    } else {
+        res.status(403).send('Forbidden');
+    }
 });
 
 router.getSessionById = function(accountId, questionSetId) {
