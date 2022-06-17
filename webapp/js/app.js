@@ -1227,7 +1227,8 @@ app.controller('questionSetController', ['$scope', 'questionSet', 'answersObject
         $q.all(promises).then(function(){
             $('#giveUpModal').modal('hide');
             $scope.waitForApiCall = false;
-            createActionItem('abort', $scope.currentQuestion);
+            let abortStr = fromOthers ? 'aborted by collaborator' : 'initiate abort';
+            createActionItem(abortStr, $scope.currentQuestion);
             if (!fromOthers && !waitForSocketGiveUpCompleted) {
                 $scope.home();
             }
