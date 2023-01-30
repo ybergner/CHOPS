@@ -11,6 +11,15 @@
                 "individual_latex_example_1.json",
                 "individual_latex_example_2.json"
             ]
+        },
+        {
+            "questionSetId" : "Tripets",
+            "name" : "Fabian_Tripets",
+            "isHidden" : false,
+            "questions" : [
+                "individual_example_question_1.json",
+                "individual_example_question_1_sol.json"
+            ]
         }
     ],
     "collaborative" : [
