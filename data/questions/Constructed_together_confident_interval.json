@@ -1,0 +1,24 @@
+{
+    "type" : "openQuestion",
+    "title" : "Co-constructed type question",
+    "versionA" : {
+        "text" : "Let’s say we know that the average Psychopath Test score in the population is 16. You decide to take the tests with your friends, there are a total of (blank) people, and get an average score of 18.5. \n \n In this question, you and your partner need to fill in a different number to fulfill the requirement given. \n \n Share the information you have and collaborate with your partner, Construct a 95% CI for the true population mean Psychopath Test score based on the specific sample, so that the number 15 is within the interval. \n",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "checkTwoVariableFormula",
+            "methodParams" : "a/sqrt(b)>2",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    },
+    "versionB" : {
+        "text" : "Let’s say we know that the average Psychopath Test score in the population is 16. Your partner decides to take the tests with friends, and get an average score of 18.5, , with a standard deviation of (blank). \n \n In this question, you and your partner need to fill in a different number to fulfill the requirement given.  \n \n Share the information you have and collaborate with your partner, Construct a 95% CI for the true population mean Psychopath Test score, based on the specific sample, so that the number 22 is within the interval. \n",
+        "option" : {},
+        "checkAnswerSettings" : {
+            "methodName" : "checkTwoVariableFormula",
+            "methodParams" : "a/sqrt(b)>2",
+            "maxAttempts" : 3,
+            "hasTwoSideChecks": true
+        }
+    }
+}

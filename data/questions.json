@@ -217,6 +217,15 @@
                 "satisfaction_survey_questions_Spring_2022_3.json",
                 "satisfaction_open_question_Spring_2022.json"
             ]
+        },
+        {
+            "questionSetId" : "Spring_2023_sample_questions",
+            "name" : "Statistics_for_behavioral_science_sample_questions",
+            "isHidden" : false,
+            "questions" : [
+                "Confident_interval_jigsaw.json",
+                "Constructed_together_confident_interval.json"
+            ]
         }
     ]
 }
