@@ -205,7 +205,7 @@
         {
             "questionSetId" : "Spring_2022_final_review",
             "name" : "UCF_physics_review_session",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "Introductory_page_Spring_2022_version_1.json",
                 "Guiding_sum_of_two_given_numbers.json",
@@ -221,10 +221,33 @@
         {
             "questionSetId" : "Spring_2023_sample_questions",
             "name" : "Statistics_for_behavioral_science_sample_questions",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "Confident_interval_jigsaw.json",
                 "Constructed_together_confident_interval.json"
+            ]
+        },
+        {
+            "questionSetId" : "Spring_2023_guiding_questions",
+            "name" : "Guiding_questions",
+            "isHidden" : false,
+            "questions" : [
+                "Introductory_page_Spring_2022_version_1.json",
+                "Guiding_sum_of_two_given_numbers.json",
+                "Guiding_sum_of_two_input_numbers.json",
+                "Guiding_question_four.json"
+            ]
+        },
+        {
+            "questionSetId" : "Spring_2023_t_value_questions",
+            "name" : "t_value_questions",
+            "isHidden" : false,
+            "questions" : [
+                "t_value_question_part1.json",
+                "t_value_question_part2.json",
+                "t_value_question_part3.json",
+                "t_value_question_part4.json",
+                "t_value_question_part5.json"
             ]
         }
     ]
