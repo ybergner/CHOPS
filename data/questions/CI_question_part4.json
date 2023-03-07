@@ -1,0 +1,24 @@
+{
+    "type" : "openQuestion",
+    "title" : "Part 4 of 5",
+    "versionA" : {
+        "text" : "(a) If only 11 patients had been run but the data were the same as in part 1, what would be the calculated value for t? \n \n (b) Referring to part a of Exercise, what would the calculated t value be if s = 3.1 (all else remaining the same)? \n \n You need to enter the answer for question (a) and your partner are responsible for question (b). \n \n After you finish, discuss with your partner how does the values compare with the t value calculated in part 1.",
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [4.40, 4.45],
+                "maxAttempts" : 2,
+                "solutionImgPath": "t_value_part4.png"
+        }
+    },
+    "versionB" : {
+        "text" : "(a) If only 11 patients had been run but the data were the same as in part 1, what would be the calculated value for t? \n \n (b) Referring to part a of Exercise, what would the calculated t value be if s = 3.1 (all else remaining the same)? \n \n You need to enter the answer for question (b) and your partner are responsible for question (a). \n \n After you finish, discuss with your partner how does the values compare with the t value calculated in part 1.",
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [12.40, 12.45],
+                "maxAttempts" : 2,
+                "solutionImgPath": "t_value_part4.png"
+        }
+    }
+}

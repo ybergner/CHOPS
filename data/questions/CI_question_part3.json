@@ -1,0 +1,49 @@
+{
+    "type" : "openQuestion",
+    "title" : "Part 3 of 5",
+    "maxHintAllowedPerPerson" : 1,
+    "versionA" : {
+        "text" : "24 stroke patients performed a maze task. The mean number of trials for success was x with standard deviation s. If the population mean for this task is μ, what is the calculated value for t? \n \n You and your partner can each select one piece of information from the following:",
+        "hint" : {
+            "a" : "x: The mean number of trials for success was x",
+            "b" : "s: The standard deviation (s)",
+            "c" : "μ: the population mean (μ)",
+            "d" : "x-μ: The difference between the mean number of trials for success and the population mean"
+        },
+        "hintText" : {
+            "a" : "The mean number of trials for success was 16.8",
+            "b" : "The standard deviation (s) is 5.8",
+            "c" : "The population mean (μ) is 5.6",
+            "d" : "x-μ: The difference between the mean number of trials for success and the population mean is 11.2"
+        },
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [9.40, 9.45],
+                "maxAttempts" : 2,
+                "solutionImgPath": "t_value_part3.png"
+        }
+    },
+    "versionB" : {
+        "text" : "24 stroke patients performed a maze task. The mean number of trials for success was x with standard deviation s. If the population mean for this task is μ, what is the calculated value for t?  \n \n You and your partner can each select one piece of information from the following:",
+        "hint" : {
+            "a" : "x: The mean number of trials for success was x",
+            "b" : "s: The standard deviation (s)",
+            "c" : "μ: the population mean (μ)",
+            "d" : "x-μ: The difference between the mean number of trials for success and the population mean"
+        },
+        "hintText" : {
+            "a" : "The mean number of trials for success was 16.8",
+            "b" : "The standard deviation (s) is 5.8",
+            "c" : "The population mean (μ) is 5.6",
+            "d" : "x-μ: The difference between the mean number of trials for success and the population mean is 11.2"
+        },
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [9.40, 9.45],
+                "maxAttempts" : 2,
+                "solutionImgPath": "t_value_part3.png"
+        }
+    }
+}

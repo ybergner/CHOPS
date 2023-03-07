@@ -1,0 +1,24 @@
+{
+    "type" : "openQuestion",
+    "title" : "Part 2 of 5",
+    "versionA" : {
+        "text" : "A researcher is trying to estimate the average number of children born to couples who do not practice birth control. The mean for a random sample of 150 such couples is 5.4. \n  \n Find the 95% confidence interval for the mean (μ) of all couples not practicing birth control. ",
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [5,00,5.1],
+                "maxAttempts" : 2,
+                "solutionImgPath": "CI_part2.png"
+        }
+    },
+    "versionB" : {
+        "text" : "A researcher is trying to estimate the average number of children born to couples who do not practice birth control. The standard deviation for a random sample of 150 such couples is 2. \n \n Find the 95% confidence interval for the mean (μ) of all couples not practicing birth control. ",
+        "option" : {},
+        "checkAnswerSettings" : {
+                "methodName" : "matchInRange",
+                "methodParams" : [5.70, 5.80],
+                "maxAttempts" : 2,
+                "solutionImgPath": "CI_part2.png"
+        }
+    }
+}
