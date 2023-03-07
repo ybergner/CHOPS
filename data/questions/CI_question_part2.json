@@ -6,7 +6,7 @@
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [5,00,5.1],
+                "methodParams" : [5.00,5.1],
                 "maxAttempts" : 2,
                 "solutionImgPath": "CI_part2.png"
         }

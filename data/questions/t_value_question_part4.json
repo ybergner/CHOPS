@@ -1,6 +1,7 @@
 {
     "type" : "openQuestion",
     "title" : "Part 4 of 5",
+    "maxHintAllowedPerPerson" : 1,
     "versionA" : {
         "text" : "Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n Answer the following questions: \n \n (a) If only 11 patients had been run but the data were the same, what would be the calculated value for t? \n \n (b) Referring to part 1, what would the calculated t value be if s = 3.1 (all else remaining the same)? \n \n First, discuss with your partner and guess how the value of t would change in both condition without calculation. Then calculate the value of t. \n \n You need to enter the answer for question (a) and your partner are responsible for question (b).",
         "hint" : {
