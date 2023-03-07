@@ -15,7 +15,7 @@
         {
             "questionSetId" : "Tripets",
             "name" : "Fabian_Tripets",
-            "isHidden" : false,
+            "isHidden" : true,
             "questions" : [
                 "individual_example_question_1.json",
                 "individual_example_question_1_sol.json"
@@ -228,21 +228,14 @@
             ]
         },
         {
-            "questionSetId" : "Spring_2023_guiding_questions",
-            "name" : "Guiding_questions",
+            "questionSetId" : "Spring_2023_t_value_questions",
+            "name" : "t_value_questions",
             "isHidden" : false,
             "questions" : [
                 "Introductory_page_Spring_2022_version_1.json",
                 "Guiding_sum_of_two_given_numbers.json",
                 "Guiding_sum_of_two_input_numbers.json",
-                "Guiding_question_four.json"
-            ]
-        },
-        {
-            "questionSetId" : "Spring_2023_t_value_questions",
-            "name" : "t_value_questions",
-            "isHidden" : false,
-            "questions" : [
+                "Guiding_question_four.json",
                 "t_value_question_part1.json",
                 "t_value_question_part2.json",
                 "t_value_question_part3.json",

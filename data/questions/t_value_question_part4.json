@@ -2,21 +2,45 @@
     "type" : "openQuestion",
     "title" : "Part 4 of 5",
     "versionA" : {
-        "text" : "(a) If only 11 patients had been run but the data were the same as in part 1, what would be the calculated value for t? \n \n (b) Referring to part a of Exercise, what would the calculated t value be if s = 3.1 (all else remaining the same)? \n \n You need to enter the answer for question (a) and your partner are responsible for question (b). \n \n After you finish, discuss with your partner how does the values compare with the t value calculated in part 1.",
+        "text" : "Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n Answer the following questions: \n \n (a) If only 11 patients had been run but the data were the same, what would be the calculated value for t? \n \n (b) Referring to part 1, what would the calculated t value be if s = 3.1 (all else remaining the same)? \n \n First, discuss with your partner and guess how the value of t would change in both condition without calculation. Then calculate the value of t. \n \n You need to enter the answer for question (a) and your partner are responsible for question (b).",
+        "hint" : {
+            "a" : "value of t will both increase in the condition (a) and (b)",
+            "b" : "value of t will increase in the condition (a) and decrease in (b)",
+            "c" : "value of t will decrease in the condition (b) and increase in (a)",
+            "d" : "value of t will both decrease in the condition (a) and (b)"
+        },
+        "hintText" : {
+            "a" : "That is not complete right. Try to calculate the value of t and think about why.",
+            "b" : "That is incorrect. Try to calculate the value of t and think about why.",
+            "c" : "That is correct!",
+            "d" : "That is not complete right. Try to calculate the value of t and think about why."
+        },
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [4.40, 4.45],
+                "methodParams" : [4.10, 4.80],
                 "maxAttempts" : 2,
                 "solutionImgPath": "t_value_part4.png"
         }
     },
     "versionB" : {
-        "text" : "(a) If only 11 patients had been run but the data were the same as in part 1, what would be the calculated value for t? \n \n (b) Referring to part a of Exercise, what would the calculated t value be if s = 3.1 (all else remaining the same)? \n \n You need to enter the answer for question (b) and your partner are responsible for question (a). \n \n After you finish, discuss with your partner how does the values compare with the t value calculated in part 1.",
+        "text" : "Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n Answer the following questions: \n \n  (a) If only 11 patients had been run but the data were the same, what would be the calculated value for t? \n \n (b) Referring to part 1, what would the calculated t value be if s = 3.1 (all else remaining the same)? \n \n First, discuss with your partner and guess how the value of t would change in both condition without calculation. Then calculate the value of t. \n \n You need to enter the answer for question (b) and your partner are responsible for question (a).",
+        "hint" : {
+            "a" : "value of t will both increase in the condition (a) and (b)",
+            "b" : "value of t will increase in the condition (a) and decrease in (b)",
+            "c" : "value of t will decrease in the condition (b) and increase in (a)",
+            "d" : "value of t will both decrease in the condition (a) and (b)"
+        },
+        "hintText" : {
+            "a" : "That is not complete right. Try to calculate the value of t and think about why.",
+            "b" : "That is incorrect. Try to calculate the value of t and think about why.",
+            "c" : "That is correct!",
+            "d" : "That is not complete right. Try to calculate the value of t and think about why."
+        },
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [12.40, 12.45],
+                "methodParams" : [12.10, 12.80],
                 "maxAttempts" : 2,
                 "solutionImgPath": "t_value_part4.png"
         }

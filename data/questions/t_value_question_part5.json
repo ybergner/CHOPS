@@ -2,22 +2,22 @@
     "type" : "openQuestion",
     "title" : "Part 5 of 5",
     "versionA" : {
-        "text" : "Based on the original question, you and your partner each need to change one value of either s or number of patients so that the new calculated t is half. You are responsible to change the value of s=6.2 within the range of (4-8).",
+        "text" : "Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n You and your partner each need to change one value of either s or number of patients so that the new calculated t is half of the original value. \n \n You are responsible to change the value of s=6.2 within the range of (4-8).",
         "option" : {},
         "checkAnswerSettings" : {
             "methodName" : "checkTwoVariableFormula",
-            "methodParams" : "a/sqrt(b)<2*6.2/sqrt(22)+0.1;a/sqrt(b)>2*6.2/sqrt(22)-0.1;9<b;b<51;a>3.9;a<8.1",
+            "methodParams" : "a/sqrt(b)<2*6.2/sqrt(22)+0.5;a/sqrt(b)>2*6.2/sqrt(22)-0.5;9<b;b<51;a>3.9;a<8.1",
             "maxAttempts" : 2,
             "hasTwoSideChecks": true,
             "solutionImgPath": "t_value_part5.png"
         }
     },
     "versionB" : {
-        "text" : "Based on the original question, you and your partner each need to change one value of either s or number of patients so that the new calculated t is half. You are responsible to change the value of the number of patients within the range of (10-50).",
+        "text" : "Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n You and your partner each need to change one value of either s or number of patients so that the new calculated t is half of the original value. \n \n You are responsible to change the value of the number of patients within the range of (10-50).",
         "option" : {},
         "checkAnswerSettings" : {
             "methodName" : "checkTwoVariableFormula",
-            "methodParams" : "a/sqrt(b)<2*6.2/sqrt(22)+0.1;a/sqrt(b)>2*6.2/sqrt(22)-0.1;9<b;b<51;a>3.9;a<8.1",
+            "methodParams" : "a/sqrt(b)<2*6.2/sqrt(22)+0.5;a/sqrt(b)>2*6.2/sqrt(22)-0.5;9<b;b<51;a>3.9;a<8.1",
             "maxAttempts" : 2,
             "hasTwoSideChecks": true,
             "solutionImgPath": "t_value_part5.png"

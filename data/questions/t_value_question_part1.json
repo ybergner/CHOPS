@@ -2,21 +2,21 @@
     "type" : "openQuestion",
     "title" : "Part 1 of 5",
     "versionA" : {
-        "text" : "Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t. (If you have the t distribution table, try to find the critical t for a .05, two-tailed test, you don’t need to enter this value) ",
+        "text" : "Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [6.25, 6.30],
+                "methodParams" : [6.00, 6.50],
                 "maxAttempts" : 2,
                 "solutionImgPath": "t_value_part1.png"
         }
     },
     "versionB" : {
-        "text" : "Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t. (If you have the t distribution table, try to find the critical t for a .05, two-tailed test, you don’t need to enter this value) ",
+        "text" : "Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [6.25, 6.30],
+                "methodParams" : [6.00, 6.50],
                 "maxAttempts" : 2,
                 "solutionImgPath": "t_value_part1.png"
         }

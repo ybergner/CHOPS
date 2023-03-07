@@ -1,6 +1,6 @@
 {
     "type" : "openQuestion",
-    "title" : "Guiding question 2",
+    "title" : "Guiding question_collaborative check",
     "versionA" : {
         "text" : "In this question type, you and your partner may have to provide different parts of an answer. The correct answer will be evaluated using both of your individual inputs. \n \n Enter a number such that the sum of your and your partner’s numbers is 27. You can discuss with your partner how you want to do this. The answer will be evaluated only after both of you have submitted your individual answers. (You may see a brief delay if you submit your answer before your partner.)  \n",
         "option" : {},

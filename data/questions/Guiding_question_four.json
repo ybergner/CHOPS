@@ -1,6 +1,6 @@
 {
     "type" : "openQuestion",
-    "title" : "Guiding question 4",
+    "title" : "Guiding question_request information",
     "maxHintAllowedPerPerson" : 1,
     "versionA" : {
         "text" : "In this question type, you and your partner again coordinate your selections, but then you must also use feedback to formulate a final answer. \n \n In this scenario, you must calculate the area of the rectangle ABCD. The information you need to answer this question can be requested, but each of you can only request one value. \n \n Request your information (select one):\n",

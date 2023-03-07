@@ -6,7 +6,7 @@
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [6.85, 6.92],
+                "methodParams" : [6.60, 7.20],
                 "maxAttempts" : 2,
                 "solutionImgPath": "t_value_part2.png"
         }
@@ -16,7 +16,7 @@
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
-                "methodParams" : [6.85, 6.92],
+                "methodParams" : [6.60, 7.20],
                 "maxAttempts" : 2,
                 "solutionImgPath": "t_value_part2.png"
         }
