@@ -91,7 +91,8 @@
     <div ng-class="{'container-fluid' : currentQuestionSet.isCollaborative, 'container' : !currentQuestionSet.isCollaborative}">
         <div class="card">
             <div class="card-header">
-                <h4>{{'Step #' + currentQuestion}}</h4>
+                <!--<h4>{{'Step #' + currentQuestion}}</h4>-->
+                <h4>{{currentQuestionSet.questions[currentQuestion - 1].title}}</h4>
             </div>
             <div class="card-body">
                 <form name="questionForm">
