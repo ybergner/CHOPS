@@ -1,8 +1,8 @@
 {
     "type" : "openQuestion",
-    "title" : "Guiding question_jigsaw",
+    "title" : "Example question_jigsaw",
     "versionA" : {
-        "text" : "In this question type, you and your partner may have complementary information that is needed in order to solve a problem. Here is a simple example. \n \n You and your partner have each been assigned a number. Your objective is to enter the sum of the two numbers in the field below. Your assigned number is 7.",
+        "text" : "In some questions, you and your partner may have complementary information that is needed in order to solve a problem. (You may not have enough information to solve the question by yourself.) Here is a simple example. \n \n You and your partner have each been assigned a number. Your objective is to enter the sum of the two numbers in the field below. Your assigned number is 7.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "guiding1",
@@ -11,7 +11,7 @@
         }
     },
     "versionB" : {
-        "text" : "In this question type, you and your partner may have complementary information that is needed in order to solve a problem. Here is a simple example. \n \n You and your partner have each been assigned a number. Your objective is to enter the sum of the two numbers in the field below. Your assigned number is 4.",
+        "text" : "In some questions, you and your partner may have complementary information that is needed in order to solve a problem. (You may not have enough information to solve the question by yourself.) Here is a simple example. \n \n You and your partner have each been assigned a number. Your objective is to enter the sum of the two numbers in the field below. Your assigned number is 4.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "guiding1",

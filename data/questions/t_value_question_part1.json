@@ -1,8 +1,8 @@
 {
     "type" : "openQuestion",
-    "title" : "Part 1 of 5",
+    "title" : "t_test question_Part 1 of 5",
     "versionA" : {
-        "text" : "Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t.",
+        "text" : "You will see 5 variations of t_test questions in the following pages, this is part 1 which is an orignal practice question from the end-of-chapter textbook. You can choose to discuss with your partner or solve the question by yourself and compare the answer. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
@@ -12,7 +12,7 @@
         }
     },
     "versionB" : {
-        "text" : "Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t.",
+        "text" : "You will see 5 variations of t_test questions in the following pages, this is part 1 which is an orignal practice question from the end-of-chapter textbook. You can choose to discuss with your partner or solve the question by yourself and compare the answer. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",

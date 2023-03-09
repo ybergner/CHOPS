@@ -1,8 +1,8 @@
 {
     "type" : "openQuestion",
-    "title" : "Part 5 of 5",
+    "title" : "t-test question_Part 5 of 5",
     "versionA" : {
-        "text" : "Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n You and your partner each need to change one value of either s or number of patients so that the new calculated t is half of the original value. \n \n You are responsible to change the value of s=6.2 within the range of (4-8).",
+        "text" : "This is the last part, congrats! In this question, each of you need to provide parts of the answer to fulfill a shared goal. The correctness of the final answer is determined by both of your inputs. \n \n Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n You and your partner each need to change one value of either s or number of patients so that the new calculated t is half of the original value. \n \n You are responsible to change the value of s=6.2 within the range of (4-8).",
         "option" : {},
         "checkAnswerSettings" : {
             "methodName" : "checkTwoVariableFormula",
@@ -13,7 +13,7 @@
         }
     },
     "versionB" : {
-        "text" : "Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n You and your partner each need to change one value of either s or number of patients so that the new calculated t is half of the original value. \n \n You are responsible to change the value of the number of patients within the range of (10-50).",
+        "text" : "This is the last part, congrats! In this question, each of you need to provide parts of the answer to fulfill a shared goal. The correctness of the final answer is determined by both of your inputs. \n \n Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n You and your partner each need to change one value of either s or number of patients so that the new calculated t is half of the original value. \n \n You are responsible to change the value of the number of patients within the range of (10-50).",
         "option" : {},
         "checkAnswerSettings" : {
             "methodName" : "checkTwoVariableFormula",

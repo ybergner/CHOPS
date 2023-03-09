@@ -3,7 +3,7 @@
     "title" : "Part 3 of 5",
     "maxHintAllowedPerPerson" : 1,
     "versionA" : {
-        "text" : "24 stroke patients performed a maze task. The mean number of trials for success was x with standard deviation s. If the population mean for this task is μ, what is the calculated value for t? \n \n You and your partner can each select one piece of information from the following:",
+        "text" : "This is part 3, each of you can only request one information, so it is encouraged to come up with a plan with your partner before starting solving the question. \n \n 24 stroke patients performed a maze task. The mean number of trials for success was x with standard deviation s. If the population mean for this task is μ, what is the calculated value for t? \n \n You and your partner can each select one piece of information from the following:",
         "hint" : {
             "a" : "x: the mean number of trials in the sample",
             "b" : "s: The standard deviation (s)",
@@ -25,7 +25,7 @@
         }
     },
     "versionB" : {
-        "text" : "24 stroke patients performed a maze task. The mean number of trials for success was x with standard deviation s. If the population mean for this task is μ, what is the calculated value for t?  \n \n You and your partner can each select one piece of information from the following:",
+        "text" : "This is part 3, each of you can only request one information, so it is encouraged to come up with a plan with your partner before starting solving the question. \n \n 24 stroke patients performed a maze task. The mean number of trials for success was x with standard deviation s. If the population mean for this task is μ, what is the calculated value for t?  \n \n You and your partner can each select one piece of information from the following:",
         "hint" : {
             "a" : "x: the mean number of trials in the sample (x)",
             "b" : "s: The standard deviation (s)",

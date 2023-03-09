@@ -1,8 +1,8 @@
 {
     "type" : "openQuestion",
-    "title" : "Part 2 of 5",
+    "title" : "t_test question_Part 2 of 5",
     "versionA" : {
-        "text" : "Twenty-two stroke patients performed a maze task. The mean number of trials for success was 17.3. If the population mean (μ) for this task is 8.2, what is the calculated value for t?",
+        "text" : "This is part 2, the hint for this question is that you may not have enough information to solve the question alone, so it would be great if you could share your information with your partner. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 17.3. If the population mean (μ) for this task is 8.2, what is the calculated value for t?",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
@@ -12,7 +12,7 @@
         }
     },
     "versionB" : {
-        "text" : "Twenty-two stroke patients performed a maze task. The mean number of trials for success was 17.3. If the standard deviation (s) is 6.2, what is the calculated value for t? ",
+        "text" : "This is part 2, the hint for this question is that you may not have enough information to solve the question alone, so it would be great if you could share your information with your partner. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 17.3. If the standard deviation (s) is 6.2, what is the calculated value for t? ",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
