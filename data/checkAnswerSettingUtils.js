@@ -121,6 +121,20 @@ utils.matchSingleChoiceExample = function(answerA, params, answerB) {
     }
 };
 
+utils.ChooseSameABC = function(answerA, params, answerB) {
+    if (answerA == 'a' && answerB == 'a' || answerA == 'b' && answerB == 'b' || answerA == 'c' && answerB == 'c') {
+        return {
+            feedback: 'You and your partner got it right! There are more than one correct combination, you can try again!',
+            isCorrected: true
+        }
+    } else {
+        return {
+            feedback: 'The combination of your answers is wrong, try to fix one selection with your partner and calculate the other.',
+            isCorrected: false
+        }
+    }
+};
+
 utils.checkTwoVariableFormula = function(answerA, formula, answerB) {
     let a = Number(answerA), b = Number(answerB), expression = formula.replace(' ', '').split(';');
     let pattern = /[!=><]=/;

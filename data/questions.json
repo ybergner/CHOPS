@@ -228,8 +228,8 @@
             ]
         },
         {
-            "questionSetId" : "Spring_2023_t_value_questions",
-            "name" : "t_value_questions",
+            "questionSetId" : "Spring_2023_t_test_questions",
+            "name" : "t_test_questions",
             "isHidden" : false,
             "questions" : [
                 "Introductory_page_Spring_2022_version_1.json",
@@ -240,7 +240,9 @@
                 "t_value_question_part2.json",
                 "t_value_question_part3.json",
                 "t_value_question_part4.json",
-                "t_value_question_part5.json"
+                "t_value_question_part4_multiple_choice.json",
+                "t_value_question_part5.json",
+                "t_value_question_part5_collaborative_check_multiple.json"
             ]
         }
     ]

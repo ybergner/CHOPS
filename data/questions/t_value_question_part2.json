@@ -2,7 +2,7 @@
     "type" : "openQuestion",
     "title" : "t_test question_Part 2 of 5",
     "versionA" : {
-        "text" : "This is part 2, the hint for this question is that you may not have enough information to solve the question alone, so it would be great if you could share your information with your partner. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 17.3. If the population mean (μ) for this task is 8.2, what is the calculated value for t?",
+        "text" : "This is part 2, the hint for this question is that you may not have enough information to solve the question alone, so it would be great if you could share your information with your partner. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 17.3. If the population mean (μ) for this task is 8.2, what is the calculated value for t? \n \n The following formula may be useful: t = (X‾ - μ0) / (s / √n), where X‾ is the sample mean, μ0 represents the population mean, s is the standard deviation of the sample and n stands for the size of the sample.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
@@ -12,7 +12,7 @@
         }
     },
     "versionB" : {
-        "text" : "This is part 2, the hint for this question is that you may not have enough information to solve the question alone, so it would be great if you could share your information with your partner. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 17.3. If the standard deviation (s) is 6.2, what is the calculated value for t? ",
+        "text" : "This is part 2, the hint for this question is that you may not have enough information to solve the question alone, so it would be great if you could share your information with your partner. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 17.3. If the standard deviation (s) is 6.2, what is the calculated value for t? \n \n The following formula may be useful: t = (X‾ - μ0) / (s / √n), where X‾ is the sample mean, μ0 represents the population mean, s is the standard deviation of the sample and n stands for the size of the sample.",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
