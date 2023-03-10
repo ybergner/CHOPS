@@ -1,5 +1,5 @@
 {
-    "type" : "multipleChoice",
+    "type" : "singleChoice",
     "title" : "t-test question_Part 4 of 5",
     "versionA" : {
         "text" : "This is part 4, in this question, each of you are responsible for one question to understand the relationship between the value of t and other variables. Discuss thoroughly because it will help you in part 5 which is quite challenging. \n \n Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n Answer the following questions: \n \n (a) If only 11 patients had been run but the data were the same, what would be the calculated value for t? \n \n (b) Referring to part 1, what would the calculated t value be if s = 3.1 (all else remaining the same)? \n \n First, discuss with your partner and guess how the value of t would change in both condition without calculation. Then calculate the value of t. \n \n You need to enter the answer for question (a) and your partner are responsible for question (b). \n \n The following formula may be useful: t = (X‾ - μ0) / (s / √n), where X‾ is the sample mean, μ0 represents the population mean, s is the standard deviation of the sample and n stands for the size of the sample.",
