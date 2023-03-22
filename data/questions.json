@@ -236,12 +236,11 @@
                 "Guiding_sum_of_two_given_numbers.json",
                 "Guiding_sum_of_two_input_numbers.json",
                 "Guiding_question_four.json",
+                "transfer_page.json",
                 "t_value_question_part1.json",
                 "t_value_question_part2.json",
                 "t_value_question_part3.json",
-                "t_value_question_part4.json",
                 "t_value_question_part4_multiple_choice.json",
-                "t_value_question_part5.json",
                 "t_value_question_part5_collaborative_check_multiple.json"
             ]
         }

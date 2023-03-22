@@ -1,0 +1,19 @@
+{
+    "type" : "singleChoice",
+    "title" : "Get Ready",
+    "versionA" : {
+        "text" : "Great! That’s the end of the example questions. Now, onto the material you are learning in class. Please click Next to continue.",
+        "option" : {
+            "positive" : "I am ready!",
+            "negative" : "I am almost ready!"
+
+        }
+    },
+    "versionB" : {
+        "text" : "Great! That’s the end of the example questions. Now, onto the material you are learning in class. Please click Next to continue.",
+        "option" : {
+            "positive" : "I am ready!",
+            "negative" : "I am almost ready!"
+        }
+    }
+}

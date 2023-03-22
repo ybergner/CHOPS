@@ -1,29 +1,31 @@
 {
     "type" : "singleChoice",
-    "title" : "t-test question_Part 5 of 5",
+    "title" : "t-test question (Part 5 of 5)",
     "versionA" : {
-        "text" : "This is the last part, congrats! In this question, each of you need to provide parts of the answer to fulfill a shared goal. The correctness of the final answer is determined by both of your inputs. \n \n Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n You and your partner each need to select one value of either s or number of patients so that the new calculated t is half of the original value. \n \n You are responsible to change the value of s=6.2. \n \n The following formula may be useful: t = (X‾ - μ0) / (s / √n), where X‾ is the sample mean, μ0 represents the population mean, s is the standard deviation of the sample and n stands for the size of the sample.",
+        "latex": "t_formula.tex",
+        "text" : "This is the last part, congrats! In this question, each of you needs to provide parts of the answer to fulfill a shared goal. The correctness of the final answer is determined by both of your inputs. \n \n Considering the information of question 1:  \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n You and your partner each need to select one value of either s or number of patients so that the new calculated t is half of the original value. \n \n You are responsible to change the value of s from 6.2 to another value. \n \n Choose the value below which, along with your partner’s choice, achieves the goal for t.",
         "option" : {
             "a" : "change standard deviation(s) to 3.62",
             "b" : "change standard deviation(s) to 4.18",
             "c" : "change standard deviation(s) to 4.67"
         },
         "checkAnswerSettings" : {
-            "methodName" : "ChooseSameABC",
+            "methodName" : "ChooseABorBC",
             "maxAttempts" : 3,
             "hasTwoSideChecks": true,
             "solutionImgPath": "t_value_part5_multiple_choice.png"
         }
     },
     "versionB" : {
-        "text" : "This is the last part, congrats! In this question, each of you need to provide parts of the answer to fulfill a shared goal. The correctness of the final answer is determined by both of your inputs. \n \n Based on the information of question 1: \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n You and your partner each need to select one value of either s or number of patients so that the new calculated t is half of the original value. \n \n You are responsible to change the value of the number of patients. \n \n The following formula may be useful: t = (X‾ - μ0) / (s / √n), where X‾ is the sample mean, μ0 represents the population mean, s is the standard deviation of the sample and n stands for the size of the sample.",
+        "latex": "t_formula.tex",
+        "text" : "This is the last part, congrats! In this question, each of you needs to provide parts of the answer to fulfill a shared goal. The correctness of the final answer is determined by both of your inputs. \n \n Considering the information of question 1:  \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2, the population mean (μ) for this task is 6.5. \n \n You and your partner each need to select one value of either s or number of patients so that the new calculated t is half of the original value. \n \n You are responsible to change the number of patients. \n \n Choose the value below which, along with your partner’s choice, achieves the goal for t.",
         "option" : {
-            "a" : "change the number of patients to 30",
-            "b" : "change the number of patients to 40",
-            "c" : "change the number of patients to 50"
+            "a" : "change the number of patients to 20",
+            "b" : "change the number of patients to 30",
+            "c" : "change the number of patients to 40"
         },
         "checkAnswerSettings" : {
-            "methodName" : "ChooseSameABC",
+            "methodName" : "ChooseABorBC",
             "maxAttempts" : 3,
             "hasTwoSideChecks": true,
             "solutionImgPath": "t_value_part5_multiple_choice.png"

@@ -82,12 +82,12 @@ utils.matchInList = function(answer, params) {
 utils.matchInRange = function(answer, params) {
     if (answer >= params[0] && answer <= params[1]) {
         return {
-            feedback: 'Your answer is correct.',
+            feedback: 'Your answer is correct. After you use all the attempts, you will see the solution.',
             isCorrected: true
         };
     } else {
         return {
-            feedback: 'Your answer is wrong.',
+            feedback: 'Oops. That’s not quite right. You can try again. After you use all the attempts, you will see the solution.',
             isCorrected: false
         };
     }
@@ -121,8 +121,8 @@ utils.matchSingleChoiceExample = function(answerA, params, answerB) {
     }
 };
 
-utils.ChooseSameABC = function(answerA, params, answerB) {
-    if (answerA == 'a' && answerB == 'a' || answerA == 'b' && answerB == 'b' || answerA == 'c' && answerB == 'c') {
+utils.ChooseABorBC = function(answerA, params, answerB) {
+    if (answerA == 'a' && answerB == 'b' || answerA == 'b' && answerB == 'c') {
         return {
             feedback: 'You and your partner got it right! There are more than one correct combination, you can try again!',
             isCorrected: true

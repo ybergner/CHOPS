@@ -1,8 +1,9 @@
 {
     "type" : "openQuestion",
-    "title" : "t_test question_Part 1 of 5",
+    "title" : "t-test question (Part 1 of 5)",
     "versionA" : {
-        "text" : "You will see 5 variations of t_test questions in the following pages, this is part 1 which is an orignal practice question from the end-of-chapter textbook. You can choose to discuss with your partner or solve the question by yourself and compare the answer. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t. \n \n The following formula may be useful: t = (X‾ - μ0) / (s / √n), where X‾ is the sample mean, μ0 represents the population mean, s is the standard deviation of the sample and n stands for the size of the sample.",
+        "latex": "t_formula.tex",
+        "text" : "You will see 5 variations of t_test questions in the following pages, this is part 1 which is an orignal practice question from the end-of-chapter textbook. You can choose to discuss with your partner or solve the question by yourself and compare the answer. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t. ",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
@@ -12,7 +13,8 @@
         }
     },
     "versionB" : {
-        "text" : "You will see 5 variations of t_test questions in the following pages, this is part 1 which is an orignal practice question from the end-of-chapter textbook. You can choose to discuss with your partner or solve the question by yourself and compare the answer. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t. \n \n The following formula may be useful: t = (X‾ - μ0) / (s / √n), where X‾ is the sample mean, μ0 represents the population mean, s is the standard deviation of the sample and n stands for the size of the sample.",
+        "latex": "t_formula.tex",
+        "text" : "You will see 5 variations of t_test questions in the following pages, this is part 1 which is an orignal practice question from the end-of-chapter textbook. You can choose to discuss with your partner or solve the question by yourself and compare the answer. \n \n Twenty-two stroke patients performed a maze task. The mean number of trials for success was 14.7 with s = 6.2. If the population mean (μ) for this task is 6.5, discuss with your partner and enter the calculated value for t. ",
         "option" : {},
         "checkAnswerSettings" : {
                 "methodName" : "matchInRange",
