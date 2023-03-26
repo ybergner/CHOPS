@@ -272,7 +272,7 @@ app.factory('accountService', ['$http', '$q', 'enums', function($http, $q, enums
 app.factory('socketService', function() {
     return {
         socketSetup : function(scope) {
-            let socket = io({ reconnection: false });
+            let socket = io();
             socket.emit('account', {account : scope.account, questionSetId : scope.currentQuestionSet.questionSetId});
             socket.on('account already has socket', function(){
                 console.log('account already connected with socket.');
