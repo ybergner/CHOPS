@@ -213,7 +213,9 @@ utils.setUpSocket = function(io) {
                 accountSessionSocketMap[socket._userName].currentWaitingCheckAttempt.attempt = undefined;
             }
         });
-
+        socket.on('pingServer', function(data) {
+            console.log(`Receiving ping from ${data}`);
+        });
     });
     console.log('socket.io set up completed');
 };

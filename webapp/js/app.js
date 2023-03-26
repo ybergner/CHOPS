@@ -321,6 +321,11 @@ app.factory('socketService', function() {
                 scope.$apply();
                 $('.toast').toast('show');
                 scope.chatEl = document.getElementById("message-box");
+                if (!scope.pingInterval) {
+                  scope.pingInterval = setInterval(function(scope){
+                    scope.socket.emit("pingServer", scope.account.accountId)
+                  }, 30 * 1000, scope);
+                }
             });
             socket.on('leave', function(id) {
                 console.log('account id ' + id + ' left');
@@ -405,6 +410,12 @@ app.factory('socketService', function() {
                         counter++;
                     }
                 }, 1000);
+            });
+            socket.on('disconnect', function(){
+                if (scope.pingInterval) {
+                    clearInterval(scope.pingInterval);
+                    scope.pingInterval = null;
+                }
             });
         }
     };
