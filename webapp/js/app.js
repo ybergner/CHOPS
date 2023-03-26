@@ -290,6 +290,9 @@ app.factory('socketService', function() {
                     scope.isA = scope.session.accountAId == scope.account.accountId;
                     angular.extend(scope.currentQuestionSet, data.questionSet);
                     scope.checkAnswer(scope.currentQuestion, true);
+                    if (scope.session._id) {
+                      scope.collaborate();
+                    }
                     scope.$apply();
                 } else {
                     scope.checkIfPreviousGiveUp();
