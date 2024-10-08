@@ -1,6 +1,6 @@
 {
     "type" : "openQuestion",
-    "title" : "Example question_jigsaw",
+    "title" : "Example (Jigsaw)",
     "versionA" : {
         "text" : "In some questions, you and your partner may have complementary information that is needed in order to solve a problem. (You may not have enough information to solve the question by yourself.) Here is a simple example. \n \n You and your partner have each been assigned a number. Your objective is to enter the sum of the two numbers in the field below. Your assigned number is 7.",
         "option" : {},

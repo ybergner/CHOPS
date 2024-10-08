@@ -391,13 +391,13 @@ app.factory('socketService', function() {
                 $('#attemptModal').modal('hide');
                 $('#warningOtherCheckModal').modal('hide');
                 $('.toast').toast('hide');
-                scope.chatBox.toastMessage = 'Collaborator give up this session, you will be redirect to home page after 3 seconds.';
+                scope.chatBox.toastMessage = 'Collaborator has left this session! You will be redirect to home page in 5 seconds.';
                 scope.$apply();
                 scope.giveUp(true);
                 $('.toast').toast('show');
                 setTimeout(function() {
                     scope.home(true);
-                }, 3000);
+                }, 5000);
             });
             socket.on('give up completed', function(message){
                 console.log('account self set up completed');
